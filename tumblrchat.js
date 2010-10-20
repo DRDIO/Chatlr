@@ -1,20 +1,9 @@
-var http = require('http'), 
-    url  = require('url'),
-    fs   = require('fs'),
-    io   = require('./'),
-    sys  = require('sys'),
-
-    server = http.createServer(function(request, response)
-    {
-        
-    }),
-
-    send404 = function(res)
-    {
-        res.writeHead(404);
-        res.write('404');
-        res.end();
-    };
+var http   = require('http'),
+    url    = require('url'),
+    fs     = require('fs'),
+    io     = require('./socket.io'),
+    sys    = require('sys'),
+    server = http.createServer();
 
 server.listen(8080);
 		

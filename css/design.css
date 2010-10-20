@@ -1,0 +1,72 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+}
+
+body {
+    background: #2c4762;
+}
+
+body, input {
+    font: 12px Arial, sans-serif;
+}
+
+#header {
+    font-size: 1em;
+    background: url(/img/header.png) no-repeat 0 0;
+    display: block;
+    width: 12.167em;
+    height: 2em;
+    text-indent: -9999em;
+    overflow: hidden;
+    margin: 0.5em;
+}
+#chatbox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-box-sizing: border-box;
+    padding: 3em 0.5em;
+    width: 100%;
+    height: 100%;
+}
+
+#chat {
+    background: #fff;
+    border-radius: 0.5em;
+    height: 100%;
+    overflow: auto;
+}
+
+#chat p {
+    padding: 0.5em; 
+    margin: 0;
+}
+
+#chat p:nth-child(odd) {
+    background: #F6F6F6;
+}
+
+#form {
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 0.5em;
+    -webkit-box-sizing: border-box;
+}
+
+#text {
+    -webkit-box-sizing: border-box;
+    outline: none;
+    border-radius: 0.5em;
+    display: block;
+    width: 100%;
+    padding: 0.5em;
+    margin: 0;
+    background: #fff;
+    border: none;
+    height: 2em;
+}
