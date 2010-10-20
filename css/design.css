@@ -12,7 +12,16 @@ body, input {
     font: 12px Arial, sans-serif;
 }
 
+#top {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
 #header {
+    float: left;
     font-size: 1em;
     background: url(/img/header.png) no-repeat 0 0;
     display: block;
@@ -22,6 +31,26 @@ body, input {
     overflow: hidden;
     margin: 0.5em;
 }
+
+#login {
+    float: right;
+    margin: 0.5em;
+}
+
+#login a {
+    color: #fff;
+    text-decoration: none;
+    padding-top: 0.5em;
+}
+
+#login img {
+    border-radius: 0.5em;
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    margin-left: 0.5em;
+}
+
 #chatbox {
     position: absolute;
     top: 0;
@@ -37,6 +66,22 @@ body, input {
     border-radius: 0.5em;
     height: 100%;
     overflow: auto;
+}
+
+#chat div {
+    padding: 0.5em;
+}
+
+#chat img {
+    margin-right: 0.5em;
+    border-radius: 0.25em;
+    vertical-align: middle;
+}
+
+#chat a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 #chat p {
