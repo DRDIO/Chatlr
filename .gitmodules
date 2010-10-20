@@ -1,3 +1,0 @@
-[submodule "socket.io"]
-	path = socket.io
-	url = /www/socket.io/
