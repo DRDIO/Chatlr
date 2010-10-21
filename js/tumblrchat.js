@@ -10,8 +10,31 @@ function displayMessage(response)
                     .attr('title', 'Visit ' + response.title)
                     .text(response.name + ': '))
                 .append($('<span/>').text(response.message)));
-    } else {
-        $('#chat').append('<p>' + response.message[0] + ': ' + response.message[1])
+
+    } else if (response.type == 'personal') {
+        $('#chat')
+            .append($('<div/>')
+		.addClass('personal')
+                .append($('<img/>').attr('src', response.avatar))
+                .append($('<a/>')
+                    .attr('href', response.url)
+                    .attr('target', '_blank')
+                    .attr('title', 'Visit ' + response.title)
+                    .text(response.name + ': '))
+                .append($('<span/>').text(response.message)));
+
+    } else if (response.type == 'connect') {
+        $('#chat')
+            .append($('<div/>')
+                .addClass('connect')
+                .append($('<img/>').attr('src', response.avatar))
+                .append($('<a/>')
+                    .attr('href', response.url)
+                    .attr('target', '_blank')
+                    .attr('title', 'Visit ' + response.title)
+                    .text(response.name + ' '))
+                .append($('<span/>').text('joined the chat!')));
+
     }
     
     $('#chat').scrollTop($('#chat')[0].scrollHeight);
@@ -22,19 +45,24 @@ $(function() {
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
 
+    var response = {
+        avatar:  tumblrAvatar,
+        title:   tumblrTitle,
+        name:    tumblrName,
+        url:     tumblrUrl};
+
     $('#form').submit(function(e) {
         e.preventDefault();
         
         var message = $('#text').val();
-        var response = {
-            type:    'message',
-            message: message,
-            avatar:  tumblrAvatar,
-            title:   tumblrTitle,
-            name:    tumblrName,
-            url:     tumblrUrl};
+
+        response.type    = 'message';
+        response.message = message;
 
         socket.send(response);
+
+	response.type = 'personal';
+
         displayMessage(response);
 
         $('#text').val('');
@@ -43,6 +71,10 @@ $(function() {
     var socket = new io.Socket(null, {port: 8080});
 
     socket.connect();
+
+    response.type = 'connect';
+    socket.send(response);
+
     socket.on('message', function(response)
     {
         if ('buffer' in response) {

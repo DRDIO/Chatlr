@@ -15,7 +15,6 @@ var socket = io.listen(server),
 socket.on('connection', function(client)
 {
     client.send({ buffer: buffer });
-    client.broadcast({ announcement: client.sessionId + ' connected' });
 
     client.on('message', function(response)
     {

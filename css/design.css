@@ -89,6 +89,18 @@ body, input {
     background: #F6F6F6;
 }
 
+#chat div.connect {
+    opacity: 0.25;
+}
+
+#chat div.personal {
+    background: #FFF2F2;
+}
+
+#chat div.personal:nth-child(odd) {
+    background: #FFE5E5;
+}
+
 #form {
     display: block;
     position: absolute;

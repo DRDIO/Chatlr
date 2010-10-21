@@ -42,8 +42,11 @@ $content = $connection->post('api/authenticate');
 $tumblr  = (array) $content->tumblelog[0];
 $tumblr  = $tumblr['@attributes'];
 
-$tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '24.png';
-$tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16.png';
+$avatarType = substr($tumblr['avatar-url'], -4);
+
+$tumblr['title']  = htmlspecialchars($tumblr['title'], ENT_QUOTES);
+$tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '24' . $avatarType;
+$tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
 
 ?>
 
@@ -55,7 +58,7 @@ $tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16.png';
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/json.js"></script>
-        <script type="text/javascript" src="http://tumblrchat.loc:8080/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="http://tumblrchat.com:8080/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="/js/tumblrchat.js"></script>
         <script type="text/javascript">
             var tumblrTitle     = '<?php echo $tumblr['title']; ?>',
