@@ -85,11 +85,6 @@ $(function() {
                 serverRes.user = users[serverRes.id];
                 displayMessage(serverRes);
             }
-
-            // Scroll to the end of the page unless mouse is down
-            if (!mouseDown) {
-                $('#chat').scrollTop($('#chat')[0].scrollHeight);
-            }
         }
     });
 
@@ -174,6 +169,11 @@ $(function() {
 
             // insert message
             $('#chat').append(row.append(link).append(message));
+        }
+        
+        // Scroll to the end of the page unless mouse is down
+        if (!mouseDown) {
+            $('#chat').scrollTop($('#chat')[0].scrollHeight);
         }
     }
 
