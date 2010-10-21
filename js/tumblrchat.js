@@ -192,9 +192,7 @@ $(function() {
         }
         
         // Scroll to the end of the page unless mouse is down
-        if (!mouseDown) {
-            $('#chat').scrollTop($('#chat')[0].scrollHeight);
-        }
+        $('#chat').scrollTop($('#chat')[0].scrollHeight);
     }
 
     function displayUser(id)
