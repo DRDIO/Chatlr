@@ -84,12 +84,8 @@ body, input {
     font-weight: bold;
 }
 
-#chat p {
-    padding: 0.5em; 
-    margin: 0;
-}
 
-#chat p:nth-child(odd) {
+#chat div:nth-child(odd) {
     background: #F6F6F6;
 }
 
