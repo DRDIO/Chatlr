@@ -96,15 +96,35 @@ $(function() {
     });
 
     // EVENT: If mouse is up, scrolling is cool
-    $(window).mouseup(function(e) {
+    $(window).mouseout(function(e) {
         mouseDown = false;
     });
-
+    
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
     // EVENT: On resize, move to bottom of the screen
     $(window).resize(function(e) {
         $('#chat').scrollTop($('#chat')[0].scrollHeight);
+    });
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+    $('.topbuttons').click(function(e) {
+        e.preventDefault();
+
+        var message = 'This feature will be available in the next version!';
+        if ($(this).attr('rel')) {
+            message = $('#' + $(this).attr('rel')).html();
+        }
+
+        $('<div/>')
+            .attr('title', $(this).attr('title'))
+            .dialog({
+                width: '40%',
+                minWidth: '320px',
+                resizable: false})
+            .html(message)
+            .parent().position({my: 'center', at: 'center', of: document});
     });
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -195,7 +215,12 @@ $(function() {
                 .attr('title', clean('Visit ' + users[id].title))
                 .text(clean(users[id].name)));
 
-        $('#users').append(user);
+        if (id == clientId) {
+            user.addClass('personal');
+            $('#users').prepend(user);
+        } else {
+            $('#users').append(user);
+        }
     }
 
     function removeUser(id)

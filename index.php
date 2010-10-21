@@ -39,6 +39,11 @@ $connection = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oaut
 
 /* If method is set change API call made. Test is called by default. */
 $content = $connection->post('api/authenticate');
+if (!$content || !isset($content->tumblelog) || !isset($content->tumblelog[0])) {
+    session_unset();
+    header('Location: ./');
+}
+
 $tumblr  = (array) $content->tumblelog[0];
 $tumblr  = $tumblr['@attributes'];
 
@@ -54,6 +59,8 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
     <head>
         <title>Tumblr Chat</title>
 
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css" />
+        
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/json.js"></script>
@@ -72,13 +79,17 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
         <div id="top">
             <h1 id="header">Tumblr Chat</h1>
             <div id="count"></div>
-            
-            <div id="login">
-                <a href="<?php echo htmlspecialchars($tumblr['url']); ?>" title="Visit <?php echo htmlspecialchars($tumblr['title']); ?>" target="_blank">
-                    <img src="<?php echo htmlspecialchars($tumblr['avatar']); ?>" alt="<?php echo htmlspecialchars($tumblr['name']); ?>" />
-                    <?php echo $tumblr['name']; ?>
-                </a>
-            </div>
+
+            <a class="topbuttons" title="About Tumblr Chat" href="" rel="page-about">
+                ?
+            </a>
+            <a class="topbuttons" title="Find Another Room" href="">
+                English Room
+            </a>
+            <a id="login" class="topbuttons" href="<?php echo htmlspecialchars($tumblr['url']); ?>" title="Change Chat Tumblr" target="_blank">
+                <img src="<?php echo htmlspecialchars($tumblr['avatar']); ?>" alt="<?php echo htmlspecialchars($tumblr['name']); ?>" />
+                <?php echo $tumblr['title']; ?>
+            </a>
         </div>
 
         <div id="usersbox">
@@ -93,5 +104,20 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
         <form id="form" action="" method="post">
             <input id="text" type="text" autocomplete="off" placeholder="Type something and hit enter!" />
         </form>
+
+        <div id="page-about" class="page">
+            Tumblr Chat was created by
+            <a href="http://kevinnuut.com/" title="Visit KevinNuut.com" target="_blank">Kevin Nuut</a>
+            using 
+            <a href="http://www.tumblr.com/oauth/apps" title="Visit Tumblr OAuth" target="_blank">Tumblr OAuth</a>,
+            <a href="http://socket.io/" title="Visit Socket.IO" target="_blank">Socket.IO</a>,
+            <a href="http://nodejs.org/" title="Visit Node.JS" target="_blank">Node.JS</a>,
+            <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>, and
+            <a href="http://php.net/" title="Visit PHP" target="_blank">PHP</a>.  The views expressed in this
+            chat do not necessarily represent the views of 
+            <a href="http://staff.tumblr.com/" target="_blank">Tumblr</a>.  We use your credentials to read your
+            blog titles, names, urls, and avatars.  We do not write anything to your blog.
+            Have fun and be nice to others. <em>No bullying allowed!</em>
+        </div>
     </body>
 </html>
