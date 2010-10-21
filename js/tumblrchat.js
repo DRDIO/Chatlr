@@ -1,20 +1,34 @@
+$.fn.dotdotdot = function() {
+    this.each(function() {
+        $(this).fadeTo(500, 0.5).fadeTo(500, 1.0, function() {
+            $(this).dotdotdot();
+        });
+    });
+};
+
+var socket;
+
 $(function() {
+    $('title').text('Tumblr Chat (Connecting...)');
+    $('#loading-pulse').dotdotdot();
+    
     // Initialize variables
     var clientId,
-        users,
-        mouseDown = false,
-        socket    = new io.Socket(null, {port: 8080});
+        users;
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
     // Connect to socket server
+    socket = new io.Socket(null, {port: 8080});
     socket.connect();
+
+    setTimeout("notifyFailure()", socket.options.connectTimeout);
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
     // EVENT: When receiving a message from the server
     socket.on('message', function(serverRes)
-    {
+    {        
         // Only accept messages with type property
         if ('type' in serverRes && serverRes.type in {'init': '', 'message': '', 'status': ''}) {
             // First message sent from server, initalize chat
@@ -57,6 +71,8 @@ $(function() {
                     user:    users[clientId],
                     message: 'joined the chat!'};
                 displayMessage(joinedRes);
+
+                $('#loading').fadeOut(1000);
 
             // If a new user is coming or going, update list accordingly
             } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'connect': '', 'disconnect': ''} && 'id' in serverRes) {
@@ -231,3 +247,20 @@ $(function() {
         return $('<div/>').text(message).text();
     }
 });
+
+function notifyFailure()
+{
+    if (!socket.connecting && !socket.connected) {
+        $('#loading-pulse').stop();
+        $('title').text('Tumblr Chat (Error!)');
+
+        $('<div/>')
+            .attr('title', 'Unable to Connect')
+            .dialog({
+                width: '40%',
+                minWidth: '320px',
+                resizable: false})
+            .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
+            .parent().position({my: 'top', at: 'top', of: document, offset: '0 24'});
+    }
+}

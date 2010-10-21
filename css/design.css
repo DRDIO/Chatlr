@@ -207,7 +207,7 @@ body, input {
 }
 
 .ui-dialog-titlebar, .ui-dialog .ui-dialog-content {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.97);
     color: #333;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.10);
     border: none;
@@ -215,13 +215,29 @@ body, input {
 
 .ui-dialog-titlebar {
     border-radius: 0.25em 0.25em 0 0;
+    padding: 1em;
 }
 
 .ui-dialog .ui-dialog-content {
     border-radius: 0 0 0.25em 0.25em;
     line-height: 1.5em;
+    padding: 0.5em 1em 1em;
 }
 
 .page {
     display: none;
+}
+
+#loading {
+    background: #2c4762;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+#loading-pulse {
+    background: url(/img/logo.png) no-repeat 50% 50%;
+    width: 100%;
+    height: 100%;
 }

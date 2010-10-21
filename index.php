@@ -119,5 +119,15 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
             blog titles, names, urls, and avatars.  We do not write anything to your blog.
             Have fun and be nice to others. <em>No bullying allowed!</em>
         </div>
+
+        <div id="page-error" class="page">
+            We are unable to connect you to Tumblr Chat at this time.  The server may be down.
+            Tumblr Chat only works in
+            <a href="http://www.apple.com/safari/" title="Get Safari!">Safari</a> and
+            <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>.
+            If you are using Firefox or IE, you will need to switch browsers.
+        </div>
+
+        <div id="loading"><div id="loading-pulse"></div></div>
     </body>
 </html>
