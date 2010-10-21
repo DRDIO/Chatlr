@@ -44,9 +44,8 @@ $tumblr  = $tumblr['@attributes'];
 
 $avatarType = substr($tumblr['avatar-url'], -4);
 
-$tumblr['title']  = htmlspecialchars($tumblr['title'], ENT_QUOTES);
-$tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '24' . $avatarType;
-$tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
+$tumblr['title']  = str_replace("'", "\'", $tumblr['title']);
+$tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
 
 ?>
 
@@ -64,7 +63,7 @@ $tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
             var tumblrTitle     = '<?php echo $tumblr['title']; ?>',
                 tumblrName      = '<?php echo $tumblr['name']; ?>',
                 tumblrUrl       = '<?php echo $tumblr['url']; ?>',
-                tumblrAvatar    = '<?php echo $tumblr['smatar']; ?>';
+                tumblrAvatar    = '<?php echo $tumblr['avatar']; ?>';
         </script>
 
         <link rel="stylesheet" type="text/css" href="/css/design.css" />
@@ -72,14 +71,20 @@ $tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
     <body>
         <div id="top">
             <h1 id="header">Tumblr Chat</h1>
+            <div id="count"></div>
+            
             <div id="login">
-                <a href="<?php echo $tumblr['url']; ?>" title="Visit <?php echo $tumblr['title']; ?>" target="_blank">
+                <a href="<?php echo htmlspecialchars($tumblr['url']); ?>" title="Visit <?php echo htmlspecialchars($tumblr['title']); ?>" target="_blank">
+                    <img src="<?php echo htmlspecialchars($tumblr['avatar']); ?>" alt="<?php echo htmlspecialchars($tumblr['name']); ?>" />
                     <?php echo $tumblr['name']; ?>
-                    <img src="<?php echo $tumblr['avatar']; ?>" alt="<?php echo $tumblr['name']; ?>" />
                 </a>
             </div>
         </div>
 
+        <div id="usersbox">
+            <div id="users"></div>
+        </div>
+        
         <div id="chatbox">
             <div id="chat">
             </div>

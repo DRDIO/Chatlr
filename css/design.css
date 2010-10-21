@@ -32,9 +32,23 @@ body, input {
     margin: 0.5em;
 }
 
+#count {
+    font-size: 0.833em;
+    float: left;
+    background: #e53f29;
+    margin: 0.6em 0.6em 0.6em 0;
+    padding: 0.3em 0.6em;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 0.3em;
+    min-width: 1em;
+    text-align: center;
+    -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
 #login {
     float: right;
-    margin: 0.5em;
+    margin: 0.75em;
 }
 
 #login a {
@@ -45,19 +59,58 @@ body, input {
 
 #login img {
     border-radius: 0.5em;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     vertical-align: middle;
     margin-left: 0.5em;
 }
 
-#chatbox {
+#usersbox {
     position: absolute;
     top: 0;
     left: 0;
     -webkit-box-sizing: border-box;
+    padding: 3em 0 3em 0.5em;
+    width: 15%;
+    height: 100%;
+}
+
+    #users {
+        background: #fff;
+        border-radius: 0.5em;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+        #users div {
+            width: 400px;
+            padding: 0.5em;
+        }
+
+        #users img {
+            margin-right: 0.5em;
+            border-radius: 0.25em;
+            vertical-align: middle;
+        }
+
+        #users a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #users div:nth-child(odd) {
+            background: #F6F6F6;
+        }
+
+#chatbox {
+    position: absolute;
+    top: 0;
+    right: 0;
+    -webkit-box-sizing: border-box;
     padding: 3em 0.5em;
-    width: 100%;
+    width: 85%;
     height: 100%;
 }
 
@@ -89,7 +142,7 @@ body, input {
     background: #F6F6F6;
 }
 
-#chat div.connect {
+#chat div.status {
     opacity: 0.25;
 }
 

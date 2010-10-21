@@ -9,29 +9,95 @@ server.listen(8080);
 		
 // socket.io, I choose you
 // simplest chat application evar
-var socket = io.listen(server),
-    buffer = [];
-		
+var socket = io.listen(server, {transports: ['websocket']}),
+    buffer = [],
+    users  = {},
+    last   = {};
+
+// EVENT: user has connected, initialize them and ask for credentials
 socket.on('connection', function(client)
 {
-    client.send({ buffer: buffer });
+    // Send the client their init message
+    // along with last 15 messages and user list
+    client.send({
+        type:   'init',
+        id:     client.sessionId,
+        buffer: buffer,
+        users:  users});
 
-    client.on('message', function(response)
+    // EVENT: user has sent a message with either credentials or a message
+    client.on('message', function(clientRes)
     {
-	if (response.message) {
-            response.message = response.message.substr(0, 200);
-        }
+        // Server can receive either credentials or a message to share
+        if ('type' in clientRes && clientRes.type in {'message': '', 'credentials': ''}) {
+            // First response from user, setup their account in list
+            if (clientRes.type == 'credentials' && 
+                'title'  in clientRes && typeof clientRes.title  == 'string' &&
+                'name'   in clientRes && typeof clientRes.name   == 'string' &&
+                'url'    in clientRes && typeof clientRes.url    == 'string' &&
+                'avatar' in clientRes && typeof clientRes.avatar == 'string') {
 
-        buffer.push(response);
-        if (buffer.length > 15) {
-            buffer.shift();
-        }
-        
-        client.broadcast(response);
+                // Initialize last message for griefing
+                last[client.sessionId] = '';
+
+                // connect is the first message from client
+                // we need to add their credentials to the user list
+                users[client.sessionId] = {
+                    title:  clientRes.title,
+                    name:   clientRes.name,
+                    url:    clientRes.url,
+                    avatar: clientRes.avatar};
+
+                // Broadcast to everyone that this user has connected
+                // This will also add the user to their user list
+                client.broadcast({
+                    type:    'status',
+                    mode:    'connect',
+                    id:      client.sessionId,
+                    user:    users[client.sessionId],
+                    message: 'joined the chat!'});
+
+            // user is sending a message to everyone
+            } else if ('message' in clientRes && typeof clientRes.message == 'string') {
+                var message = clientRes.message.substr(0, 500);
+                // If there is a message and it isn't the same as their last (griefing)
+                if (message.length > 0 && message != last[client.sessionId]) {
+                    // Store last message to track griefing
+                    last[client.sessionId] = message;
+
+                    // Push messages into buffer for user logins
+                    buffer.push({
+                        type:    'message',
+                        user:    users[client.sessionId],
+                        message: message});
+
+                    if (buffer.length > 15) {
+                        buffer.shift();
+                    }  
+
+                    // Broadcast message to everyone
+                    client.broadcast({
+                        type:    'message',
+                        id:      client.sessionId,
+                        message: message});
+                }
+            }
+        }              
     });
 
+    // EVENT: Disconnect
     client.on('disconnect', function()
     {
-            client.broadcast({ announcement: client.sessionId + ' disconnected' });
+        // Remove user and last grief from server
+        delete users[client.sessionId];
+        delete last[client.sessionId];
+
+        // Broadcast to everyone that this user has disconnected
+        // This will remove user from their list
+        client.broadcast({
+            type:    'status',
+            mode:    'disconnect',
+            id:      client.sessionId,
+            message: 'left the chat...'});
     });
 });
