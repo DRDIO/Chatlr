@@ -79,7 +79,6 @@ $tumblr['smatar'] = substr($tumblr['avatar-url'], 0, -7) . '16.png';
 
         <div id="chatbox">
             <div id="chat">
-                <p>Connecting...</p>
             </div>
         </div>
 
