@@ -625,3 +625,2257 @@ The 'sys' module is now called 'util'. It should have a similar interface.
 21 Oct 03:11:30 - Initializing client with transport "websocket"
 21 Oct 03:11:30 - Client 9379635362420231 connected
 21 Oct 03:12:37 - Client 10496893734671175 disconnected
+21 Oct 03:14:03 - Initializing client with transport "xhr-polling"
+21 Oct 03:14:03 - Client 485151402419433 connected
+21 Oct 03:14:09 - Initializing client with transport "websocket"
+21 Oct 03:14:09 - Client 5935903487261385 connected
+21 Oct 03:14:55 - Client 485151402419433 disconnected
+21 Oct 03:16:30 - Initializing client with transport "websocket"
+21 Oct 03:16:30 - Client 4123011289630085 connected
+21 Oct 03:17:14 - Client 4123011289630085 disconnected
+21 Oct 03:18:08 - Initializing client with transport "xhr-polling"
+21 Oct 03:18:08 - Client 37555025867186487 connected
+21 Oct 03:18:26 - Initializing client with transport "websocket"
+21 Oct 03:18:26 - Client 9152612024918199 connected
+21 Oct 03:18:30 - Initializing client with transport "websocket"
+21 Oct 03:18:30 - Client 18837575893849134 connected
+21 Oct 03:18:38 - Client 4828331903554499 disconnected
+21 Oct 03:18:43 - Client 5935903487261385 disconnected
+21 Oct 03:19:02 - Client 18837575893849134 disconnected
+21 Oct 03:19:08 - Client 9379635362420231 disconnected
+21 Oct 03:19:10 - Initializing client with transport "websocket"
+21 Oct 03:19:10 - Client 3576343737076968 connected
+21 Oct 03:19:10 - Client 37555025867186487 disconnected
+21 Oct 03:20:20 - Client 5462318803183734 disconnected
+21 Oct 03:21:02 - Client 7650791520718485 disconnected
+The 'sys' module is now called 'util'. It should have a similar interface.
+21 Oct 03:21:15 - socket.io ready - accepting connections
+21 Oct 03:21:20 - Initializing client with transport "websocket"
+21 Oct 03:21:20 - Client 027253578882664442 connected
+21 Oct 03:21:30 - Initializing client with transport "websocket"
+21 Oct 03:21:30 - Client 5736049516126513 connected
+21 Oct 03:21:36 - Client 5736049516126513 disconnected
+21 Oct 03:22:13 - Initializing client with transport "xhr-polling"
+21 Oct 03:22:13 - Client 1801500995643437 connected
+21 Oct 03:22:14 - Initializing client with transport "websocket"
+21 Oct 03:22:14 - Client 11382121662609279 connected
+21 Oct 03:22:38 - Client 11382121662609279 disconnected
+21 Oct 03:24:09 - Initializing client with transport "xhr-polling"
+21 Oct 03:24:09 - Client 7397363116033375 connected
+21 Oct 03:25:02 - Client 7397363116033375 disconnected
+21 Oct 03:26:40 - Initializing client with transport "websocket"
+21 Oct 03:26:40 - Client 17344059189781547 connected
+21 Oct 03:26:42 - Initializing client with transport "websocket"
+21 Oct 03:26:42 - Client 0025935256853699684 connected
+21 Oct 03:27:05 - Initializing client with transport "xhr-polling"
+21 Oct 03:27:05 - Client 4311092288699001 connected
+21 Oct 03:27:20 - Client 4311092288699001 disconnected
+21 Oct 03:28:42 - Client 0025935256853699684 disconnected
+21 Oct 03:28:43 - Initializing client with transport "websocket"
+21 Oct 03:28:43 - Client 5801468768622726 connected
+21 Oct 03:29:46 - Client 027253578882664442 disconnected
+21 Oct 03:29:46 - Initializing client with transport "websocket"
+21 Oct 03:29:46 - Client 40779277915135026 connected
+21 Oct 03:29:55 - Client 5801468768622726 disconnected
+21 Oct 03:29:57 - Initializing client with transport "websocket"
+21 Oct 03:29:57 - Client 9578376642894 connected
+21 Oct 03:31:00 - Initializing client with transport "xhr-polling"
+21 Oct 03:31:00 - Client 051633547991514206 connected
+21 Oct 03:31:15 - Client 051633547991514206 disconnected
+21 Oct 03:31:15 - Couldnt find client with session id "051633547991514206"
+21 Oct 03:31:15 - Couldnt find client with session id "051633547991514206"
+21 Oct 03:31:19 - Client 9578376642894 disconnected
+21 Oct 03:31:21 - Initializing client with transport "websocket"
+21 Oct 03:31:21 - Client 8979736445471644 connected
+21 Oct 03:32:53 - Client 40779277915135026 disconnected
+21 Oct 03:33:04 - Initializing client with transport "websocket"
+21 Oct 03:33:04 - Client 8778853064868599 connected
+21 Oct 03:33:17 - Client 8778853064868599 disconnected
+21 Oct 03:34:06 - Initializing client with transport "websocket"
+21 Oct 03:34:06 - Client 9968438546638936 connected
+21 Oct 03:35:10 - Client 9968438546638936 disconnected
+21 Oct 03:38:09 - Initializing client with transport "websocket"
+21 Oct 03:38:09 - Client 7260720920749009 connected
+21 Oct 03:39:21 - Initializing client with transport "websocket"
+21 Oct 03:39:21 - Client 23601176775991917 connected
+21 Oct 03:40:19 - Client 23601176775991917 disconnected
+21 Oct 03:41:29 - Initializing client with transport "websocket"
+21 Oct 03:41:29 - Client 37788396095857024 connected
+21 Oct 03:42:37 - Client 37788396095857024 disconnected
+21 Oct 03:42:59 - Initializing client with transport "websocket"
+21 Oct 03:42:59 - Client 12345493794418871 connected
+21 Oct 03:47:29 - Initializing client with transport "websocket"
+21 Oct 03:47:29 - Client 7997501352801919 connected
+21 Oct 03:48:15 - Client 7997501352801919 disconnected
+21 Oct 03:48:31 - Data incorrectly framed by UA. Dropping connection
+21 Oct 03:48:31 - Client 7260720920749009 disconnected
+21 Oct 03:48:32 - Initializing client with transport "websocket"
+21 Oct 03:48:32 - Client 7927212289068848 connected
+21 Oct 03:49:09 - Initializing client with transport "xhr-polling"
+21 Oct 03:49:09 - Client 12312126066535711 connected
+21 Oct 03:52:35 - Initializing client with transport "xhr-polling"
+21 Oct 03:52:35 - Client 6235195426270366 connected
+21 Oct 03:52:41 - Client 12312126066535711 disconnected
+21 Oct 03:53:00 - Client 6235195426270366 disconnected
+21 Oct 03:53:12 - Client 1801500995643437 disconnected
+21 Oct 03:55:05 - Initializing client with transport "websocket"
+21 Oct 03:55:05 - Client 41243463731370866 connected
+21 Oct 03:55:15 - Initializing client with transport "websocket"
+21 Oct 03:55:15 - Client 4693555438425392 connected
+21 Oct 03:56:55 - Client 4693555438425392 disconnected
+21 Oct 03:57:33 - Data incorrectly framed by UA. Dropping connection
+21 Oct 03:57:33 - Client 7927212289068848 disconnected
+21 Oct 03:59:12 - Initializing client with transport "websocket"
+21 Oct 03:59:12 - Client 4513954846188426 connected
+21 Oct 03:59:45 - Initializing client with transport "websocket"
+21 Oct 03:59:45 - Client 5352402289863676 connected
+21 Oct 04:00:08 - Initializing client with transport "websocket"
+21 Oct 04:00:08 - Client 26654543122276664 connected
+21 Oct 04:00:28 - Client 26654543122276664 disconnected
+21 Oct 04:00:47 - Initializing client with transport "websocket"
+21 Oct 04:00:47 - Client 038692144909873605 connected
+21 Oct 04:01:50 - Initializing client with transport "xhr-polling"
+21 Oct 04:01:50 - Client 14937292248941958 connected
+21 Oct 04:02:05 - Client 14937292248941958 disconnected
+21 Oct 04:05:38 - Client 8979736445471644 disconnected
+21 Oct 04:05:41 - Initializing client with transport "websocket"
+21 Oct 04:05:41 - Client 017996558686718345 connected
+21 Oct 04:06:12 - Initializing client with transport "websocket"
+21 Oct 04:06:12 - Client 16073426394723356 connected
+21 Oct 04:06:14 - Client 41243463731370866 disconnected
+21 Oct 04:07:02 - Initializing client with transport "websocket"
+21 Oct 04:07:02 - Client 6983421589247882 connected
+21 Oct 04:09:40 - Client 6983421589247882 disconnected
+21 Oct 04:09:43 - Initializing client with transport "xhr-polling"
+21 Oct 04:09:43 - Client 790709814755246 connected
+21 Oct 04:09:55 - Client 790709814755246 disconnected
+21 Oct 04:13:09 - Initializing client with transport "websocket"
+21 Oct 04:13:09 - Client 6044213688001037 connected
+21 Oct 04:14:58 - Initializing client with transport "websocket"
+21 Oct 04:14:58 - Client 09719984349794686 connected
+21 Oct 04:15:54 - Client 09719984349794686 disconnected
+21 Oct 04:15:59 - Initializing client with transport "websocket"
+21 Oct 04:15:59 - Client 6718042646534741 connected
+21 Oct 04:16:01 - Initializing client with transport "websocket"
+21 Oct 04:16:01 - Client 7811991188209504 connected
+21 Oct 04:16:04 - Client 6044213688001037 disconnected
+21 Oct 04:16:11 - Initializing client with transport "websocket"
+21 Oct 04:16:11 - Client 15380689385347068 connected
+21 Oct 04:17:00 - Initializing client with transport "websocket"
+21 Oct 04:17:00 - Client 026481515262275934 connected
+21 Oct 04:17:04 - Initializing client with transport "websocket"
+21 Oct 04:17:04 - Client 8040350244846195 connected
+21 Oct 04:17:07 - Initializing client with transport "websocket"
+21 Oct 04:17:07 - Client 2507178820669651 connected
+21 Oct 04:17:27 - Initializing client with transport "websocket"
+21 Oct 04:17:27 - Client 2163555114530027 connected
+21 Oct 04:17:50 - Initializing client with transport "websocket"
+21 Oct 04:17:50 - Client 5461549020837992 connected
+21 Oct 04:18:13 - Initializing client with transport "websocket"
+21 Oct 04:18:13 - Client 4670173062477261 connected
+21 Oct 04:18:16 - Initializing client with transport "websocket"
+21 Oct 04:18:16 - Client 21918202913366258 connected
+21 Oct 04:18:20 - Initializing client with transport "xhr-polling"
+21 Oct 04:18:20 - Client 027053875848650932 connected
+21 Oct 04:18:20 - Client 17344059189781547 disconnected
+21 Oct 04:18:28 - Initializing client with transport "websocket"
+21 Oct 04:18:28 - Client 276800399646163 connected
+21 Oct 04:18:44 - Client 027053875848650932 disconnected
+21 Oct 04:18:50 - Initializing client with transport "websocket"
+21 Oct 04:18:50 - Client 8286832149606198 connected
+21 Oct 04:18:56 - Client 16073426394723356 disconnected
+21 Oct 04:19:02 - Client 12345493794418871 disconnected
+21 Oct 04:19:13 - Client 2507178820669651 disconnected
+21 Oct 04:19:14 - Client 026481515262275934 disconnected
+21 Oct 04:19:22 - Initializing client with transport "websocket"
+21 Oct 04:19:22 - Client 416938443435356 connected
+21 Oct 04:19:25 - Client 4513954846188426 disconnected
+21 Oct 04:19:35 - Initializing client with transport "websocket"
+21 Oct 04:19:35 - Client 9952321096789092 connected
+21 Oct 04:20:21 - Initializing client with transport "websocket"
+21 Oct 04:20:21 - Client 671218294184655 connected
+21 Oct 04:20:25 - Initializing client with transport "websocket"
+21 Oct 04:20:25 - Client 28778240038082004 connected
+21 Oct 04:20:26 - Client 28778240038082004 disconnected
+21 Oct 04:20:27 - Client 038692144909873605 disconnected
+21 Oct 04:20:30 - Initializing client with transport "xhr-polling"
+21 Oct 04:20:30 - Client 3456211935263127 connected
+21 Oct 04:20:33 - Client 21918202913366258 disconnected
+21 Oct 04:20:35 - Initializing client with transport "websocket"
+21 Oct 04:20:35 - Client 07656658929772675 connected
+21 Oct 04:20:42 - Client 9952321096789092 disconnected
+21 Oct 04:20:43 - Initializing client with transport "websocket"
+21 Oct 04:20:43 - Client 2955638221465051 connected
+21 Oct 04:20:54 - Initializing client with transport "websocket"
+21 Oct 04:20:54 - Client 702273505507037 connected
+21 Oct 04:21:12 - Initializing client with transport "websocket"
+21 Oct 04:21:12 - Client 40513422852382064 connected
+21 Oct 04:21:46 - Client 416938443435356 disconnected
+21 Oct 04:21:49 - Initializing client with transport "websocket"
+21 Oct 04:21:49 - Client 30885057034902275 connected
+21 Oct 04:21:51 - Initializing client with transport "websocket"
+21 Oct 04:21:51 - Client 6565202735364437 connected
+21 Oct 04:21:52 - Initializing client with transport "websocket"
+21 Oct 04:21:52 - Client 6702029556035995 connected
+21 Oct 04:21:55 - Client 6565202735364437 disconnected
+21 Oct 04:21:55 - Initializing client with transport "xhr-polling"
+21 Oct 04:21:55 - Client 865971005987376 connected
+21 Oct 04:21:59 - Initializing client with transport "websocket"
+21 Oct 04:21:59 - Client 3045760339591652 connected
+21 Oct 04:22:02 - Client 07656658929772675 disconnected
+21 Oct 04:22:03 - Initializing client with transport "websocket"
+21 Oct 04:22:03 - Client 9678666575346142 connected
+21 Oct 04:22:04 - Initializing client with transport "websocket"
+21 Oct 04:22:04 - Client 1726356716826558 connected
+21 Oct 04:22:09 - Initializing client with transport "websocket"
+21 Oct 04:22:09 - Client 2338605672121048 connected
+21 Oct 04:22:22 - Client 6702029556035995 disconnected
+21 Oct 04:22:23 - Client 2338605672121048 disconnected
+21 Oct 04:22:31 - Initializing client with transport "websocket"
+21 Oct 04:22:31 - Client 5272940408904105 connected
+21 Oct 04:22:43 - Initializing client with transport "websocket"
+21 Oct 04:22:43 - Client 2466044018510729 connected
+21 Oct 04:22:52 - Client 017996558686718345 disconnected
+21 Oct 04:22:59 - Initializing client with transport "websocket"
+21 Oct 04:22:59 - Client 7526684803888202 connected
+21 Oct 04:23:01 - Client 2466044018510729 disconnected
+21 Oct 04:23:01 - Client 15380689385347068 disconnected
+21 Oct 04:23:06 - Client 671218294184655 disconnected
+21 Oct 04:23:10 - Initializing client with transport "websocket"
+21 Oct 04:23:10 - Client 04288240894675255 connected
+21 Oct 04:23:16 - Initializing client with transport "websocket"
+21 Oct 04:23:16 - Client 5516882156953216 connected
+21 Oct 04:23:17 - Client 40513422852382064 disconnected
+21 Oct 04:23:25 - Client 04288240894675255 disconnected
+21 Oct 04:23:40 - Initializing client with transport "websocket"
+21 Oct 04:23:40 - Client 1382474445272237 connected
+21 Oct 04:23:44 - Initializing client with transport "websocket"
+21 Oct 04:23:44 - Client 07690336951054633 connected
+21 Oct 04:23:51 - Initializing client with transport "websocket"
+21 Oct 04:23:51 - Client 5888442387804389 connected
+21 Oct 04:23:54 - Client 30885057034902275 disconnected
+21 Oct 04:23:58 - Initializing client with transport "websocket"
+21 Oct 04:23:58 - Client 746219904627651 connected
+21 Oct 04:24:09 - Client 2955638221465051 disconnected
+21 Oct 04:24:10 - Client 3045760339591652 disconnected
+21 Oct 04:24:15 - Client 5461549020837992 disconnected
+21 Oct 04:24:16 - Initializing client with transport "websocket"
+21 Oct 04:24:16 - Client 18481851695105433 connected
+21 Oct 04:24:24 - Client 1382474445272237 disconnected
+21 Oct 04:24:30 - Client 07690336951054633 disconnected
+21 Oct 04:24:38 - Client 5516882156953216 disconnected
+21 Oct 04:24:47 - Initializing client with transport "websocket"
+21 Oct 04:24:47 - Client 8264719566795975 connected
+21 Oct 04:24:52 - Initializing client with transport "websocket"
+21 Oct 04:24:52 - Client 5702466915827245 connected
+21 Oct 04:25:03 - Client 4670173062477261 disconnected
+21 Oct 04:25:04 - Initializing client with transport "websocket"
+21 Oct 04:25:04 - Client 5285036915447563 connected
+21 Oct 04:25:12 - Initializing client with transport "websocket"
+21 Oct 04:25:12 - Client 5645417729392648 connected
+21 Oct 04:25:18 - Client 6718042646534741 disconnected
+21 Oct 04:25:25 - Client 5702466915827245 disconnected
+21 Oct 04:25:40 - Initializing client with transport "websocket"
+21 Oct 04:25:40 - Client 38622129219584167 connected
+21 Oct 04:25:59 - Client 702273505507037 disconnected
+21 Oct 04:26:03 - Client 9678666575346142 disconnected
+21 Oct 04:26:09 - Client 18481851695105433 disconnected
+21 Oct 04:26:13 - Client 5645417729392648 disconnected
+21 Oct 04:26:17 - Client 5888442387804389 disconnected
+21 Oct 04:26:22 - Initializing client with transport "websocket"
+21 Oct 04:26:22 - Client 3085623357910663 connected
+21 Oct 04:26:37 - Initializing client with transport "websocket"
+21 Oct 04:26:37 - Client 9279077220708132 connected
+21 Oct 04:26:49 - Client 9279077220708132 disconnected
+21 Oct 04:26:53 - Client 865971005987376 disconnected
+21 Oct 04:26:53 - Couldnt find client with session id "865971005987376"
+21 Oct 04:26:54 - Couldnt find client with session id "865971005987376"
+21 Oct 04:26:54 - Couldnt find client with session id "865971005987376"
+21 Oct 04:26:59 - Initializing client with transport "websocket"
+21 Oct 04:26:59 - Client 7912780323531479 connected
+21 Oct 04:27:02 - Initializing client with transport "websocket"
+21 Oct 04:27:02 - Client 16980325104668736 connected
+21 Oct 04:27:09 - Client 7526684803888202 disconnected
+21 Oct 04:27:13 - Initializing client with transport "websocket"
+21 Oct 04:27:13 - Client 7753479862585664 connected
+21 Oct 04:27:18 - Initializing client with transport "websocket"
+21 Oct 04:27:18 - Client 8194960511755198 connected
+21 Oct 04:27:34 - Initializing client with transport "websocket"
+21 Oct 04:27:34 - Client 10866517201066017 connected
+21 Oct 04:27:38 - Client 10866517201066017 disconnected
+21 Oct 04:27:38 - Initializing client with transport "xhr-polling"
+21 Oct 04:27:38 - Client 4338562646880746 connected
+21 Oct 04:27:54 - Initializing client with transport "websocket"
+21 Oct 04:27:54 - Client 17838740814477205 connected
+21 Oct 04:27:55 - Initializing client with transport "websocket"
+21 Oct 04:27:55 - Client 5991505472920835 connected
+21 Oct 04:28:04 - Initializing client with transport "websocket"
+21 Oct 04:28:04 - Client 5724486885592341 connected
+21 Oct 04:28:06 - Initializing client with transport "websocket"
+21 Oct 04:28:06 - Client 6309825298376381 connected
+21 Oct 04:28:10 - Client 38622129219584167 disconnected
+21 Oct 04:28:25 - Client 8264719566795975 disconnected
+21 Oct 04:28:28 - Initializing client with transport "websocket"
+21 Oct 04:28:28 - Client 075958855682984 connected
+21 Oct 04:28:31 - Client 7811991188209504 disconnected
+21 Oct 04:28:40 - Initializing client with transport "websocket"
+21 Oct 04:28:40 - Client 4565583812072873 connected
+21 Oct 04:28:45 - Client 5285036915447563 disconnected
+21 Oct 04:28:50 - Initializing client with transport "websocket"
+21 Oct 04:28:50 - Client 5439611019100994 connected
+21 Oct 04:28:58 - Initializing client with transport "websocket"
+21 Oct 04:28:58 - Client 9359045771416277 connected
+21 Oct 04:29:02 - Client 9359045771416277 disconnected
+21 Oct 04:29:02 - Initializing client with transport "xhr-polling"
+21 Oct 04:29:02 - Client 5136168212629855 connected
+21 Oct 04:29:02 - Initializing client with transport "websocket"
+21 Oct 04:29:02 - Client 2070786759722978 connected
+21 Oct 04:29:02 - Data incorrectly framed by UA. Dropping connection
+21 Oct 04:29:02 - Client 2070786759722978 disconnected
+21 Oct 04:29:07 - Initializing client with transport "xhr-polling"
+21 Oct 04:29:07 - Client 720330448821187 connected
+21 Oct 04:29:31 - Initializing client with transport "websocket"
+21 Oct 04:29:31 - Client 6880897430237383 connected
+21 Oct 04:29:33 - Initializing client with transport "websocket"
+21 Oct 04:29:33 - Client 029718399280682206 connected
+21 Oct 04:29:35 - Client 029718399280682206 disconnected
+21 Oct 04:29:35 - Initializing client with transport "xhr-polling"
+21 Oct 04:29:35 - Client 6950849134009331 connected
+21 Oct 04:29:49 - Initializing client with transport "websocket"
+21 Oct 04:29:49 - Client 5630381982773542 connected
+21 Oct 04:29:53 - Client 4565583812072873 disconnected
+21 Oct 04:29:56 - Initializing client with transport "websocket"
+21 Oct 04:29:56 - Client 19817546172998846 connected
+21 Oct 04:30:02 - Client 5724486885592341 disconnected
+21 Oct 04:30:03 - Initializing client with transport "websocket"
+21 Oct 04:30:03 - Client 31253573414869606 connected
+21 Oct 04:30:17 - Client 4338562646880746 disconnected
+21 Oct 04:30:24 - Client 6880897430237383 disconnected
+21 Oct 04:30:25 - Client 31253573414869606 disconnected
+21 Oct 04:30:27 - Client 17838740814477205 disconnected
+21 Oct 04:30:28 - Initializing client with transport "websocket"
+21 Oct 04:30:28 - Client 0524936409201473 connected
+21 Oct 04:30:31 - Client 5991505472920835 disconnected
+21 Oct 04:30:38 - Initializing client with transport "websocket"
+21 Oct 04:30:38 - Client 687783311586827 connected
+21 Oct 04:30:44 - Client 16980325104668736 disconnected
+21 Oct 04:30:51 - Initializing client with transport "websocket"
+21 Oct 04:30:51 - Client 37095381994731724 connected
+21 Oct 04:30:57 - Initializing client with transport "xhr-polling"
+21 Oct 04:30:57 - Client 711798352887854 connected
+21 Oct 04:31:05 - Initializing client with transport "websocket"
+21 Oct 04:31:05 - Client 4474093646276742 connected
+21 Oct 04:31:11 - Initializing client with transport "websocket"
+21 Oct 04:31:11 - Client 4413448083214462 connected
+21 Oct 04:31:14 - Client 711798352887854 disconnected
+21 Oct 04:31:14 - Client 2163555114530027 disconnected
+21 Oct 04:31:19 - Initializing client with transport "websocket"
+21 Oct 04:31:19 - Client 7795301922596991 connected
+21 Oct 04:31:29 - Initializing client with transport "websocket"
+21 Oct 04:31:29 - Client 5366648221388459 connected
+21 Oct 04:31:37 - Client 0524936409201473 disconnected
+21 Oct 04:31:48 - Client 4413448083214462 disconnected
+21 Oct 04:31:51 - Client 7795301922596991 disconnected
+21 Oct 04:31:57 - Initializing client with transport "websocket"
+21 Oct 04:31:57 - Client 9131553105544299 connected
+21 Oct 04:32:01 - Initializing client with transport "websocket"
+21 Oct 04:32:01 - Client 4331543331500143 connected
+21 Oct 04:32:02 - Client 5366648221388459 disconnected
+21 Oct 04:32:04 - Initializing client with transport "websocket"
+21 Oct 04:32:04 - Client 6834898851811886 connected
+21 Oct 04:32:05 - Client 6309825298376381 disconnected
+21 Oct 04:32:05 - Initializing client with transport "xhr-polling"
+21 Oct 04:32:05 - Client 07298051612451673 connected
+21 Oct 04:32:06 - Initializing client with transport "websocket"
+21 Oct 04:32:06 - Client 9221540936268866 connected
+21 Oct 04:32:11 - Initializing client with transport "websocket"
+21 Oct 04:32:11 - Client 9918797560967505 connected
+21 Oct 04:32:15 - Initializing client with transport "websocket"
+21 Oct 04:32:15 - Client 8537239676807076 connected
+21 Oct 04:32:18 - Client 7753479862585664 disconnected
+21 Oct 04:32:18 - Client 07298051612451673 disconnected
+21 Oct 04:32:20 - Initializing client with transport "websocket"
+21 Oct 04:32:20 - Client 5119901387952268 connected
+21 Oct 04:32:21 - Initializing client with transport "websocket"
+21 Oct 04:32:21 - Client 8018026396166533 connected
+21 Oct 04:32:24 - Client 9221540936268866 disconnected
+21 Oct 04:32:28 - Client 8537239676807076 disconnected
+21 Oct 04:32:29 - Initializing client with transport "websocket"
+21 Oct 04:32:29 - Client 6015846896916628 connected
+21 Oct 04:32:52 - Initializing client with transport "websocket"
+21 Oct 04:32:52 - Client 18045486323535442 connected
+21 Oct 04:32:57 - Initializing client with transport "websocket"
+21 Oct 04:32:57 - WebSocket connection invalid or Origin not verified
+21 Oct 04:33:02 - Initializing client with transport "xhr-polling"
+21 Oct 04:33:02 - Client 41166351083666086 connected
+21 Oct 04:33:05 - Client 5136168212629855 disconnected
+21 Oct 04:33:08 - Initializing client with transport "websocket"
+21 Oct 04:33:08 - Client 4502137799281627 connected
+21 Oct 04:33:08 - Initializing client with transport "websocket"
+21 Oct 04:33:08 - Client 06682874984107912 connected
+21 Oct 04:33:09 - Client 6950849134009331 disconnected
+21 Oct 04:33:09 - Client 276800399646163 disconnected
+21 Oct 04:33:10 - Initializing client with transport "websocket"
+21 Oct 04:33:10 - Client 45738577865995467 connected
+21 Oct 04:33:10 - Client 41166351083666086 disconnected
+21 Oct 04:33:17 - Client 720330448821187 disconnected
+21 Oct 04:33:21 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:21 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:24 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:24 - Couldnt find client with session id "6950849134009331"
+21 Oct 04:33:25 - Couldnt find client with session id "6950849134009331"
+21 Oct 04:33:25 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:26 - Couldnt find client with session id "6950849134009331"
+21 Oct 04:33:29 - Initializing client with transport "websocket"
+21 Oct 04:33:29 - Client 00032356707379221916 connected
+21 Oct 04:33:31 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:31 - Initializing client with transport "websocket"
+21 Oct 04:33:31 - Client 10416200966574252 connected
+21 Oct 04:33:31 - Initializing client with transport "websocket"
+21 Oct 04:33:31 - Client 5616167522966862 connected
+21 Oct 04:33:33 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:38 - Initializing client with transport "websocket"
+21 Oct 04:33:38 - Client 40332397003658116 connected
+21 Oct 04:33:45 - Client 5630381982773542 disconnected
+21 Oct 04:33:50 - Initializing client with transport "websocket"
+21 Oct 04:33:51 - Client 6654369521420449 connected
+21 Oct 04:33:51 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:53 - Client 00032356707379221916 disconnected
+21 Oct 04:33:53 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:54 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:54 - Initializing client with transport "websocket"
+21 Oct 04:33:54 - Client 7232751676347107 connected
+21 Oct 04:33:55 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:55 - Client 18045486323535442 disconnected
+21 Oct 04:33:56 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:56 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:59 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:59 - Couldnt find client with session id "720330448821187"
+21 Oct 04:33:59 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:01 - Initializing client with transport "websocket"
+21 Oct 04:34:01 - Client 8183628779370338 connected
+21 Oct 04:34:02 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:05 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:06 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:07 - Initializing client with transport "websocket"
+21 Oct 04:34:07 - Client 3357248136308044 connected
+21 Oct 04:34:07 - Client 7232751676347107 disconnected
+21 Oct 04:34:09 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:10 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:11 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:11 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:12 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:12 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:13 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:13 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:14 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:16 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:16 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:17 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:17 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:18 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:19 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:19 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:20 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:20 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:21 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:22 - Client 8183628779370338 disconnected
+21 Oct 04:34:28 - Initializing client with transport "websocket"
+21 Oct 04:34:28 - Client 8376582697965205 connected
+21 Oct 04:34:29 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:32 - Client 4331543331500143 disconnected
+21 Oct 04:34:33 - Client 5272940408904105 disconnected
+21 Oct 04:34:37 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:39 - Initializing client with transport "websocket"
+21 Oct 04:34:39 - Client 1422656688373536 connected
+21 Oct 04:34:41 - Couldnt find client with session id "720330448821187"
+21 Oct 04:34:53 - Client 6015846896916628 disconnected
+21 Oct 04:34:57 - Client 7912780323531479 disconnected
+21 Oct 04:34:58 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:02 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:03 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:03 - Initializing client with transport "xhr-polling"
+21 Oct 04:35:03 - Client 5970866745337844 connected
+21 Oct 04:35:06 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:07 - Initializing client with transport "websocket"
+21 Oct 04:35:07 - Client 3982715564779937 connected
+21 Oct 04:35:10 - Client 1422656688373536 disconnected
+21 Oct 04:35:11 - Client 5970866745337844 disconnected
+21 Oct 04:35:14 - Initializing client with transport "websocket"
+21 Oct 04:35:14 - Client 9676253299694508 connected
+21 Oct 04:35:15 - Initializing client with transport "websocket"
+21 Oct 04:35:15 - Client 1998511073179543 connected
+21 Oct 04:35:16 - Client 4474093646276742 disconnected
+21 Oct 04:35:17 - Initializing client with transport "websocket"
+21 Oct 04:35:17 - Client 5920080484356731 connected
+21 Oct 04:35:22 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:22 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:22 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:22 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:23 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:24 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:25 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:27 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:28 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:28 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:29 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:34 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:37 - Client 5920080484356731 disconnected
+21 Oct 04:35:37 - Client 5352402289863676 disconnected
+21 Oct 04:35:40 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:41 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:41 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:43 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:44 - Client 6654369521420449 disconnected
+21 Oct 04:35:45 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:45 - Initializing client with transport "websocket"
+21 Oct 04:35:45 - Client 5847414783202112 connected
+21 Oct 04:35:48 - Client 5439611019100994 disconnected
+21 Oct 04:35:49 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:50 - Couldnt find client with session id "720330448821187"
+21 Oct 04:35:56 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:04 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:05 - Client 3357248136308044 disconnected
+21 Oct 04:36:06 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:07 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:07 - Initializing client with transport "xhr-polling"
+21 Oct 04:36:07 - Client 29330803477205336 connected
+21 Oct 04:36:09 - Initializing client with transport "websocket"
+21 Oct 04:36:09 - Client 5018162552732974 connected
+21 Oct 04:36:13 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:14 - Client 5119901387952268 disconnected
+21 Oct 04:36:17 - Initializing client with transport "websocket"
+21 Oct 04:36:17 - Client 7936124433763325 connected
+21 Oct 04:36:25 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:26 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:27 - Client 5018162552732974 disconnected
+21 Oct 04:36:38 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:40 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:40 - Client 1998511073179543 disconnected
+21 Oct 04:36:40 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:44 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:51 - Client 1726356716826558 disconnected
+21 Oct 04:36:52 - Initializing client with transport "websocket"
+21 Oct 04:36:52 - Client 23707796819508076 connected
+21 Oct 04:36:53 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:53 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:54 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:54 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:55 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:55 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:56 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:58 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:58 - Couldnt find client with session id "720330448821187"
+21 Oct 04:36:59 - Client 5847414783202112 disconnected
+21 Oct 04:37:00 - Client 29330803477205336 disconnected
+21 Oct 04:37:00 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:01 - Couldnt find client with session id "29330803477205336"
+21 Oct 04:37:02 - Couldnt find client with session id "29330803477205336"
+21 Oct 04:37:03 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:04 - Couldnt find client with session id "29330803477205336"
+21 Oct 04:37:05 - Client 10416200966574252 disconnected
+21 Oct 04:37:06 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:06 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:09 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:09 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:10 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:10 - Client 075958855682984 disconnected
+21 Oct 04:37:14 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:16 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:16 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:18 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:23 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:25 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:27 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:27 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:27 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:27 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:27 - Client 7936124433763325 disconnected
+21 Oct 04:37:27 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:31 - Initializing client with transport "websocket"
+21 Oct 04:37:31 - Client 9031489188782871 connected
+21 Oct 04:37:33 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:34 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:35 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:35 - Initializing client with transport "websocket"
+21 Oct 04:37:35 - Client 21314143273048103 connected
+21 Oct 04:37:39 - Initializing client with transport "websocket"
+21 Oct 04:37:39 - Client 8886159518733621 connected
+21 Oct 04:37:40 - Initializing client with transport "websocket"
+21 Oct 04:37:40 - Client 174377110786736 connected
+21 Oct 04:37:41 - Initializing client with transport "websocket"
+21 Oct 04:37:41 - Client 49679814954288304 connected
+21 Oct 04:37:42 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:42 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:42 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:42 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:42 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:43 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:45 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:46 - Client 3456211935263127 disconnected
+21 Oct 04:37:46 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:48 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:48 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:50 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:51 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:52 - Client 5616167522966862 disconnected
+21 Oct 04:37:54 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:56 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:57 - Client 174377110786736 disconnected
+21 Oct 04:37:58 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:58 - Couldnt find client with session id "720330448821187"
+21 Oct 04:37:59 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:01 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:02 - Initializing client with transport "websocket"
+21 Oct 04:38:02 - Client 1369083863683045 connected
+21 Oct 04:38:02 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:02 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:04 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:05 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:07 - Initializing client with transport "xhr-polling"
+21 Oct 04:38:07 - Client 40493857813999057 connected
+21 Oct 04:38:18 - Client 40493857813999057 disconnected
+21 Oct 04:38:18 - Client 9676253299694508 disconnected
+21 Oct 04:38:20 - Client 8018026396166533 disconnected
+21 Oct 04:38:30 - Client 49679814954288304 disconnected
+21 Oct 04:38:33 - Initializing client with transport "websocket"
+21 Oct 04:38:33 - Client 22070108610205352 connected
+21 Oct 04:38:45 - Initializing client with transport "xhr-polling"
+21 Oct 04:38:45 - Client 8381554374936968 connected
+21 Oct 04:38:56 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:57 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:58 - Couldnt find client with session id "720330448821187"
+21 Oct 04:38:59 - Couldnt find client with session id "720330448821187"
+21 Oct 04:39:00 - Client 21314143273048103 disconnected
+21 Oct 04:39:01 - Couldnt find client with session id "720330448821187"
+21 Oct 04:39:25 - Initializing client with transport "xhr-polling"
+21 Oct 04:39:25 - Client 6927431840449572 connected
+21 Oct 04:39:29 - Client 9131553105544299 disconnected
+21 Oct 04:39:33 - Initializing client with transport "websocket"
+21 Oct 04:39:33 - Client 1473418683744967 connected
+21 Oct 04:39:40 - Client 687783311586827 disconnected
+21 Oct 04:39:51 - Initializing client with transport "websocket"
+21 Oct 04:39:51 - Client 3613618710078299 connected
+21 Oct 04:40:06 - Initializing client with transport "websocket"
+21 Oct 04:40:06 - Client 15077554900199175 connected
+21 Oct 04:40:07 - Initializing client with transport "websocket"
+21 Oct 04:40:07 - Client 09742263285443187 connected
+21 Oct 04:40:16 - Client 23707796819508076 disconnected
+21 Oct 04:40:19 - Initializing client with transport "websocket"
+21 Oct 04:40:19 - Client 3133292174898088 connected
+21 Oct 04:40:21 - Client 22070108610205352 disconnected
+21 Oct 04:40:22 - Initializing client with transport "websocket"
+21 Oct 04:40:22 - Client 3289756439626217 connected
+21 Oct 04:40:25 - Client 09742263285443187 disconnected
+21 Oct 04:40:27 - Client 8381554374936968 disconnected
+21 Oct 04:40:30 - Couldnt find client with session id "8381554374936968"
+21 Oct 04:40:31 - Couldnt find client with session id "8381554374936968"
+21 Oct 04:40:33 - Couldnt find client with session id "8381554374936968"
+21 Oct 04:40:33 - Client 8194960511755198 disconnected
+21 Oct 04:40:42 - Client 6927431840449572 disconnected
+21 Oct 04:40:45 - Client 3289756439626217 disconnected
+21 Oct 04:40:50 - Couldnt find client with session id "720330448821187"
+21 Oct 04:40:52 - Couldnt find client with session id "720330448821187"
+21 Oct 04:40:52 - Couldnt find client with session id "720330448821187"
+21 Oct 04:40:54 - Couldnt find client with session id "720330448821187"
+21 Oct 04:40:56 - Client 15077554900199175 disconnected
+21 Oct 04:41:00 - Initializing client with transport "xhr-polling"
+21 Oct 04:41:00 - Client 6554976678453386 connected
+21 Oct 04:41:01 - Couldnt find client with session id "720330448821187"
+21 Oct 04:41:03 - Couldnt find client with session id "720330448821187"
+21 Oct 04:41:07 - Initializing client with transport "websocket"
+21 Oct 04:41:07 - Client 8867166987620294 connected
+21 Oct 04:41:09 - Initializing client with transport "websocket"
+21 Oct 04:41:09 - Client 9111290844157338 connected
+21 Oct 04:41:10 - Couldnt find client with session id "720330448821187"
+21 Oct 04:41:14 - Initializing client with transport "websocket"
+21 Oct 04:41:14 - Client 6050371369346976 connected
+21 Oct 04:41:15 - Initializing client with transport "websocket"
+21 Oct 04:41:15 - Client 7292265398427844 connected
+21 Oct 04:41:26 - Initializing client with transport "websocket"
+21 Oct 04:41:26 - Client 7841443193610758 connected
+21 Oct 04:41:29 - Initializing client with transport "websocket"
+21 Oct 04:41:29 - Client 05791362491436303 connected
+21 Oct 04:41:35 - Client 8867166987620294 disconnected
+21 Oct 04:41:38 - Client 4502137799281627 disconnected
+21 Oct 04:41:38 - Client 05791362491436303 disconnected
+21 Oct 04:41:38 - Initializing client with transport "websocket"
+21 Oct 04:41:38 - Client 2100929592270404 connected
+21 Oct 04:41:48 - Client 1369083863683045 disconnected
+21 Oct 04:41:49 - Initializing client with transport "websocket"
+21 Oct 04:41:49 - Client 5913899142760783 connected
+21 Oct 04:42:08 - Client 7841443193610758 disconnected
+21 Oct 04:42:10 - Client 19817546172998846 disconnected
+21 Oct 04:42:19 - Initializing client with transport "websocket"
+21 Oct 04:42:19 - Client 026423797477036715 connected
+21 Oct 04:42:27 - Client 7292265398427844 disconnected
+21 Oct 04:42:33 - Client 37095381994731724 disconnected
+21 Oct 04:42:36 - Client 9111290844157338 disconnected
+21 Oct 04:43:26 - Initializing client with transport "websocket"
+21 Oct 04:43:26 - Client 7944757950026542 connected
+21 Oct 04:43:56 - Client 2100929592270404 disconnected
+21 Oct 04:44:16 - Initializing client with transport "websocket"
+21 Oct 04:44:16 - Client 5586373549886048 connected
+21 Oct 04:44:20 - Initializing client with transport "websocket"
+21 Oct 04:44:20 - Client 2287124975118786 connected
+21 Oct 04:44:27 - Client 6050371369346976 disconnected
+21 Oct 04:44:38 - Client 06682874984107912 disconnected
+21 Oct 04:44:38 - Client 2287124975118786 disconnected
+21 Oct 04:44:39 - Initializing client with transport "websocket"
+21 Oct 04:44:39 - Client 07850364246405661 connected
+21 Oct 04:44:41 - Client 7944757950026542 disconnected
+21 Oct 04:44:45 - Initializing client with transport "websocket"
+21 Oct 04:44:45 - Client 8705977404024452 connected
+21 Oct 04:44:55 - Initializing client with transport "websocket"
+21 Oct 04:44:55 - Client 8937412570230663 connected
+21 Oct 04:45:24 - Initializing client with transport "websocket"
+21 Oct 04:45:24 - Client 08356443606317043 connected
+21 Oct 04:45:31 - Initializing client with transport "websocket"
+21 Oct 04:45:31 - Client 5276744244620204 connected
+21 Oct 04:45:31 - Initializing client with transport "xhr-polling"
+21 Oct 04:45:31 - Client 26438608625903726 connected
+21 Oct 04:45:31 - Client 5276744244620204 disconnected
+21 Oct 04:45:31 - Client 07850364246405661 disconnected
+21 Oct 04:45:35 - Initializing client with transport "websocket"
+21 Oct 04:45:35 - Client 9319039657711983 connected
+21 Oct 04:45:36 - Initializing client with transport "xhr-polling"
+21 Oct 04:45:36 - Client 5611290750093758 connected
+21 Oct 04:45:37 - Initializing client with transport "websocket"
+21 Oct 04:45:37 - Client 8189923097379506 connected
+21 Oct 04:45:39 - Client 26438608625903726 disconnected
+21 Oct 04:45:57 - Couldnt find client with session id "26438608625903726"
+21 Oct 04:45:57 - Couldnt find client with session id "26438608625903726"
+21 Oct 04:46:28 - Initializing client with transport "websocket"
+21 Oct 04:46:28 - Client 37245611543767154 connected
+21 Oct 04:46:42 - Client 3133292174898088 disconnected
+21 Oct 04:46:45 - Client 9319039657711983 disconnected
+21 Oct 04:46:49 - Client 9918797560967505 disconnected
+21 Oct 04:47:00 - Initializing client with transport "websocket"
+21 Oct 04:47:00 - Client 6319324425421655 connected
+21 Oct 04:47:54 - Client 6319324425421655 disconnected
+21 Oct 04:48:01 - Client 1473418683744967 disconnected
+21 Oct 04:48:03 - Initializing client with transport "xhr-polling"
+21 Oct 04:48:03 - Client 9374948504846543 connected
+21 Oct 04:48:03 - Client 8286832149606198 disconnected
+21 Oct 04:48:06 - Client 026423797477036715 disconnected
+21 Oct 04:48:11 - Client 08356443606317043 disconnected
+21 Oct 04:48:27 - Initializing client with transport "websocket"
+21 Oct 04:48:27 - Client 22986363735981286 connected
+21 Oct 04:48:35 - Client 37245611543767154 disconnected
+21 Oct 04:48:38 - Client 9374948504846543 disconnected
+21 Oct 04:48:42 - Initializing client with transport "websocket"
+21 Oct 04:48:42 - Client 16397095075808465 connected
+21 Oct 04:48:45 - Client 22986363735981286 disconnected
+21 Oct 04:48:54 - Client 3613618710078299 disconnected
+21 Oct 04:49:10 - Initializing client with transport "xhr-polling"
+21 Oct 04:49:10 - Client 9716228956822306 connected
+21 Oct 04:49:29 - Client 6554976678453386 disconnected
+21 Oct 04:49:42 - Client 5586373549886048 disconnected
+21 Oct 04:50:32 - Initializing client with transport "websocket"
+21 Oct 04:50:32 - Client 8624506343621761 connected
+21 Oct 04:50:47 - Client 16397095075808465 disconnected
+21 Oct 04:50:55 - Initializing client with transport "websocket"
+21 Oct 04:50:55 - Client 16699500707909465 connected
+21 Oct 04:50:57 - Client 5913899142760783 disconnected
+21 Oct 04:51:10 - Initializing client with transport "websocket"
+21 Oct 04:51:10 - Client 020701817702502012 connected
+21 Oct 04:51:10 - Data incorrectly framed by UA. Dropping connection
+21 Oct 04:51:11 - Client 020701817702502012 disconnected
+21 Oct 04:51:15 - Initializing client with transport "xhr-polling"
+21 Oct 04:51:15 - Client 01676805643364787 connected
+21 Oct 04:51:18 - Initializing client with transport "websocket"
+21 Oct 04:51:18 - Client 3958623134531081 connected
+21 Oct 04:51:47 - Initializing client with transport "websocket"
+21 Oct 04:51:47 - Client 5121168100740761 connected
+21 Oct 04:51:55 - Client 8189923097379506 disconnected
+21 Oct 04:51:56 - Client 3958623134531081 disconnected
+21 Oct 04:52:01 - Client 01676805643364787 disconnected
+21 Oct 04:52:02 - Client 8376582697965205 disconnected
+21 Oct 04:52:17 - Client 8040350244846195 disconnected
+21 Oct 04:52:22 - Client 9716228956822306 disconnected
+21 Oct 04:52:30 - Client 8624506343621761 disconnected
+21 Oct 04:52:39 - Initializing client with transport "websocket"
+21 Oct 04:52:39 - Client 6204324106220156 connected
+21 Oct 04:52:39 - Initializing client with transport "websocket"
+21 Oct 04:52:39 - Client 6832292180042714 connected
+21 Oct 04:52:40 - Client 6832292180042714 disconnected
+21 Oct 04:52:42 - Client 9031489188782871 disconnected
+21 Oct 04:52:44 - Initializing client with transport "websocket"
+21 Oct 04:52:44 - Client 5888791258912534 connected
+21 Oct 04:52:51 - Client 5888791258912534 disconnected
+21 Oct 04:53:05 - Couldnt find client with session id "720330448821187"
+21 Oct 04:53:05 - Couldnt find client with session id "720330448821187"
+21 Oct 04:53:08 - Initializing client with transport "websocket"
+21 Oct 04:53:08 - Client 21647222456522286 connected
+21 Oct 04:53:23 - Client 5611290750093758 disconnected
+21 Oct 04:53:26 - Client 8705977404024452 disconnected
+21 Oct 04:53:39 - Initializing client with transport "websocket"
+21 Oct 04:53:39 - Client 6856163733173162 connected
+21 Oct 04:53:45 - Client 6204324106220156 disconnected
+21 Oct 04:53:48 - Initializing client with transport "xhr-polling"
+21 Oct 04:53:48 - Client 36093399045057595 connected
+21 Oct 04:53:54 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:53:54 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:53:54 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:54:02 - Initializing client with transport "xhr-polling"
+21 Oct 04:54:02 - Client 6595540037378669 connected
+21 Oct 04:54:02 - Client 5121168100740761 disconnected
+21 Oct 04:54:42 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:54:44 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:54:44 - Initializing client with transport "websocket"
+21 Oct 04:54:44 - Client 9559244285337627 connected
+21 Oct 04:54:45 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:54:45 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:54:45 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:54:46 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:55:12 - Client 9559244285337627 disconnected
+21 Oct 04:55:33 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:55:37 - Initializing client with transport "websocket"
+21 Oct 04:55:37 - Client 6808763612061739 connected
+21 Oct 04:55:37 - Client 16699500707909465 disconnected
+21 Oct 04:55:48 - Couldnt find client with session id "01676805643364787"
+21 Oct 04:55:55 - Client 21647222456522286 disconnected
+21 Oct 04:56:01 - Client 36093399045057595 disconnected
+21 Oct 04:56:01 - Couldnt find client with session id "720330448821187"
+21 Oct 04:56:03 - Couldnt find client with session id "36093399045057595"
+21 Oct 04:56:03 - Couldnt find client with session id "36093399045057595"
+21 Oct 04:56:04 - Couldnt find client with session id "36093399045057595"
+21 Oct 04:56:17 - Couldnt find client with session id "36093399045057595"
+21 Oct 04:56:17 - Couldnt find client with session id "36093399045057595"
+21 Oct 04:56:17 - Couldnt find client with session id "36093399045057595"
+21 Oct 04:56:20 - Initializing client with transport "websocket"
+21 Oct 04:56:20 - Client 3422878892160952 connected
+21 Oct 04:56:35 - Initializing client with transport "websocket"
+21 Oct 04:56:35 - Client 32402174384333193 connected
+21 Oct 04:56:38 - Initializing client with transport "websocket"
+21 Oct 04:56:38 - Client 9027317729778588 connected
+21 Oct 04:56:41 - Initializing client with transport "websocket"
+21 Oct 04:56:41 - Client 03143006842583418 connected
+21 Oct 04:56:45 - Initializing client with transport "websocket"
+21 Oct 04:56:45 - Client 9956076263915747 connected
+21 Oct 04:56:54 - Initializing client with transport "websocket"
+21 Oct 04:56:54 - Client 5562909541185945 connected
+21 Oct 04:56:59 - Initializing client with transport "websocket"
+21 Oct 04:56:59 - Client 03453685133717954 connected
+21 Oct 04:57:06 - Initializing client with transport "xhr-polling"
+21 Oct 04:57:06 - Client 8770410914439708 connected
+21 Oct 04:57:09 - Client 6856163733173162 disconnected
+21 Oct 04:57:28 - Client 8770410914439708 disconnected
+21 Oct 04:57:28 - Couldnt find client with session id "8770410914439708"
+21 Oct 04:57:33 - Couldnt find client with session id "8770410914439708"
+21 Oct 04:57:34 - Initializing client with transport "websocket"
+21 Oct 04:57:34 - Client 9200651503633708 connected
+21 Oct 04:57:36 - Couldnt find client with session id "8770410914439708"
+21 Oct 04:57:45 - Client 03453685133717954 disconnected
+21 Oct 04:57:57 - Client 9956076263915747 disconnected
+21 Oct 04:57:59 - Initializing client with transport "websocket"
+21 Oct 04:57:59 - Client 16343834926374257 connected
+21 Oct 04:58:02 - Couldnt find client with session id "8770410914439708"
+21 Oct 04:58:04 - Initializing client with transport "websocket"
+21 Oct 04:58:04 - Client 617386709433049 connected
+21 Oct 04:58:04 - Client 5562909541185945 disconnected
+21 Oct 04:58:06 - Couldnt find client with session id "8770410914439708"
+21 Oct 04:58:13 - Initializing client with transport "websocket"
+21 Oct 04:58:13 - Client 230211750138551 connected
+21 Oct 04:58:14 - Client 9200651503633708 disconnected
+21 Oct 04:58:20 - Initializing client with transport "websocket"
+21 Oct 04:58:20 - Client 957757172640413 connected
+21 Oct 04:58:29 - Client 03143006842583418 disconnected
+21 Oct 04:58:30 - Client 230211750138551 disconnected
+21 Oct 04:58:30 - Client 957757172640413 disconnected
+21 Oct 04:58:32 - Initializing client with transport "websocket"
+21 Oct 04:58:32 - Client 13095023832283914 connected
+21 Oct 04:58:33 - Initializing client with transport "websocket"
+21 Oct 04:58:33 - Client 1010217685252428 connected
+21 Oct 04:58:41 - Client 6595540037378669 disconnected
+21 Oct 04:58:43 - Initializing client with transport "websocket"
+21 Oct 04:58:43 - Client 4302529802080244 connected
+21 Oct 04:59:00 - Client 13095023832283914 disconnected
+21 Oct 04:59:09 - Initializing client with transport "websocket"
+21 Oct 04:59:09 - Client 045958636328577995 connected
+21 Oct 04:59:27 - Initializing client with transport "websocket"
+21 Oct 04:59:27 - Client 7543560981284827 connected
+21 Oct 04:59:38 - Initializing client with transport "xhr-polling"
+21 Oct 04:59:38 - Client 5450300448574126 connected
+21 Oct 04:59:51 - Initializing client with transport "websocket"
+21 Oct 04:59:51 - Client 5910460287705064 connected
+21 Oct 05:00:00 - Client 32402174384333193 disconnected
+21 Oct 05:00:36 - Client 4302529802080244 disconnected
+21 Oct 05:00:40 - Client 9027317729778588 disconnected
+21 Oct 05:00:51 - Client 5910460287705064 disconnected
+21 Oct 05:00:53 - Initializing client with transport "websocket"
+21 Oct 05:00:53 - Client 24101464403793216 connected
+21 Oct 05:00:54 - Client 8886159518733621 disconnected
+21 Oct 05:00:59 - Initializing client with transport "websocket"
+21 Oct 05:00:59 - Client 3272259570658207 connected
+21 Oct 05:01:01 - Initializing client with transport "websocket"
+21 Oct 05:01:01 - Client 30706430971622467 connected
+21 Oct 05:01:12 - Initializing client with transport "websocket"
+21 Oct 05:01:12 - Client 6126118886750191 connected
+21 Oct 05:01:14 - Initializing client with transport "websocket"
+21 Oct 05:01:14 - Client 7472488775383681 connected
+21 Oct 05:01:38 - Client 1010217685252428 disconnected
+21 Oct 05:01:41 - Initializing client with transport "websocket"
+21 Oct 05:01:41 - Client 9930830849334598 connected
+21 Oct 05:01:42 - Client 5450300448574126 disconnected
+21 Oct 05:01:51 - Initializing client with transport "websocket"
+21 Oct 05:01:51 - Client 3191280399914831 connected
+21 Oct 05:01:52 - Client 24101464403793216 disconnected
+21 Oct 05:01:52 - Client 30706430971622467 disconnected
+21 Oct 05:02:00 - Client 7472488775383681 disconnected
+21 Oct 05:02:09 - Client 3191280399914831 disconnected
+21 Oct 05:02:12 - Initializing client with transport "websocket"
+21 Oct 05:02:12 - Client 19305039360187948 connected
+21 Oct 05:02:23 - Initializing client with transport "xhr-polling"
+21 Oct 05:02:23 - Client 6366230582352728 connected
+21 Oct 05:02:24 - Client 16343834926374257 disconnected
+21 Oct 05:02:27 - Initializing client with transport "websocket"
+21 Oct 05:02:27 - Client 015648767817765474 connected
+21 Oct 05:02:31 - Client 6808763612061739 disconnected
+21 Oct 05:02:48 - Client 6126118886750191 disconnected
+21 Oct 05:02:52 - Initializing client with transport "websocket"
+21 Oct 05:02:52 - Client 5638442947529256 connected
+21 Oct 05:03:18 - Client 3422878892160952 disconnected
+21 Oct 05:03:20 - Client 19305039360187948 disconnected
+21 Oct 05:03:23 - Initializing client with transport "websocket"
+21 Oct 05:03:23 - Client 7123259054496884 connected
+21 Oct 05:03:29 - Initializing client with transport "websocket"
+21 Oct 05:03:29 - Client 7356896514538676 connected
+21 Oct 05:03:45 - Initializing client with transport "websocket"
+21 Oct 05:03:45 - Client 02397300419397652 connected
+21 Oct 05:03:47 - Client 015648767817765474 disconnected
+21 Oct 05:03:50 - Initializing client with transport "websocket"
+21 Oct 05:03:50 - Client 6195278377272189 connected
+21 Oct 05:03:50 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:03:50 - Client 6195278377272189 disconnected
+21 Oct 05:03:55 - Initializing client with transport "xhr-polling"
+21 Oct 05:03:55 - Client 1258467952720821 connected
+21 Oct 05:03:57 - Client 3272259570658207 disconnected
+21 Oct 05:04:02 - Initializing client with transport "websocket"
+21 Oct 05:04:02 - Client 5001029360573739 connected
+21 Oct 05:04:04 - Initializing client with transport "xhr-polling"
+21 Oct 05:04:04 - Client 955598680768162 connected
+21 Oct 05:04:10 - Client 3085623357910663 disconnected
+21 Oct 05:04:18 - Initializing client with transport "websocket"
+21 Oct 05:04:18 - Client 7447694824077189 connected
+21 Oct 05:04:19 - Client 1258467952720821 disconnected
+21 Oct 05:04:26 - Initializing client with transport "websocket"
+21 Oct 05:04:26 - Client 8020097282715142 connected
+21 Oct 05:04:37 - Initializing client with transport "xhr-polling"
+21 Oct 05:04:37 - Client 6303268899209797 connected
+21 Oct 05:04:42 - Client 7543560981284827 disconnected
+21 Oct 05:04:43 - Client 5638442947529256 disconnected
+21 Oct 05:04:46 - Client 8020097282715142 disconnected
+21 Oct 05:04:47 - Client 5001029360573739 disconnected
+21 Oct 05:04:48 - Client 02397300419397652 disconnected
+21 Oct 05:04:49 - Initializing client with transport "websocket"
+21 Oct 05:04:49 - Client 9490710201207548 connected
+21 Oct 05:04:57 - Client 6303268899209797 disconnected
+21 Oct 05:05:01 - Initializing client with transport "xhr-polling"
+21 Oct 05:05:01 - Client 3825178286060691 connected
+21 Oct 05:05:09 - Client 955598680768162 disconnected
+21 Oct 05:05:14 - Client 3825178286060691 disconnected
+21 Oct 05:05:18 - Client 7447694824077189 disconnected
+21 Oct 05:05:22 - Initializing client with transport "websocket"
+21 Oct 05:05:22 - Client 44864663225598633 connected
+21 Oct 05:05:25 - Initializing client with transport "websocket"
+21 Oct 05:05:25 - Client 94787129573524 connected
+21 Oct 05:05:25 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:05:25 - Client 94787129573524 disconnected
+21 Oct 05:05:30 - Initializing client with transport "xhr-polling"
+21 Oct 05:05:30 - Client 7159525491297245 connected
+21 Oct 05:05:42 - Client 7356896514538676 disconnected
+21 Oct 05:05:44 - Client 7123259054496884 disconnected
+21 Oct 05:06:17 - Initializing client with transport "websocket"
+21 Oct 05:06:17 - Client 208644988713786 connected
+21 Oct 05:06:20 - Initializing client with transport "websocket"
+21 Oct 05:06:20 - Client 372890634695068 connected
+21 Oct 05:06:22 - Client 6366230582352728 disconnected
+21 Oct 05:06:26 - Couldnt find client with session id "6366230582352728"
+21 Oct 05:06:30 - Couldnt find client with session id "6366230582352728"
+21 Oct 05:06:33 - Client 9930830849334598 disconnected
+21 Oct 05:06:34 - Couldnt find client with session id "6366230582352728"
+21 Oct 05:06:38 - Client 372890634695068 disconnected
+21 Oct 05:06:50 - Client 208644988713786 disconnected
+21 Oct 05:07:02 - Initializing client with transport "xhr-polling"
+21 Oct 05:07:02 - Client 08249361510388553 connected
+21 Oct 05:07:13 - Initializing client with transport "websocket"
+21 Oct 05:07:13 - Client 7466981182806194 connected
+21 Oct 05:07:24 - Initializing client with transport "websocket"
+21 Oct 05:07:24 - Client 3863657945767045 connected
+21 Oct 05:07:30 - Client 3863657945767045 disconnected
+21 Oct 05:07:39 - Initializing client with transport "websocket"
+21 Oct 05:07:39 - Client 48822279437445104 connected
+21 Oct 05:07:41 - Client 7466981182806194 disconnected
+21 Oct 05:07:57 - Client 045958636328577995 disconnected
+21 Oct 05:08:28 - Initializing client with transport "websocket"
+21 Oct 05:08:28 - Client 2310689038131386 connected
+21 Oct 05:08:40 - Client 2310689038131386 disconnected
+21 Oct 05:09:02 - Client 48822279437445104 disconnected
+21 Oct 05:09:11 - Initializing client with transport "websocket"
+21 Oct 05:09:11 - Client 47462221095338464 connected
+21 Oct 05:09:11 - Client 47462221095338464 disconnected
+21 Oct 05:09:20 - Initializing client with transport "xhr-polling"
+21 Oct 05:09:20 - Client 9643348916433752 connected
+21 Oct 05:09:44 - Initializing client with transport "websocket"
+21 Oct 05:09:44 - Client 3968405167106539 connected
+21 Oct 05:09:46 - Client 3968405167106539 disconnected
+21 Oct 05:10:02 - Initializing client with transport "websocket"
+21 Oct 05:10:02 - Client 14919870742596686 connected
+21 Oct 05:10:23 - Client 14919870742596686 disconnected
+21 Oct 05:10:30 - Initializing client with transport "websocket"
+21 Oct 05:10:30 - Client 4508197659160942 connected
+21 Oct 05:10:31 - Client 746219904627651 disconnected
+21 Oct 05:10:44 - Initializing client with transport "websocket"
+21 Oct 05:10:44 - Client 9187587194610387 connected
+21 Oct 05:10:53 - Client 7159525491297245 disconnected
+21 Oct 05:11:11 - Initializing client with transport "websocket"
+21 Oct 05:11:11 - Client 4102288084104657 connected
+21 Oct 05:11:11 - Initializing client with transport "websocket"
+21 Oct 05:11:11 - Client 8410913879051805 connected
+21 Oct 05:11:28 - Client 9187587194610387 disconnected
+21 Oct 05:11:47 - Initializing client with transport "websocket"
+21 Oct 05:11:47 - Client 10727949696592987 connected
+21 Oct 05:11:48 - Client 617386709433049 disconnected
+21 Oct 05:11:58 - Initializing client with transport "websocket"
+21 Oct 05:11:58 - Client 11274594278074801 connected
+21 Oct 05:12:13 - Client 10727949696592987 disconnected
+21 Oct 05:12:21 - Client 4102288084104657 disconnected
+21 Oct 05:12:48 - Initializing client with transport "websocket"
+21 Oct 05:12:48 - Client 6473806600552052 connected
+21 Oct 05:12:48 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:12:50 - Initializing client with transport "xhr-polling"
+21 Oct 05:12:50 - Client 6623818769585341 connected
+21 Oct 05:13:06 - Client 6473806600552052 disconnected
+21 Oct 05:13:21 - Client 4508197659160942 disconnected
+21 Oct 05:13:26 - Client 11274594278074801 disconnected
+21 Oct 05:13:47 - Initializing client with transport "websocket"
+21 Oct 05:13:47 - Client 47639493294991553 connected
+21 Oct 05:13:50 - Initializing client with transport "websocket"
+21 Oct 05:13:50 - Client 20758219715207815 connected
+21 Oct 05:14:13 - Initializing client with transport "websocket"
+21 Oct 05:14:13 - Client 3147108058910817 connected
+21 Oct 05:14:16 - Client 47639493294991553 disconnected
+21 Oct 05:14:38 - Initializing client with transport "websocket"
+21 Oct 05:14:38 - Client 1603093098383397 connected
+21 Oct 05:14:48 - Client 8410913879051805 disconnected
+21 Oct 05:15:10 - Initializing client with transport "websocket"
+21 Oct 05:15:10 - Client 6349551905877888 connected
+21 Oct 05:15:17 - Client 6623818769585341 disconnected
+21 Oct 05:15:22 - Client 6349551905877888 disconnected
+21 Oct 05:15:24 - Initializing client with transport "websocket"
+21 Oct 05:15:24 - Client 5100441777613014 connected
+21 Oct 05:15:39 - Initializing client with transport "websocket"
+21 Oct 05:15:39 - Client 03739936253987253 connected
+21 Oct 05:15:53 - Initializing client with transport "websocket"
+21 Oct 05:15:53 - Client 9021538512315601 connected
+21 Oct 05:15:57 - Initializing client with transport "websocket"
+21 Oct 05:15:57 - Client 4338647115509957 connected
+21 Oct 05:16:05 - Initializing client with transport "websocket"
+21 Oct 05:16:05 - Client 6259806575253606 connected
+21 Oct 05:16:38 - Initializing client with transport "websocket"
+21 Oct 05:16:38 - Client 9722773008979857 connected
+21 Oct 05:17:18 - Client 9722773008979857 disconnected
+21 Oct 05:17:24 - Initializing client with transport "websocket"
+21 Oct 05:17:24 - Client 37946505518630147 connected
+21 Oct 05:17:24 - Initializing client with transport "websocket"
+21 Oct 05:17:24 - Client 6412999471649528 connected
+21 Oct 05:17:42 - Client 6412999471649528 disconnected
+21 Oct 05:17:45 - Client 9021538512315601 disconnected
+21 Oct 05:18:14 - Initializing client with transport "websocket"
+21 Oct 05:18:14 - Client 300185359781608 connected
+21 Oct 05:18:19 - Initializing client with transport "websocket"
+21 Oct 05:18:19 - Client 3797011314891279 connected
+21 Oct 05:18:21 - Initializing client with transport "websocket"
+21 Oct 05:18:21 - Client 28779767733067274 connected
+21 Oct 05:18:34 - Client 03739936253987253 disconnected
+21 Oct 05:18:39 - Client 3147108058910817 disconnected
+21 Oct 05:18:48 - Client 3797011314891279 disconnected
+21 Oct 05:19:40 - Initializing client with transport "websocket"
+21 Oct 05:19:40 - Client 7452718592248857 connected
+21 Oct 05:19:41 - Initializing client with transport "websocket"
+21 Oct 05:19:41 - Client 04067235952243209 connected
+21 Oct 05:20:27 - Initializing client with transport "xhr-polling"
+21 Oct 05:20:27 - Client 752702770056203 connected
+21 Oct 05:20:41 - Initializing client with transport "websocket"
+21 Oct 05:20:41 - Client 619027363602072 connected
+21 Oct 05:20:51 - Client 37946505518630147 disconnected
+21 Oct 05:21:18 - Initializing client with transport "websocket"
+21 Oct 05:21:18 - Client 9215401844121516 connected
+21 Oct 05:21:18 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:21:18 - Client 9215401844121516 disconnected
+21 Oct 05:21:21 - Initializing client with transport "xhr-polling"
+21 Oct 05:21:21 - Client 735814314102754 connected
+21 Oct 05:21:39 - Client 752702770056203 disconnected
+21 Oct 05:21:57 - Initializing client with transport "websocket"
+21 Oct 05:21:57 - Client 6548196324147284 connected
+21 Oct 05:22:15 - Initializing client with transport "websocket"
+21 Oct 05:22:15 - Client 29572531557641923 connected
+21 Oct 05:22:18 - Initializing client with transport "websocket"
+21 Oct 05:22:18 - Client 6695062301587313 connected
+21 Oct 05:22:27 - Initializing client with transport "websocket"
+21 Oct 05:22:27 - Client 7137472308240831 connected
+21 Oct 05:22:33 - Client 7452718592248857 disconnected
+21 Oct 05:22:38 - Client 735814314102754 disconnected
+21 Oct 05:22:50 - Client 6259806575253606 disconnected
+21 Oct 05:22:52 - Couldnt find client with session id "735814314102754"
+21 Oct 05:22:52 - Couldnt find client with session id "735814314102754"
+21 Oct 05:22:53 - Couldnt find client with session id "735814314102754"
+21 Oct 05:23:06 - Initializing client with transport "websocket"
+21 Oct 05:23:06 - Client 8208980548661202 connected
+21 Oct 05:23:07 - Client 7137472308240831 disconnected
+21 Oct 05:23:18 - Client 29572531557641923 disconnected
+21 Oct 05:23:24 - Client 1603093098383397 disconnected
+21 Oct 05:23:34 - Initializing client with transport "xhr-polling"
+21 Oct 05:23:34 - Client 9713137741200626 connected
+21 Oct 05:23:35 - Initializing client with transport "websocket"
+21 Oct 05:23:35 - Client 9509802462998778 connected
+21 Oct 05:23:43 - Client 9713137741200626 disconnected
+21 Oct 05:23:50 - Couldnt find client with session id "9713137741200626"
+21 Oct 05:23:53 - Client 9509802462998778 disconnected
+21 Oct 05:23:58 - Couldnt find client with session id "9713137741200626"
+21 Oct 05:24:03 - Couldnt find client with session id "9713137741200626"
+21 Oct 05:24:04 - Initializing client with transport "websocket"
+21 Oct 05:24:04 - Client 08763276156969368 connected
+21 Oct 05:24:04 - Client 08763276156969368 disconnected
+21 Oct 05:24:05 - Initializing client with transport "websocket"
+21 Oct 05:24:05 - Client 175239929696545 connected
+21 Oct 05:24:07 - Couldnt find client with session id "9713137741200626"
+21 Oct 05:24:07 - Client 6695062301587313 disconnected
+21 Oct 05:24:08 - Initializing client with transport "xhr-polling"
+21 Oct 05:24:08 - Client 1988018131814897 connected
+21 Oct 05:24:13 - Client 3982715564779937 disconnected
+21 Oct 05:24:15 - Client 9643348916433752 disconnected
+21 Oct 05:24:28 - Initializing client with transport "websocket"
+21 Oct 05:24:28 - Client 22196821053512394 connected
+21 Oct 05:24:47 - Client 28779767733067274 disconnected
+21 Oct 05:24:47 - Client 9490710201207548 disconnected
+21 Oct 05:24:52 - Client 1988018131814897 disconnected
+21 Oct 05:25:09 - Client 175239929696545 disconnected
+21 Oct 05:25:50 - Initializing client with transport "websocket"
+21 Oct 05:25:50 - Client 5423564142547548 connected
+21 Oct 05:26:04 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:26:05 - Client 8208980548661202 disconnected
+21 Oct 05:26:20 - Client 08249361510388553 disconnected
+21 Oct 05:26:21 - Couldnt find client with session id "08249361510388553"
+21 Oct 05:26:21 - Couldnt find client with session id "08249361510388553"
+21 Oct 05:26:32 - Initializing client with transport "websocket"
+21 Oct 05:26:32 - Client 00872980454005301 connected
+21 Oct 05:26:39 - Client 5423564142547548 disconnected
+21 Oct 05:26:56 - Client 619027363602072 disconnected
+21 Oct 05:27:02 - Initializing client with transport "websocket"
+21 Oct 05:27:02 - Client 9723892980255187 connected
+21 Oct 05:27:07 - Initializing client with transport "websocket"
+21 Oct 05:27:07 - Client 9799887747503817 connected
+21 Oct 05:27:15 - Client 9723892980255187 disconnected
+21 Oct 05:27:25 - Initializing client with transport "websocket"
+21 Oct 05:27:25 - Client 4464706867001951 connected
+21 Oct 05:27:29 - Initializing client with transport "websocket"
+21 Oct 05:27:29 - Client 6182903200387955 connected
+21 Oct 05:27:33 - Client 9799887747503817 disconnected
+21 Oct 05:27:47 - Client 6182903200387955 disconnected
+21 Oct 05:27:59 - Client 5100441777613014 disconnected
+21 Oct 05:28:08 - Client 6548196324147284 disconnected
+21 Oct 05:28:11 - Client 4464706867001951 disconnected
+21 Oct 05:28:27 - Initializing client with transport "xhr-polling"
+21 Oct 05:28:27 - Client 6718997179996222 connected
+21 Oct 05:28:38 - Client 300185359781608 disconnected
+21 Oct 05:28:59 - Initializing client with transport "websocket"
+21 Oct 05:28:59 - Client 4597603327129036 connected
+21 Oct 05:29:28 - Initializing client with transport "websocket"
+21 Oct 05:29:28 - Client 7774818558245897 connected
+21 Oct 05:29:41 - Initializing client with transport "websocket"
+21 Oct 05:29:41 - Client 9573577004484832 connected
+21 Oct 05:30:06 - Initializing client with transport "websocket"
+21 Oct 05:30:06 - Client 7729990370571613 connected
+21 Oct 05:30:07 - Initializing client with transport "websocket"
+21 Oct 05:30:07 - Client 3920210571959615 connected
+21 Oct 05:30:19 - Client 3920210571959615 disconnected
+21 Oct 05:30:26 - Initializing client with transport "websocket"
+21 Oct 05:30:26 - Client 7849803185090423 connected
+21 Oct 05:30:36 - Initializing client with transport "websocket"
+21 Oct 05:30:36 - Client 8933144793845713 connected
+21 Oct 05:30:36 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:30:36 - Client 8933144793845713 disconnected
+21 Oct 05:30:41 - Initializing client with transport "xhr-polling"
+21 Oct 05:30:41 - Client 24040933162905276 connected
+21 Oct 05:30:42 - Client 7849803185090423 disconnected
+21 Oct 05:31:07 - Client 22196821053512394 disconnected
+21 Oct 05:31:15 - Client 24040933162905276 disconnected
+21 Oct 05:31:39 - Client 7774818558245897 disconnected
+21 Oct 05:31:50 - Client 9573577004484832 disconnected
+21 Oct 05:32:05 - Initializing client with transport "websocket"
+21 Oct 05:32:05 - Client 9336626562289894 connected
+21 Oct 05:32:05 - Client 45738577865995467 disconnected
+21 Oct 05:32:10 - Initializing client with transport "websocket"
+21 Oct 05:32:10 - Client 4193580485880375 connected
+21 Oct 05:32:40 - Initializing client with transport "websocket"
+21 Oct 05:32:40 - Client 7467016805894673 connected
+21 Oct 05:32:42 - Initializing client with transport "websocket"
+21 Oct 05:32:42 - Client 5763977547176182 connected
+21 Oct 05:32:48 - Initializing client with transport "websocket"
+21 Oct 05:32:48 - Client 816682126140222 connected
+21 Oct 05:32:58 - Client 7467016805894673 disconnected
+21 Oct 05:33:36 - Client 7729990370571613 disconnected
+21 Oct 05:33:39 - Initializing client with transport "websocket"
+21 Oct 05:33:39 - Client 20164110627956688 connected
+21 Oct 05:33:51 - Initializing client with transport "websocket"
+21 Oct 05:33:51 - Client 5068196633365005 connected
+21 Oct 05:33:56 - Client 5068196633365005 disconnected
+21 Oct 05:34:16 - Initializing client with transport "websocket"
+21 Oct 05:34:16 - Client 20331205311231315 connected
+21 Oct 05:34:28 - Initializing client with transport "xhr-polling"
+21 Oct 05:34:28 - Client 3832507124170661 connected
+21 Oct 05:34:31 - Initializing client with transport "websocket"
+21 Oct 05:34:31 - Client 10486870701424778 connected
+21 Oct 05:34:33 - Client 6718997179996222 disconnected
+21 Oct 05:34:54 - Client 4597603327129036 disconnected
+21 Oct 05:34:55 - Initializing client with transport "websocket"
+21 Oct 05:34:55 - Client 726320288842544 connected
+21 Oct 05:34:58 - Client 3832507124170661 disconnected
+21 Oct 05:34:58 - Client 20758219715207815 disconnected
+21 Oct 05:34:59 - Client 726320288842544 disconnected
+21 Oct 05:34:59 - Initializing client with transport "xhr-polling"
+21 Oct 05:34:59 - Client 322583032771945 connected
+21 Oct 05:35:02 - Initializing client with transport "websocket"
+21 Oct 05:35:02 - Client 5296527887694538 connected
+21 Oct 05:35:15 - Initializing client with transport "xhr-polling"
+21 Oct 05:35:15 - Client 7324975556693971 connected
+21 Oct 05:35:29 - Client 4193580485880375 disconnected
+21 Oct 05:35:32 - Client 20164110627956688 disconnected
+21 Oct 05:35:33 - Client 5763977547176182 disconnected
+21 Oct 05:35:34 - Initializing client with transport "websocket"
+21 Oct 05:35:34 - Client 45948285865597427 connected
+21 Oct 05:35:38 - Initializing client with transport "websocket"
+21 Oct 05:35:38 - Client 6578224182594568 connected
+21 Oct 05:35:48 - Initializing client with transport "websocket"
+21 Oct 05:35:48 - Client 2679732085671276 connected
+21 Oct 05:36:06 - Client 7324975556693971 disconnected
+21 Oct 05:36:10 - Client 10486870701424778 disconnected
+21 Oct 05:36:53 - Initializing client with transport "websocket"
+21 Oct 05:36:53 - Client 5693378206342459 connected
+21 Oct 05:36:57 - Client 5693378206342459 disconnected
+21 Oct 05:36:57 - Initializing client with transport "xhr-polling"
+21 Oct 05:36:57 - Client 9314327405299991 connected
+21 Oct 05:36:58 - Initializing client with transport "websocket"
+21 Oct 05:36:58 - Client 24599008029326797 connected
+21 Oct 05:37:11 - Initializing client with transport "websocket"
+21 Oct 05:37:11 - Client 4165581348352134 connected
+21 Oct 05:37:14 - Initializing client with transport "websocket"
+21 Oct 05:37:14 - Client 5639941543340683 connected
+21 Oct 05:37:16 - Client 24599008029326797 disconnected
+21 Oct 05:37:29 - Client 322583032771945 disconnected
+21 Oct 05:37:32 - Client 20331205311231315 disconnected
+21 Oct 05:37:41 - Initializing client with transport "websocket"
+21 Oct 05:37:41 - Client 015392022440209985 connected
+21 Oct 05:38:00 - Initializing client with transport "websocket"
+21 Oct 05:38:00 - Client 9331431025639176 connected
+21 Oct 05:38:00 - Client 9314327405299991 disconnected
+21 Oct 05:38:32 - Client 015392022440209985 disconnected
+21 Oct 05:38:33 - Client 6578224182594568 disconnected
+21 Oct 05:38:44 - Client 5639941543340683 disconnected
+21 Oct 05:39:00 - Client 5296527887694538 disconnected
+21 Oct 05:39:39 - Initializing client with transport "websocket"
+21 Oct 05:39:39 - Client 11294824536889791 connected
+21 Oct 05:39:51 - Client 11294824536889791 disconnected
+21 Oct 05:40:00 - Initializing client with transport "websocket"
+21 Oct 05:40:00 - Client 010680967476218939 connected
+21 Oct 05:40:39 - Client 9336626562289894 disconnected
+21 Oct 05:40:42 - Initializing client with transport "websocket"
+21 Oct 05:40:42 - Client 3711496426258236 connected
+21 Oct 05:41:19 - Client 3711496426258236 disconnected
+21 Oct 05:41:22 - Initializing client with transport "websocket"
+21 Oct 05:41:22 - Client 6631758576259017 connected
+21 Oct 05:41:27 - Initializing client with transport "websocket"
+21 Oct 05:41:27 - Client 6538859861902893 connected
+21 Oct 05:41:44 - Client 816682126140222 disconnected
+21 Oct 05:41:55 - Client 6631758576259017 disconnected
+21 Oct 05:42:17 - Initializing client with transport "websocket"
+21 Oct 05:42:17 - Client 8445089710876346 connected
+21 Oct 05:42:17 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:42:17 - Client 8445089710876346 disconnected
+21 Oct 05:42:21 - Initializing client with transport "xhr-polling"
+21 Oct 05:42:21 - Client 6036185657139868 connected
+21 Oct 05:42:26 - Client 4165581348352134 disconnected
+21 Oct 05:43:04 - Initializing client with transport "websocket"
+21 Oct 05:43:04 - Client 23014464951120317 connected
+21 Oct 05:43:27 - Client 010680967476218939 disconnected
+21 Oct 05:43:40 - Client 23014464951120317 disconnected
+21 Oct 05:44:04 - Client 6036185657139868 disconnected
+21 Oct 05:44:34 - Initializing client with transport "websocket"
+21 Oct 05:44:34 - Client 12947275582700968 connected
+21 Oct 05:44:39 - Initializing client with transport "websocket"
+21 Oct 05:44:39 - Client 5367617679294199 connected
+21 Oct 05:44:49 - Client 6538859861902893 disconnected
+21 Oct 05:44:57 - Client 44864663225598633 disconnected
+21 Oct 05:45:08 - Client 12947275582700968 disconnected
+21 Oct 05:45:10 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:45:10 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:45:11 - Initializing client with transport "websocket"
+21 Oct 05:45:11 - Client 49517665966413915 connected
+21 Oct 05:45:11 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:45:21 - Client 49517665966413915 disconnected
+21 Oct 05:45:23 - Client 5367617679294199 disconnected
+21 Oct 05:45:31 - Initializing client with transport "websocket"
+21 Oct 05:45:31 - Client 9823961881920695 connected
+21 Oct 05:45:35 - Client 04067235952243209 disconnected
+21 Oct 05:46:11 - Client 45948285865597427 disconnected
+21 Oct 05:46:22 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:46:23 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:46:26 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:46:32 - Initializing client with transport "websocket"
+21 Oct 05:46:32 - Client 30540905077941716 connected
+21 Oct 05:47:03 - Client 9823961881920695 disconnected
+21 Oct 05:47:13 - Initializing client with transport "websocket"
+21 Oct 05:47:13 - Client 05916631733998656 connected
+21 Oct 05:47:17 - Client 30540905077941716 disconnected
+21 Oct 05:48:37 - Client 05916631733998656 disconnected
+21 Oct 05:48:50 - Initializing client with transport "websocket"
+21 Oct 05:48:50 - Client 196426204405725 connected
+21 Oct 05:48:58 - Initializing client with transport "websocket"
+21 Oct 05:48:58 - Client 1565547431819141 connected
+21 Oct 05:49:34 - Initializing client with transport "websocket"
+21 Oct 05:49:34 - Client 23498871875926852 connected
+21 Oct 05:50:15 - Initializing client with transport "websocket"
+21 Oct 05:50:15 - Client 2617740093264729 connected
+21 Oct 05:50:25 - Client 196426204405725 disconnected
+21 Oct 05:50:27 - Initializing client with transport "websocket"
+21 Oct 05:50:27 - Client 30533261434175074 connected
+21 Oct 05:50:46 - Client 30533261434175074 disconnected
+21 Oct 05:50:49 - Initializing client with transport "websocket"
+21 Oct 05:50:49 - Client 8321528409142047 connected
+21 Oct 05:51:14 - Initializing client with transport "websocket"
+21 Oct 05:51:14 - Client 48423735424876213 connected
+21 Oct 05:51:20 - Initializing client with transport "websocket"
+21 Oct 05:51:20 - Client 6877604615874588 connected
+21 Oct 05:51:56 - Client 23498871875926852 disconnected
+21 Oct 05:51:57 - Initializing client with transport "websocket"
+21 Oct 05:51:57 - Client 050388602539896965 connected
+21 Oct 05:51:59 - Client 050388602539896965 disconnected
+21 Oct 05:51:59 - Initializing client with transport "xhr-polling"
+21 Oct 05:51:59 - Client 05334844812750816 connected
+21 Oct 05:52:04 - Client 48423735424876213 disconnected
+21 Oct 05:52:13 - Initializing client with transport "websocket"
+21 Oct 05:52:13 - Client 1296355442609638 connected
+21 Oct 05:52:24 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:52:25 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:52:26 - Client 8321528409142047 disconnected
+21 Oct 05:52:28 - Couldnt find client with session id "6036185657139868"
+21 Oct 05:52:28 - Initializing client with transport "websocket"
+21 Oct 05:52:28 - Client 0780582760926336 connected
+21 Oct 05:52:31 - Client 1296355442609638 disconnected
+21 Oct 05:52:36 - Initializing client with transport "websocket"
+21 Oct 05:52:36 - Client 4557452159933746 connected
+21 Oct 05:52:42 - Client 2617740093264729 disconnected
+21 Oct 05:52:45 - Initializing client with transport "websocket"
+21 Oct 05:52:45 - Client 08363151224330068 connected
+21 Oct 05:53:03 - Initializing client with transport "websocket"
+21 Oct 05:53:03 - Client 5369899258948863 connected
+21 Oct 05:53:17 - Client 08363151224330068 disconnected
+21 Oct 05:54:13 - Client 5369899258948863 disconnected
+21 Oct 05:54:28 - Initializing client with transport "websocket"
+21 Oct 05:54:28 - Client 9308356146793813 connected
+21 Oct 05:54:28 - Client 9308356146793813 disconnected
+21 Oct 05:54:36 - Initializing client with transport "xhr-polling"
+21 Oct 05:54:36 - Client 22776076523587108 connected
+21 Oct 05:54:40 - Initializing client with transport "websocket"
+21 Oct 05:54:40 - Client 3141298375558108 connected
+21 Oct 05:54:40 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:54:40 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:54:40 - Client 3141298375558108 disconnected
+21 Oct 05:54:44 - Initializing client with transport "xhr-polling"
+21 Oct 05:54:44 - Client 7358202966861427 connected
+21 Oct 05:56:23 - Client 7358202966861427 disconnected
+21 Oct 05:56:24 - Initializing client with transport "websocket"
+21 Oct 05:56:24 - Client 3121772608719766 connected
+21 Oct 05:56:33 - Client 4557452159933746 disconnected
+21 Oct 05:56:47 - Initializing client with transport "websocket"
+21 Oct 05:56:47 - Client 8173279108013958 connected
+21 Oct 05:56:47 - Data incorrectly framed by UA. Dropping connection
+21 Oct 05:56:47 - Client 8173279108013958 disconnected
+21 Oct 05:56:52 - Initializing client with transport "xhr-polling"
+21 Oct 05:56:52 - Client 7448775246739388 connected
+21 Oct 05:57:04 - Client 7448775246739388 disconnected
+21 Oct 05:57:40 - Client 05334844812750816 disconnected
+21 Oct 05:58:12 - Initializing client with transport "xhr-polling"
+21 Oct 05:58:12 - Client 6727211365941912 connected
+21 Oct 05:58:14 - Initializing client with transport "websocket"
+21 Oct 05:58:14 - Client 9926899753045291 connected
+21 Oct 05:58:14 - Client 9926899753045291 disconnected
+21 Oct 05:58:28 - Client 22776076523587108 disconnected
+21 Oct 06:00:02 - Initializing client with transport "websocket"
+21 Oct 06:00:02 - Client 6104288429487497 connected
+21 Oct 06:00:03 - Client 00872980454005301 disconnected
+21 Oct 06:00:07 - Initializing client with transport "websocket"
+21 Oct 06:00:07 - Client 4674016728531569 connected
+21 Oct 06:00:11 - Client 6104288429487497 disconnected
+21 Oct 06:00:15 - Client 4674016728531569 disconnected
+21 Oct 06:03:08 - Initializing client with transport "websocket"
+21 Oct 06:03:08 - Client 35800525918602943 connected
+21 Oct 06:03:36 - Client 35800525918602943 disconnected
+21 Oct 06:03:52 - Initializing client with transport "websocket"
+21 Oct 06:03:52 - Client 22884648805484176 connected
+21 Oct 06:03:57 - Client 3121772608719766 disconnected
+21 Oct 06:04:16 - Initializing client with transport "websocket"
+21 Oct 06:04:16 - Client 04224525787867606 connected
+21 Oct 06:04:18 - Initializing client with transport "websocket"
+21 Oct 06:04:18 - Client 5639178736601025 connected
+21 Oct 06:04:39 - Client 5639178736601025 disconnected
+21 Oct 06:05:37 - Client 22884648805484176 disconnected
+21 Oct 06:06:07 - Initializing client with transport "websocket"
+21 Oct 06:06:07 - Client 9837285350076854 connected
+21 Oct 06:06:27 - Client 9837285350076854 disconnected
+21 Oct 06:06:56 - Initializing client with transport "websocket"
+21 Oct 06:06:56 - Client 42106635333038867 connected
+21 Oct 06:07:02 - Initializing client with transport "websocket"
+21 Oct 06:07:02 - Client 9543912850786 connected
+21 Oct 06:07:26 - Initializing client with transport "websocket"
+21 Oct 06:07:26 - Client 5720242818351835 connected
+21 Oct 06:07:52 - Client 2679732085671276 disconnected
+21 Oct 06:07:53 - Client 9543912850786 disconnected
+21 Oct 06:08:00 - Client 04224525787867606 disconnected
+21 Oct 06:08:08 - Initializing client with transport "websocket"
+21 Oct 06:08:08 - Client 6006217019166797 connected
+21 Oct 06:08:15 - Client 1565547431819141 disconnected
+21 Oct 06:09:02 - Initializing client with transport "websocket"
+21 Oct 06:09:02 - Client 5124106847215444 connected
+21 Oct 06:09:09 - Client 9331431025639176 disconnected
+21 Oct 06:09:44 - Client 5720242818351835 disconnected
+21 Oct 06:10:04 - Client 42106635333038867 disconnected
+21 Oct 06:10:26 - Initializing client with transport "websocket"
+21 Oct 06:10:26 - Client 4538747761398554 connected
+21 Oct 06:10:27 - Initializing client with transport "websocket"
+21 Oct 06:10:27 - Client 5081865130923688 connected
+21 Oct 06:10:27 - Client 5081865130923688 disconnected
+21 Oct 06:10:32 - Initializing client with transport "xhr-polling"
+21 Oct 06:10:32 - Client 11479836399666965 connected
+21 Oct 06:10:47 - Client 4538747761398554 disconnected
+21 Oct 06:10:48 - Initializing client with transport "xhr-polling"
+21 Oct 06:10:48 - Client 02732572378590703 connected
+21 Oct 06:10:54 - Client 11479836399666965 disconnected
+21 Oct 06:11:02 - Client 02732572378590703 disconnected
+21 Oct 06:11:13 - Client 5124106847215444 disconnected
+21 Oct 06:11:30 - Client 6727211365941912 disconnected
+21 Oct 06:11:47 - Initializing client with transport "websocket"
+21 Oct 06:11:47 - Client 8076479849405587 connected
+21 Oct 06:11:53 - Initializing client with transport "websocket"
+21 Oct 06:11:53 - Client 943410866195336 connected
+21 Oct 06:12:54 - Initializing client with transport "websocket"
+21 Oct 06:12:54 - Client 20063379779458046 connected
+21 Oct 06:13:09 - Client 20063379779458046 disconnected
+21 Oct 06:14:00 - Initializing client with transport "websocket"
+21 Oct 06:14:00 - Client 3475569065194577 connected
+21 Oct 06:14:03 - Client 6877604615874588 disconnected
+21 Oct 06:16:38 - Initializing client with transport "websocket"
+21 Oct 06:16:38 - Client 6683728094212711 connected
+21 Oct 06:16:55 - Initializing client with transport "websocket"
+21 Oct 06:16:55 - Client 9994229779113084 connected
+21 Oct 06:17:42 - Client 6683728094212711 disconnected
+21 Oct 06:18:20 - Client 9994229779113084 disconnected
+21 Oct 06:18:32 - Initializing client with transport "websocket"
+21 Oct 06:18:32 - Client 9411390628665686 connected
+21 Oct 06:21:19 - Client 9411390628665686 disconnected
+21 Oct 06:21:56 - Initializing client with transport "websocket"
+21 Oct 06:21:56 - Client 25759813166223466 connected
+21 Oct 06:22:34 - Client 25759813166223466 disconnected
+21 Oct 06:23:28 - Initializing client with transport "websocket"
+21 Oct 06:23:28 - Client 13968843617476523 connected
+21 Oct 06:23:35 - Initializing client with transport "xhr-multipart"
+21 Oct 06:23:35 - Client 9366035659331828 connected
+21 Oct 06:23:53 - Initializing client with transport "websocket"
+21 Oct 06:23:53 - Client 23425481072627008 connected
+21 Oct 06:24:32 - Initializing client with transport "websocket"
+21 Oct 06:24:32 - Client 6249036861117929 connected
+21 Oct 06:25:04 - Client 9366035659331828 disconnected
+21 Oct 06:25:05 - Initializing client with transport "xhr-multipart"
+21 Oct 06:25:05 - Client 8084314789157361 connected
+21 Oct 06:26:00 - Initializing client with transport "websocket"
+21 Oct 06:26:00 - Client 04971598228439689 connected
+21 Oct 06:26:46 - Client 04971598228439689 disconnected
+21 Oct 06:27:25 - Initializing client with transport "websocket"
+21 Oct 06:27:25 - Client 30092037352733314 connected
+21 Oct 06:27:34 - Client 13968843617476523 disconnected
+21 Oct 06:27:42 - Client 30092037352733314 disconnected
+21 Oct 06:27:48 - Client 8084314789157361 disconnected
+21 Oct 06:28:25 - Initializing client with transport "xhr-polling"
+21 Oct 06:28:25 - Client 6870109171140939 connected
+21 Oct 06:28:38 - Client 6870109171140939 disconnected
+21 Oct 06:28:40 - Couldnt find client with session id "6870109171140939"
+21 Oct 06:28:44 - Couldnt find client with session id "6870109171140939"
+21 Oct 06:28:49 - Couldnt find client with session id "6870109171140939"
+21 Oct 06:29:44 - Initializing client with transport "websocket"
+21 Oct 06:29:44 - Client 7418677101377398 connected
+21 Oct 06:30:04 - Initializing client with transport "websocket"
+21 Oct 06:30:04 - Client 4710743320174515 connected
+21 Oct 06:30:22 - Client 4710743320174515 disconnected
+21 Oct 06:30:24 - Initializing client with transport "websocket"
+21 Oct 06:30:24 - Client 3807680360041559 connected
+21 Oct 06:30:37 - Client 7418677101377398 disconnected
+21 Oct 06:30:40 - Client 23425481072627008 disconnected
+21 Oct 06:31:30 - Client 943410866195336 disconnected
+21 Oct 06:31:44 - Couldnt find client with session id "720330448821187"
+21 Oct 06:31:45 - Initializing client with transport "websocket"
+21 Oct 06:31:45 - Client 8713539366144687 connected
+21 Oct 06:32:31 - Initializing client with transport "websocket"
+21 Oct 06:32:31 - Client 26937419665046036 connected
+21 Oct 06:32:45 - Couldnt find client with session id "720330448821187"
+21 Oct 06:33:01 - Couldnt find client with session id "720330448821187"
+21 Oct 06:33:03 - Client 3807680360041559 disconnected
+21 Oct 06:33:05 - Couldnt find client with session id "720330448821187"
+21 Oct 06:33:11 - Initializing client with transport "websocket"
+21 Oct 06:33:11 - Client 5871956131886691 connected
+21 Oct 06:33:15 - Client 26937419665046036 disconnected
+21 Oct 06:33:29 - Client 5871956131886691 disconnected
+21 Oct 06:33:39 - Initializing client with transport "websocket"
+21 Oct 06:33:39 - Client 9317660480737686 connected
+21 Oct 06:33:43 - Couldnt find client with session id "720330448821187"
+21 Oct 06:33:46 - Couldnt find client with session id "720330448821187"
+21 Oct 06:34:02 - Couldnt find client with session id "720330448821187"
+21 Oct 06:34:04 - Couldnt find client with session id "720330448821187"
+21 Oct 06:34:21 - Initializing client with transport "websocket"
+21 Oct 06:34:21 - Client 6663084323517978 connected
+21 Oct 06:34:28 - Initializing client with transport "websocket"
+21 Oct 06:34:28 - Client 17519196425564587 connected
+21 Oct 06:34:37 - Initializing client with transport "websocket"
+21 Oct 06:34:37 - Client 8329192888922989 connected
+21 Oct 06:34:45 - Initializing client with transport "websocket"
+21 Oct 06:34:45 - Client 18003241624683142 connected
+21 Oct 06:34:53 - Client 18003241624683142 disconnected
+21 Oct 06:34:53 - Initializing client with transport "websocket"
+21 Oct 06:34:53 - Client 7472965361084789 connected
+21 Oct 06:34:55 - Client 8329192888922989 disconnected
+21 Oct 06:35:00 - Initializing client with transport "websocket"
+21 Oct 06:35:00 - Client 4413732390385121 connected
+21 Oct 06:35:19 - Initializing client with transport "websocket"
+21 Oct 06:35:19 - Client 0768937012180686 connected
+21 Oct 06:35:27 - Initializing client with transport "websocket"
+21 Oct 06:35:27 - Client 7598345547448844 connected
+21 Oct 06:35:37 - Client 0768937012180686 disconnected
+21 Oct 06:36:10 - Initializing client with transport "websocket"
+21 Oct 06:36:10 - Client 07516732136718929 connected
+21 Oct 06:36:10 - Initializing client with transport "xhr-multipart"
+21 Oct 06:36:10 - Client 19593295105732977 connected
+21 Oct 06:36:28 - Client 07516732136718929 disconnected
+21 Oct 06:36:31 - Client 6249036861117929 disconnected
+21 Oct 06:36:37 - Client 7472965361084789 disconnected
+21 Oct 06:36:44 - Initializing client with transport "websocket"
+21 Oct 06:36:44 - Client 11431256728246808 connected
+21 Oct 06:36:44 - Initializing client with transport "websocket"
+21 Oct 06:36:44 - Client 7998991385102272 connected
+21 Oct 06:37:15 - Initializing client with transport "websocket"
+21 Oct 06:37:15 - Client 42858830839395523 connected
+21 Oct 06:37:20 - Client 7998991385102272 disconnected
+21 Oct 06:37:25 - Client 4413732390385121 disconnected
+21 Oct 06:37:52 - Initializing client with transport "websocket"
+21 Oct 06:37:52 - Client 3889598953537643 connected
+21 Oct 06:38:02 - Initializing client with transport "websocket"
+21 Oct 06:38:02 - Client 20616103359498084 connected
+21 Oct 06:38:03 - Data incorrectly framed by UA. Dropping connection
+21 Oct 06:38:03 - Client 20616103359498084 disconnected
+21 Oct 06:38:07 - Initializing client with transport "xhr-polling"
+21 Oct 06:38:07 - Client 23977470817044377 connected
+21 Oct 06:38:10 - Client 3889598953537643 disconnected
+21 Oct 06:38:23 - Client 42858830839395523 disconnected
+21 Oct 06:38:41 - Initializing client with transport "websocket"
+21 Oct 06:38:41 - Client 8537317526061088 connected
+21 Oct 06:38:42 - Client 7598345547448844 disconnected
+21 Oct 06:38:50 - Initializing client with transport "websocket"
+21 Oct 06:38:50 - Client 651818118756637 connected
+21 Oct 06:38:59 - Client 8537317526061088 disconnected
+21 Oct 06:39:23 - Initializing client with transport "websocket"
+21 Oct 06:39:23 - Client 23411498731002212 connected
+21 Oct 06:39:32 - Client 23977470817044377 disconnected
+21 Oct 06:39:41 - Client 23411498731002212 disconnected
+21 Oct 06:40:27 - Initializing client with transport "websocket"
+21 Oct 06:40:27 - Client 8232380971312523 connected
+21 Oct 06:40:42 - Client 6663084323517978 disconnected
+21 Oct 06:40:45 - Client 8232380971312523 disconnected
+21 Oct 06:41:20 - Client 19593295105732977 disconnected
+21 Oct 06:41:43 - Initializing client with transport "websocket"
+21 Oct 06:41:43 - Client 00839065806940198 connected
+21 Oct 06:41:52 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:01 - Client 00839065806940198 disconnected
+21 Oct 06:42:09 - Initializing client with transport "xhr-polling"
+21 Oct 06:42:09 - Client 15648239105939865 connected
+21 Oct 06:42:10 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:10 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:13 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:13 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:14 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:14 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:14 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:15 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:16 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:17 - Client 15648239105939865 disconnected
+21 Oct 06:42:18 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:22 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:42 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:45 - Initializing client with transport "websocket"
+21 Oct 06:42:45 - Client 8725232132710516 connected
+21 Oct 06:42:53 - Initializing client with transport "xhr-polling"
+21 Oct 06:42:53 - Client 014611040242016315 connected
+21 Oct 06:42:54 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:54 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:55 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:57 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:42:59 - Initializing client with transport "websocket"
+21 Oct 06:42:59 - Client 33797459048219025 connected
+21 Oct 06:42:59 - Initializing client with transport "websocket"
+21 Oct 06:42:59 - Client 30726806982420385 connected
+21 Oct 06:43:01 - Client 014611040242016315 disconnected
+21 Oct 06:43:03 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:03 - Client 8725232132710516 disconnected
+21 Oct 06:43:11 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:11 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:12 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:12 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:13 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:16 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:43:22 - Initializing client with transport "websocket"
+21 Oct 06:43:22 - Client 5161131792701781 connected
+21 Oct 06:44:01 - Client 30726806982420385 disconnected
+21 Oct 06:44:29 - Initializing client with transport "websocket"
+21 Oct 06:44:29 - Client 8011308084242046 connected
+21 Oct 06:44:44 - Initializing client with transport "websocket"
+21 Oct 06:44:44 - Client 7834051111713052 connected
+21 Oct 06:44:47 - Client 651818118756637 disconnected
+21 Oct 06:45:01 - Initializing client with transport "websocket"
+21 Oct 06:45:01 - Client 021570391952991486 connected
+21 Oct 06:45:02 - Client 7834051111713052 disconnected
+21 Oct 06:45:24 - Initializing client with transport "websocket"
+21 Oct 06:45:24 - Client 5183067361358553 connected
+21 Oct 06:45:42 - Client 5183067361358553 disconnected
+21 Oct 06:46:02 - Initializing client with transport "websocket"
+21 Oct 06:46:02 - Client 8706766916438937 connected
+21 Oct 06:46:03 - Initializing client with transport "websocket"
+21 Oct 06:46:03 - Client 962347803870216 connected
+21 Oct 06:46:08 - Initializing client with transport "websocket"
+21 Oct 06:46:08 - Client 28698021196760237 connected
+21 Oct 06:46:10 - Initializing client with transport "websocket"
+21 Oct 06:46:10 - WebSocket connection invalid or Origin not verified
+21 Oct 06:46:11 - Initializing client with transport "websocket"
+21 Oct 06:46:11 - Client 612431452376768 connected
+21 Oct 06:46:12 - Client 962347803870216 disconnected
+21 Oct 06:46:17 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:46:18 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:46:18 - Client 612431452376768 disconnected
+21 Oct 06:46:19 - Initializing client with transport "websocket"
+21 Oct 06:46:19 - Client 9666912010870874 connected
+21 Oct 06:46:20 - Client 8706766916438937 disconnected
+21 Oct 06:46:21 - Client 021570391952991486 disconnected
+21 Oct 06:46:23 - Initializing client with transport "websocket"
+21 Oct 06:46:23 - Client 9104220448061824 connected
+21 Oct 06:46:23 - Client 9666912010870874 disconnected
+21 Oct 06:46:29 - Initializing client with transport "websocket"
+21 Oct 06:46:29 - Client 701458043884486 connected
+21 Oct 06:46:55 - Client 11431256728246808 disconnected
+21 Oct 06:47:07 - Client 9104220448061824 disconnected
+21 Oct 06:47:16 - Client 40332397003658116 disconnected
+21 Oct 06:47:29 - Initializing client with transport "websocket"
+21 Oct 06:47:29 - Client 2904603648930788 connected
+21 Oct 06:47:47 - Client 2904603648930788 disconnected
+21 Oct 06:47:48 - Initializing client with transport "websocket"
+21 Oct 06:47:48 - Client 08055717498064041 connected
+21 Oct 06:48:06 - Client 08055717498064041 disconnected
+21 Oct 06:48:07 - Initializing client with transport "websocket"
+21 Oct 06:48:07 - Client 05922488565556705 connected
+21 Oct 06:48:23 - Initializing client with transport "websocket"
+21 Oct 06:48:23 - Client 3259869229514152 connected
+21 Oct 06:48:25 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:48:49 - Initializing client with transport "websocket"
+21 Oct 06:48:49 - Client 9481315456796438 connected
+21 Oct 06:48:52 - Client 05922488565556705 disconnected
+21 Oct 06:49:08 - Initializing client with transport "websocket"
+21 Oct 06:49:08 - Client 23648550221696496 connected
+21 Oct 06:49:37 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:49:38 - Initializing client with transport "websocket"
+21 Oct 06:49:38 - Client 9903200604021549 connected
+21 Oct 06:49:39 - Initializing client with transport "websocket"
+21 Oct 06:49:39 - Client 9285236576106399 connected
+21 Oct 06:49:41 - Client 28698021196760237 disconnected
+21 Oct 06:49:44 - Initializing client with transport "websocket"
+21 Oct 06:49:44 - Client 7399465751368552 connected
+21 Oct 06:49:47 - Initializing client with transport "websocket"
+21 Oct 06:49:47 - WebSocket connection invalid or Origin not verified
+21 Oct 06:49:48 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:49:54 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:49:56 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:49:57 - Initializing client with transport "websocket"
+21 Oct 06:49:57 - Client 5304496434982866 connected
+21 Oct 06:50:01 - Initializing client with transport "xhr-multipart"
+21 Oct 06:50:01 - Client 30124895414337516 connected
+21 Oct 06:50:02 - Client 7399465751368552 disconnected
+21 Oct 06:50:09 - Initializing client with transport "websocket"
+21 Oct 06:50:09 - Client 8043252304196358 connected
+21 Oct 06:50:19 - Client 30124895414337516 disconnected
+21 Oct 06:50:25 - Initializing client with transport "websocket"
+21 Oct 06:50:25 - Client 1236589327454567 connected
+21 Oct 06:50:34 - Initializing client with transport "websocket"
+21 Oct 06:50:34 - Client 937733355909586 connected
+21 Oct 06:50:44 - Client 6834898851811886 disconnected
+21 Oct 06:50:45 - Client 4338647115509957 disconnected
+21 Oct 06:50:52 - Client 937733355909586 disconnected
+21 Oct 06:50:53 - Client 1236589327454567 disconnected
+21 Oct 06:50:56 - Initializing client with transport "websocket"
+21 Oct 06:50:56 - Client 9687944080214947 connected
+21 Oct 06:50:58 - Initializing client with transport "websocket"
+21 Oct 06:50:58 - Client 3759221490472555 connected
+21 Oct 06:50:58 - Data incorrectly framed by UA. Dropping connection
+21 Oct 06:50:58 - Client 3759221490472555 disconnected
+21 Oct 06:51:00 - Initializing client with transport "websocket"
+21 Oct 06:51:00 - Client 7676239651627839 connected
+21 Oct 06:51:03 - Initializing client with transport "xhr-polling"
+21 Oct 06:51:03 - Client 5000689504668117 connected
+21 Oct 06:51:08 - Client 9687944080214947 disconnected
+21 Oct 06:51:12 - Initializing client with transport "websocket"
+21 Oct 06:51:12 - Client 1894362922757864 connected
+21 Oct 06:51:18 - Initializing client with transport "websocket"
+21 Oct 06:51:18 - Client 04646751983091235 connected
+21 Oct 06:51:25 - Initializing client with transport "websocket"
+21 Oct 06:51:25 - Client 7979846526868641 connected
+21 Oct 06:51:26 - Initializing client with transport "websocket"
+21 Oct 06:51:26 - Client 31344322650693357 connected
+21 Oct 06:51:30 - Initializing client with transport "xhr-polling"
+21 Oct 06:51:30 - Client 6728674105834216 connected
+21 Oct 06:51:33 - Client 5000689504668117 disconnected
+21 Oct 06:51:43 - Client 31344322650693357 disconnected
+21 Oct 06:51:43 - Client 7979846526868641 disconnected
+21 Oct 06:51:43 - Client 1894362922757864 disconnected
+21 Oct 06:51:46 - Couldnt find client with session id "23977470817044377"
+21 Oct 06:51:48 - Client 9285236576106399 disconnected
+21 Oct 06:51:49 - Initializing client with transport "websocket"
+21 Oct 06:51:49 - Client 39033402246423066 connected
+21 Oct 06:52:18 - Client 3259869229514152 disconnected
+21 Oct 06:52:29 - Client 6728674105834216 disconnected
+21 Oct 06:52:30 - Initializing client with transport "websocket"
+21 Oct 06:52:30 - Client 11315869307145476 connected
+21 Oct 06:52:32 - Data incorrectly framed by UA. Dropping connection
+21 Oct 06:52:32 - Client 11315869307145476 disconnected
+21 Oct 06:52:33 - Initializing client with transport "xhr-polling"
+21 Oct 06:52:33 - Client 03780391812324524 connected
+21 Oct 06:52:41 - Initializing client with transport "websocket"
+21 Oct 06:52:41 - Client 3449245453812182 connected
+21 Oct 06:52:42 - Initializing client with transport "websocket"
+21 Oct 06:52:42 - Client 9868382390122861 connected
+21 Oct 06:53:06 - Client 04646751983091235 disconnected
+21 Oct 06:53:07 - Initializing client with transport "websocket"
+21 Oct 06:53:07 - Client 3743875629734248 connected
+21 Oct 06:53:08 - Client 17519196425564587 disconnected
+21 Oct 06:53:08 - Initializing client with transport "websocket"
+21 Oct 06:53:08 - Client 8034926585387439 connected
+21 Oct 06:53:13 - Client 6006217019166797 disconnected
+21 Oct 06:53:27 - Initializing client with transport "xhr-polling"
+21 Oct 06:53:27 - Client 1393066425807774 connected
+21 Oct 06:53:34 - Initializing client with transport "websocket"
+21 Oct 06:53:34 - Client 14198815706185997 connected
+21 Oct 06:53:39 - Initializing client with transport "websocket"
+21 Oct 06:53:39 - Client 04930662759579718 connected
+21 Oct 06:53:41 - Initializing client with transport "xhr-polling"
+21 Oct 06:53:41 - Client 6942256265319884 connected
+21 Oct 06:53:42 - Initializing client with transport "websocket"
+21 Oct 06:53:42 - Client 42026333045214415 connected
+21 Oct 06:53:45 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:53:46 - Initializing client with transport "websocket"
+21 Oct 06:53:46 - Client 8936545955948532 connected
+21 Oct 06:53:54 - Client 8936545955948532 disconnected
+21 Oct 06:53:54 - Client 42026333045214415 disconnected
+21 Oct 06:53:54 - Client 6942256265319884 disconnected
+21 Oct 06:53:56 - Initializing client with transport "websocket"
+21 Oct 06:53:56 - WebSocket connection invalid or Origin not verified
+21 Oct 06:53:58 - Initializing client with transport "websocket"
+21 Oct 06:53:58 - Client 4449306954629719 connected
+21 Oct 06:53:58 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:53:59 - Initializing client with transport "websocket"
+21 Oct 06:53:59 - Client 5952637323644012 connected
+21 Oct 06:54:03 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:09 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:15 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:18 - Initializing client with transport "websocket"
+21 Oct 06:54:18 - Client 44084642245434225 connected
+21 Oct 06:54:19 - Client 3743875629734248 disconnected
+21 Oct 06:54:23 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:24 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:27 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:28 - Initializing client with transport "websocket"
+21 Oct 06:54:28 - Client 8116692206822336 connected
+21 Oct 06:54:31 - Client 5952637323644012 disconnected
+21 Oct 06:54:41 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:43 - Client 8076479849405587 disconnected
+21 Oct 06:54:44 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:54:46 - Client 8116692206822336 disconnected
+21 Oct 06:55:04 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:55:26 - Initializing client with transport "websocket"
+21 Oct 06:55:26 - Client 5355557377915829 connected
+21 Oct 06:55:27 - Initializing client with transport "websocket"
+21 Oct 06:55:27 - Client 3159255364444107 connected
+21 Oct 06:55:37 - Initializing client with transport "websocket"
+21 Oct 06:55:37 - Client 4735055861528963 connected
+21 Oct 06:55:50 - Client 4735055861528963 disconnected
+21 Oct 06:56:10 - Client 5304496434982866 disconnected
+21 Oct 06:56:13 - Initializing client with transport "xhr-polling"
+21 Oct 06:56:13 - Client 8327420663554221 connected
+21 Oct 06:56:16 - Client 9868382390122861 disconnected
+21 Oct 06:56:18 - Initializing client with transport "websocket"
+21 Oct 06:56:18 - Client 5790821106638759 connected
+21 Oct 06:56:35 - Client 8327420663554221 disconnected
+21 Oct 06:56:48 - Client 9481315456796438 disconnected
+21 Oct 06:57:00 - Initializing client with transport "websocket"
+21 Oct 06:57:00 - Client 14721411257050931 connected
+21 Oct 06:57:06 - Client 14198815706185997 disconnected
+21 Oct 06:57:19 - Initializing client with transport "websocket"
+21 Oct 06:57:19 - Client 2203314513899386 connected
+21 Oct 06:57:26 - Initializing client with transport "websocket"
+21 Oct 06:57:26 - Client 1543192220851779 connected
+21 Oct 06:57:29 - Initializing client with transport "websocket"
+21 Oct 06:57:29 - Client 8895674494560808 connected
+21 Oct 06:57:31 - Client 7676239651627839 disconnected
+21 Oct 06:57:31 - Initializing client with transport "websocket"
+21 Oct 06:57:31 - Client 1155206577386707 connected
+21 Oct 06:57:34 - Initializing client with transport "websocket"
+21 Oct 06:57:34 - Client 7552495044656098 connected
+21 Oct 06:57:39 - Client 2203314513899386 disconnected
+21 Oct 06:57:42 - Client 0780582760926336 disconnected
+21 Oct 06:57:44 - Initializing client with transport "websocket"
+21 Oct 06:57:44 - Client 8663064956199378 connected
+21 Oct 06:57:56 - Client 7552495044656098 disconnected
+21 Oct 06:57:57 - Initializing client with transport "websocket"
+21 Oct 06:57:57 - Client 7627962573897094 connected
+21 Oct 06:58:15 - Client 8895674494560808 disconnected
+21 Oct 06:58:21 - Initializing client with transport "websocket"
+21 Oct 06:58:21 - Client 95630719861947 connected
+21 Oct 06:58:21 - Initializing client with transport "websocket"
+21 Oct 06:58:21 - Client 8416621084325016 connected
+21 Oct 06:58:23 - Client 7627962573897094 disconnected
+21 Oct 06:58:23 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:58:30 - Initializing client with transport "websocket"
+21 Oct 06:58:30 - Client 8512098430655897 connected
+21 Oct 06:58:37 - Initializing client with transport "websocket"
+21 Oct 06:58:37 - Client 35039518075063825 connected
+21 Oct 06:58:40 - Client 35039518075063825 disconnected
+21 Oct 06:58:42 - Initializing client with transport "websocket"
+21 Oct 06:58:42 - Client 9583669772837311 connected
+21 Oct 06:58:48 - Initializing client with transport "websocket"
+21 Oct 06:58:48 - Client 7628187981899828 connected
+21 Oct 06:58:51 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:58:55 - Initializing client with transport "websocket"
+21 Oct 06:58:55 - Client 13643066817894578 connected
+21 Oct 06:59:01 - Couldnt find client with session id "01676805643364787"
+21 Oct 06:59:03 - Client 04930662759579718 disconnected
+21 Oct 06:59:08 - Initializing client with transport "websocket"
+21 Oct 06:59:08 - Client 06785149336792529 connected
+21 Oct 06:59:15 - Initializing client with transport "websocket"
+21 Oct 06:59:15 - Client 07523811561986804 connected
+21 Oct 06:59:17 - Initializing client with transport "websocket"
+21 Oct 06:59:17 - Client 06199064454995096 connected
+21 Oct 06:59:19 - Client 07523811561986804 disconnected
+21 Oct 06:59:37 - Client 8512098430655897 disconnected
+21 Oct 06:59:40 - Initializing client with transport "websocket"
+21 Oct 06:59:40 - Client 42546144290827215 connected
+21 Oct 06:59:46 - Client 42546144290827215 disconnected
+21 Oct 06:59:57 - Initializing client with transport "websocket"
+21 Oct 06:59:57 - Client 8958527045324445 connected
+21 Oct 07:00:06 - Client 1543192220851779 disconnected
+21 Oct 07:00:10 - Client 13643066817894578 disconnected
+21 Oct 07:00:32 - Initializing client with transport "websocket"
+21 Oct 07:00:32 - Client 6785703159403056 connected
+21 Oct 07:00:33 - Client 6785703159403056 disconnected
+21 Oct 07:00:33 - Initializing client with transport "xhr-polling"
+21 Oct 07:00:33 - Client 12897216761484742 connected
+21 Oct 07:00:35 - Initializing client with transport "websocket"
+21 Oct 07:00:35 - Client 1743492865934968 connected
+21 Oct 07:00:38 - Client 5161131792701781 disconnected
+21 Oct 07:00:44 - Initializing client with transport "websocket"
+21 Oct 07:00:44 - Client 5041899669449776 connected
+21 Oct 07:00:51 - Client 9583669772837311 disconnected
+21 Oct 07:00:54 - Client 12897216761484742 disconnected
+21 Oct 07:00:54 - Client 1743492865934968 disconnected
+21 Oct 07:00:55 - Couldnt find client with session id "12897216761484742"
+21 Oct 07:01:00 - Client 14721411257050931 disconnected
+21 Oct 07:01:00 - Initializing client with transport "websocket"
+21 Oct 07:01:00 - Client 16234196163713932 connected
+21 Oct 07:01:02 - Client 5041899669449776 disconnected
+21 Oct 07:01:08 - Initializing client with transport "websocket"
+21 Oct 07:01:08 - Client 767437906935811 connected
+21 Oct 07:01:10 - Initializing client with transport "websocket"
+21 Oct 07:01:10 - Client 04625581856817007 connected
+21 Oct 07:01:15 - Client 04625581856817007 disconnected
+21 Oct 07:01:15 - Initializing client with transport "xhr-polling"
+21 Oct 07:01:15 - Client 2265946997795254 connected
+21 Oct 07:01:19 - Initializing client with transport "websocket"
+21 Oct 07:01:19 - Client 9433688325807452 connected
+21 Oct 07:01:21 - Initializing client with transport "websocket"
+21 Oct 07:01:21 - Client 18055504793301225 connected
+21 Oct 07:01:23 - Client 18055504793301225 disconnected
+21 Oct 07:01:23 - Initializing client with transport "xhr-polling"
+21 Oct 07:01:23 - Client 9890738145913929 connected
+21 Oct 07:01:23 - Client 2265946997795254 disconnected
+21 Oct 07:01:28 - Initializing client with transport "websocket"
+21 Oct 07:01:28 - Client 6405869557056576 connected
+21 Oct 07:01:30 - Initializing client with transport "xhr-multipart"
+21 Oct 07:01:30 - Client 1312518895138055 connected
+21 Oct 07:01:31 - Data incorrectly framed by UA. Dropping connection
+21 Oct 07:01:31 - Client 8958527045324445 disconnected
+21 Oct 07:01:35 - Client 95630719861947 disconnected
+21 Oct 07:01:35 - Couldnt find client with session id "2265946997795254"
+21 Oct 07:01:36 - Client 8043252304196358 disconnected
+21 Oct 07:01:49 - Client 16234196163713932 disconnected
+21 Oct 07:01:59 - Initializing client with transport "websocket"
+21 Oct 07:01:59 - Client 2041581477969885 connected
+21 Oct 07:02:05 - Client 06785149336792529 disconnected
+21 Oct 07:02:21 - Client 8416621084325016 disconnected
+21 Oct 07:02:37 - Client 2041581477969885 disconnected
+21 Oct 07:02:46 - Initializing client with transport "websocket"
+21 Oct 07:02:46 - Client 19701111363247037 connected
+21 Oct 07:02:47 - Initializing client with transport "websocket"
+21 Oct 07:02:47 - Client 2383243632502854 connected
+21 Oct 07:03:22 - Initializing client with transport "websocket"
+21 Oct 07:03:22 - Client 2588791211601347 connected
+21 Oct 07:03:30 - Client 44084642245434225 disconnected
+21 Oct 07:03:33 - Initializing client with transport "websocket"
+21 Oct 07:03:33 - Client 12779262522235513 connected
+21 Oct 07:03:35 - Initializing client with transport "websocket"
+21 Oct 07:03:35 - Client 5017362008802593 connected
+21 Oct 07:03:38 - Client 5017362008802593 disconnected
+21 Oct 07:03:40 - Client 1393066425807774 disconnected
+21 Oct 07:03:44 - Initializing client with transport "websocket"
+21 Oct 07:03:44 - Client 3156408735085279 connected
+21 Oct 07:04:04 - Initializing client with transport "websocket"
+21 Oct 07:04:04 - Client 7364771915599704 connected
+21 Oct 07:04:22 - Client 8034926585387439 disconnected
+21 Oct 07:04:27 - Initializing client with transport "websocket"
+21 Oct 07:04:27 - Client 5694168447516859 connected
+21 Oct 07:04:35 - Initializing client with transport "websocket"
+21 Oct 07:04:35 - Client 01623276202008128 connected
+21 Oct 07:04:35 - Initializing client with transport "xhr-polling"
+21 Oct 07:04:35 - Client 9618225921876729 connected
+21 Oct 07:04:36 - Initializing client with transport "websocket"
+21 Oct 07:04:36 - Client 6255178092978895 connected
+21 Oct 07:04:39 - Client 2383243632502854 disconnected
+21 Oct 07:04:41 - Initializing client with transport "websocket"
+21 Oct 07:04:41 - Client 7829284686595201 connected
+21 Oct 07:04:48 - Client 9618225921876729 disconnected
+21 Oct 07:04:49 - Client 9890738145913929 disconnected
+21 Oct 07:04:51 - Couldnt find client with session id "9890738145913929"
+21 Oct 07:04:52 - Couldnt find client with session id "9890738145913929"
+21 Oct 07:04:52 - Couldnt find client with session id "9890738145913929"
+21 Oct 07:04:55 - Client 6255178092978895 disconnected
+21 Oct 07:04:58 - Client 5355557377915829 disconnected
+21 Oct 07:04:58 - Client 1312518895138055 disconnected
+21 Oct 07:04:59 - Client 7829284686595201 disconnected
+21 Oct 07:05:02 - Client 5694168447516859 disconnected
+21 Oct 07:05:04 - Initializing client with transport "websocket"
+21 Oct 07:05:04 - Client 43534074909985065 connected
+21 Oct 07:05:08 - Couldnt find client with session id "9890738145913929"
+21 Oct 07:05:08 - Client 19701111363247037 disconnected
+21 Oct 07:05:08 - Initializing client with transport "websocket"
+21 Oct 07:05:08 - Client 27664380008354783 connected
+21 Oct 07:05:10 - Client 27664380008354783 disconnected
+21 Oct 07:05:22 - Client 43534074909985065 disconnected
+21 Oct 07:05:23 - Client 12779262522235513 disconnected
+21 Oct 07:05:25 - Initializing client with transport "websocket"
+21 Oct 07:05:25 - Client 41797766741365194 connected
+21 Oct 07:05:39 - Initializing client with transport "websocket"
+21 Oct 07:05:39 - Client 04278548061847687 connected
+21 Oct 07:05:40 - Client 2588791211601347 disconnected
+21 Oct 07:05:44 - Initializing client with transport "websocket"
+21 Oct 07:05:44 - Client 414182601030916 connected
+21 Oct 07:06:01 - Initializing client with transport "xhr-polling"
+21 Oct 07:06:01 - Client 4494168651290238 connected
+21 Oct 07:06:12 - Client 414182601030916 disconnected
+21 Oct 07:06:13 - Initializing client with transport "websocket"
+21 Oct 07:06:13 - Client 17083589639514685 connected
+21 Oct 07:06:51 - Client 41797766741365194 disconnected
+21 Oct 07:06:55 - Client 04278548061847687 disconnected
+21 Oct 07:07:00 - Client 8663064956199378 disconnected
+21 Oct 07:07:04 - Initializing client with transport "websocket"
+21 Oct 07:07:04 - Client 3773474362678826 connected
+21 Oct 07:07:10 - Initializing client with transport "websocket"
+21 Oct 07:07:10 - Client 7789993600454181 connected
+21 Oct 07:07:35 - Initializing client with transport "websocket"
+21 Oct 07:07:35 - Client 7569790019188076 connected
+21 Oct 07:07:48 - Client 3773474362678826 disconnected
+21 Oct 07:08:10 - Client 7569790019188076 disconnected
+21 Oct 07:08:21 - Initializing client with transport "websocket"
+21 Oct 07:08:21 - Client 9841218253131956 connected
+21 Oct 07:08:23 - Initializing client with transport "websocket"
+21 Oct 07:08:23 - Client 19664704124443233 connected
+21 Oct 07:08:31 - Initializing client with transport "websocket"
+21 Oct 07:08:31 - Client 1398580747190863 connected
+21 Oct 07:08:38 - Client 06199064454995096 disconnected
+21 Oct 07:08:39 - Client 9841218253131956 disconnected
+21 Oct 07:09:09 - Client 7789993600454181 disconnected
+21 Oct 07:09:15 - Initializing client with transport "websocket"
+21 Oct 07:09:15 - Client 10735996789298952 connected
+21 Oct 07:09:24 - Client 1398580747190863 disconnected
+21 Oct 07:09:32 - Client 01623276202008128 disconnected
+21 Oct 07:09:32 - Client 03780391812324524 disconnected
+21 Oct 07:09:36 - Initializing client with transport "websocket"
+21 Oct 07:09:36 - Client 5376741127111018 connected
+21 Oct 07:09:36 - Couldnt find client with session id "03780391812324524"
+21 Oct 07:09:43 - Couldnt find client with session id "03780391812324524"
+21 Oct 07:09:45 - Couldnt find client with session id "03780391812324524"
+21 Oct 07:10:15 - Client 23648550221696496 disconnected
+21 Oct 07:10:16 - Initializing client with transport "xhr-polling"
+21 Oct 07:10:16 - Client 32882510288618505 connected
+21 Oct 07:10:17 - Client 6405869557056576 disconnected
+21 Oct 07:10:20 - Client 19664704124443233 disconnected
+21 Oct 07:10:35 - Client 7364771915599704 disconnected
+21 Oct 07:10:37 - Client 767437906935811 disconnected
+21 Oct 07:11:03 - Initializing client with transport "websocket"
+21 Oct 07:11:03 - Client 14103306294418871 connected
+21 Oct 07:11:32 - Initializing client with transport "websocket"
+21 Oct 07:11:32 - Client 6177775552496314 connected
+21 Oct 07:11:46 - Initializing client with transport "websocket"
+21 Oct 07:11:46 - Client 3201228978578001 connected
+21 Oct 07:11:57 - Client 6177775552496314 disconnected
+21 Oct 07:11:58 - Initializing client with transport "websocket"
+21 Oct 07:11:58 - Client 6479669923428446 connected
+21 Oct 07:12:17 - Initializing client with transport "websocket"
+21 Oct 07:12:17 - Client 7793538901023567 connected
+21 Oct 07:12:20 - Client 17083589639514685 disconnected
+21 Oct 07:12:28 - Client 3201228978578001 disconnected
+21 Oct 07:12:29 - Client 3449245453812182 disconnected
+21 Oct 07:12:32 - Client 6479669923428446 disconnected
+21 Oct 07:12:49 - Initializing client with transport "websocket"
+21 Oct 07:12:49 - Client 8840007523540407 connected
+21 Oct 07:12:49 - Initializing client with transport "websocket"
+21 Oct 07:12:49 - Client 5708027787040919 connected
+21 Oct 07:12:56 - Initializing client with transport "websocket"
+21 Oct 07:12:56 - Client 43274342850781977 connected
+21 Oct 07:12:58 - Initializing client with transport "websocket"
+21 Oct 07:12:58 - Client 2596223170403391 connected
+21 Oct 07:12:59 - Client 32882510288618505 disconnected
+21 Oct 07:13:00 - Couldnt find client with session id "32882510288618505"
+21 Oct 07:13:01 - Couldnt find client with session id "32882510288618505"
+21 Oct 07:13:05 - Couldnt find client with session id "32882510288618505"
+21 Oct 07:13:07 - Initializing client with transport "websocket"
+21 Oct 07:13:07 - Client 8784814223181456 connected
+21 Oct 07:13:11 - Couldnt find client with session id "32882510288618505"
+21 Oct 07:13:14 - Initializing client with transport "websocket"
+21 Oct 07:13:14 - Client 6367387836799026 connected
+21 Oct 07:13:18 - Client 8937412570230663 disconnected
+21 Oct 07:13:21 - Client 2596223170403391 disconnected
+21 Oct 07:13:22 - Client 9433688325807452 disconnected
+21 Oct 07:13:27 - Client 3475569065194577 disconnected
+21 Oct 07:13:57 - Client 6367387836799026 disconnected
+21 Oct 07:14:16 - Initializing client with transport "xhr-polling"
+21 Oct 07:14:16 - Client 9151178551837802 connected
+21 Oct 07:14:35 - Initializing client with transport "xhr-polling"
+21 Oct 07:14:35 - Client 2587955449707806 connected
+21 Oct 07:14:51 - Initializing client with transport "websocket"
+21 Oct 07:14:51 - Client 6890725609846413 connected
+21 Oct 07:14:53 - Initializing client with transport "websocket"
+21 Oct 07:14:53 - Client 43601597961969674 connected
+21 Oct 07:14:54 - Initializing client with transport "websocket"
+21 Oct 07:14:54 - Client 044193230802193284 connected
+21 Oct 07:14:54 - Client 8784814223181456 disconnected
+21 Oct 07:14:55 - Initializing client with transport "websocket"
+21 Oct 07:14:55 - Client 8858508947305381 connected
+21 Oct 07:14:58 - Initializing client with transport "websocket"
+21 Oct 07:14:58 - Client 9765663580037653 connected
+21 Oct 07:15:03 - Initializing client with transport "websocket"
+21 Oct 07:15:03 - Client 03875955007970333 connected
+21 Oct 07:15:09 - Initializing client with transport "websocket"
+21 Oct 07:15:09 - Client 37041666451841593 connected
+21 Oct 07:15:09 - Data incorrectly framed by UA. Dropping connection
+21 Oct 07:15:09 - Client 37041666451841593 disconnected
+21 Oct 07:15:13 - Initializing client with transport "xhr-polling"
+21 Oct 07:15:13 - Client 6021201789844781 connected
+21 Oct 07:15:16 - Client 9765663580037653 disconnected
+21 Oct 07:15:19 - Initializing client with transport "websocket"
+21 Oct 07:15:19 - Client 6806898650247604 connected
+21 Oct 07:15:21 - Client 03875955007970333 disconnected
+21 Oct 07:15:23 - Initializing client with transport "websocket"
+21 Oct 07:15:23 - Client 3734846643637866 connected
+21 Oct 07:15:24 - Client 7793538901023567 disconnected
+21 Oct 07:15:37 - Client 43274342850781977 disconnected
+21 Oct 07:15:41 - Client 3734846643637866 disconnected
+21 Oct 07:15:52 - Initializing client with transport "websocket"
+21 Oct 07:15:52 - Client 34875752520747483 connected
+21 Oct 07:16:13 - Initializing client with transport "websocket"
+21 Oct 07:16:13 - Client 32994941039942205 connected
+21 Oct 07:16:21 - Initializing client with transport "websocket"
+21 Oct 07:16:21 - Client 7780189819168299 connected
+21 Oct 07:16:40 - Client 6021201789844781 disconnected
+21 Oct 07:16:45 - Initializing client with transport "websocket"
+21 Oct 07:16:45 - Client 6277150472160429 connected
+21 Oct 07:16:45 - Data incorrectly framed by UA. Dropping connection
+21 Oct 07:16:45 - Client 6277150472160429 disconnected
+21 Oct 07:16:48 - Initializing client with transport "websocket"
+21 Oct 07:16:48 - Client 909971448360011 connected
+21 Oct 07:16:48 - Client 34875752520747483 disconnected
+21 Oct 07:16:50 - Initializing client with transport "xhr-polling"
+21 Oct 07:16:50 - Client 5871586373541504 connected
+21 Oct 07:16:50 - Initializing client with transport "websocket"
+21 Oct 07:16:50 - Client 16492087277583778 connected
+21 Oct 07:16:55 - Initializing client with transport "websocket"
+21 Oct 07:16:55 - Client 1475092328619212 connected
+21 Oct 07:16:58 - Initializing client with transport "websocket"
+21 Oct 07:16:58 - Client 26874795788899064 connected
+21 Oct 07:17:03 - Client 701458043884486 disconnected
+21 Oct 07:17:06 - Initializing client with transport "websocket"
+21 Oct 07:17:06 - Client 05068874778226018 connected
+21 Oct 07:17:08 - Client 8713539366144687 disconnected
+21 Oct 07:17:09 - Client 5871586373541504 disconnected
+21 Oct 07:17:10 - Client 909971448360011 disconnected
+21 Oct 07:17:33 - Initializing client with transport "websocket"
+21 Oct 07:17:33 - Client 5349142770282924 connected
+21 Oct 07:17:34 - Initializing client with transport "websocket"
+21 Oct 07:17:34 - Client 1943528982810676 connected
+21 Oct 07:17:37 - Initializing client with transport "websocket"
+21 Oct 07:17:37 - Client 27112185629084706 connected
+21 Oct 07:17:40 - Client 1475092328619212 disconnected
+21 Oct 07:17:42 - Client 2587955449707806 disconnected
+21 Oct 07:17:44 - Couldnt find client with session id "2587955449707806"
+21 Oct 07:17:48 - Couldnt find client with session id "2587955449707806"
+21 Oct 07:18:08 - Client 9151178551837802 disconnected
+21 Oct 07:18:08 - Couldnt find client with session id "9151178551837802"
+21 Oct 07:18:11 - Client 044193230802193284 disconnected
+21 Oct 07:18:11 - Client 32994941039942205 disconnected
+21 Oct 07:18:11 - Client 4494168651290238 disconnected
+21 Oct 07:18:12 - Couldnt find client with session id "9151178551837802"
+21 Oct 07:18:17 - Client 8840007523540407 disconnected
+21 Oct 07:18:19 - Client 5376741127111018 disconnected
+21 Oct 07:18:19 - Client 1943528982810676 disconnected
+21 Oct 07:18:19 - Client 7780189819168299 disconnected
+21 Oct 07:18:23 - Client 6890725609846413 disconnected
+21 Oct 07:18:23 - Client 05068874778226018 disconnected
+21 Oct 07:18:29 - Client 5349142770282924 disconnected
+21 Oct 07:18:29 - Initializing client with transport "xhr-polling"
+21 Oct 07:18:29 - Client 07705108262598515 connected
+21 Oct 07:18:31 - Client 3159255364444107 disconnected
+21 Oct 07:18:36 - Initializing client with transport "websocket"
+21 Oct 07:18:36 - Client 3048214272130281 connected
+21 Oct 07:18:38 - Initializing client with transport "websocket"
+21 Oct 07:18:38 - Client 5484661480877548 connected
+21 Oct 07:18:39 - Initializing client with transport "websocket"
+21 Oct 07:18:39 - Client 26044660061597824 connected
+21 Oct 07:18:39 - Client 1155206577386707 disconnected
+21 Oct 07:18:42 - Client 26874795788899064 disconnected
+21 Oct 07:18:42 - Initializing client with transport "websocket"
+21 Oct 07:18:42 - Client 405275862198323 connected
+21 Oct 07:18:42 - Initializing client with transport "websocket"
+21 Oct 07:18:42 - Client 7006354799959809 connected
+21 Oct 07:18:43 - Initializing client with transport "websocket"
+21 Oct 07:18:43 - Client 5439900457859039 connected
+21 Oct 07:18:44 - Client 7628187981899828 disconnected
+21 Oct 07:18:46 - Initializing client with transport "websocket"
+21 Oct 07:18:46 - Client 6376816595438868 connected
+21 Oct 07:18:57 - Client 27112185629084706 disconnected
+21 Oct 07:19:01 - Initializing client with transport "websocket"
+21 Oct 07:19:01 - Client 7007645855192095 connected
+21 Oct 07:19:05 - Client 7007645855192095 disconnected
+21 Oct 07:19:06 - Initializing client with transport "websocket"
+21 Oct 07:19:06 - Client 7520119966939092 connected
+21 Oct 07:19:08 - Initializing client with transport "websocket"
+21 Oct 07:19:08 - Client 042682717787101865 connected
+21 Oct 07:19:09 - Initializing client with transport "websocket"
+21 Oct 07:19:09 - Client 21799339703284204 connected
+21 Oct 07:19:10 - Initializing client with transport "websocket"
+21 Oct 07:19:10 - Client 7877237263601273 connected
+21 Oct 07:19:18 - Initializing client with transport "websocket"
+21 Oct 07:19:18 - Client 33352708048187196 connected
+21 Oct 07:19:18 - Initializing client with transport "websocket"
+21 Oct 07:19:18 - Client 5896591667551547 connected
+21 Oct 07:19:20 - Initializing client with transport "websocket"
+21 Oct 07:19:20 - Client 7884111567400396 connected
+21 Oct 07:19:20 - Initializing client with transport "websocket"
+21 Oct 07:19:20 - Client 9277814023662359 connected
+21 Oct 07:19:21 - Client 5484661480877548 disconnected
+21 Oct 07:19:24 - Initializing client with transport "websocket"
+21 Oct 07:19:24 - Client 5491517332848161 connected
+21 Oct 07:19:24 - Client 7520119966939092 disconnected
+21 Oct 07:19:24 - Client 33352708048187196 disconnected
+21 Oct 07:19:32 - Initializing client with transport "websocket"
+21 Oct 07:19:32 - Client 9964701964054257 connected
+21 Oct 07:19:32 - Client 7884111567400396 disconnected
+21 Oct 07:19:37 - Initializing client with transport "websocket"
+21 Oct 07:19:37 - Client 4380711878184229 connected
+21 Oct 07:19:43 - Client 042682717787101865 disconnected
+21 Oct 07:19:47 - Client 4380711878184229 disconnected
+21 Oct 07:19:54 - Client 5491517332848161 disconnected
+21 Oct 07:19:55 - Client 9964701964054257 disconnected
+21 Oct 07:20:00 - Initializing client with transport "websocket"
+21 Oct 07:20:00 - Client 3713846323080361 connected
+21 Oct 07:20:02 - Initializing client with transport "websocket"
+21 Oct 07:20:02 - Client 9299030231777579 connected
+21 Oct 07:20:02 - Initializing client with transport "websocket"
+21 Oct 07:20:02 - Client 7241134506184608 connected
+21 Oct 07:20:10 - Initializing client with transport "websocket"
+21 Oct 07:20:10 - Client 9931653458625078 connected
+21 Oct 07:20:20 - Initializing client with transport "websocket"
+21 Oct 07:20:20 - Client 6906893346458673 connected
+21 Oct 07:20:21 - Initializing client with transport "websocket"
+21 Oct 07:20:21 - Client 6451063847634941 connected
+21 Oct 07:20:29 - Client 7006354799959809 disconnected
+
+node.js:27
+  if (!x) throw new Error(msg || "assertion error");
+                ^
+Error: assertion error
+    at node.js:27:17
+    at Timer.callback (net.js:142:29)
+    at node.js:604:9
+The 'sys' module is now called 'util'. It should have a similar interface.
+21 Oct 12:12:19 - socket.io ready - accepting connections
+21 Oct 12:12:32 - Initializing client with transport "xhr-polling"
+21 Oct 12:12:32 - Client 6496471760328859 connected
+21 Oct 12:12:44 - Client 6496471760328859 disconnected
+21 Oct 12:13:40 - Initializing client with transport "websocket"
+21 Oct 12:13:40 - Client 058088260469958186 connected
+21 Oct 12:13:58 - Client 058088260469958186 disconnected
+21 Oct 12:15:14 - Initializing client with transport "websocket"
+21 Oct 12:15:14 - Client 3393476135097444 connected
+21 Oct 12:15:15 - Initializing client with transport "websocket"
+21 Oct 12:15:15 - Client 10098700039088726 connected
+21 Oct 12:16:11 - Client 10098700039088726 disconnected
+21 Oct 12:16:31 - Client 3393476135097444 disconnected
+21 Oct 12:18:17 - Initializing client with transport "websocket"
+21 Oct 12:18:17 - Client 4196124286390841 connected
+21 Oct 12:19:33 - Initializing client with transport "websocket"
+21 Oct 12:19:33 - Client 3026259168982506 connected
+21 Oct 12:20:43 - Client 3026259168982506 disconnected
+21 Oct 12:22:59 - Initializing client with transport "websocket"
+21 Oct 12:22:59 - Client 510991798248142 connected
+21 Oct 12:22:59 - Data incorrectly framed by UA. Dropping connection
+21 Oct 12:23:02 - Client 510991798248142 disconnected
+21 Oct 12:23:02 - Initializing client with transport "xhr-polling"
+21 Oct 12:23:02 - Client 824278813553974 connected
+21 Oct 12:23:43 - Initializing client with transport "websocket"
+21 Oct 12:23:43 - Client 5235224610660225 connected
+21 Oct 12:23:57 - Client 5235224610660225 disconnected
+21 Oct 12:25:47 - Initializing client with transport "websocket"
+21 Oct 12:25:47 - Client 2464214931242168 connected
+21 Oct 12:25:51 - Initializing client with transport "websocket"
+21 Oct 12:25:51 - Client 9813146835658699 connected
+21 Oct 12:25:57 - Initializing client with transport "websocket"
+21 Oct 12:25:57 - Client 11384349898435175 connected
+21 Oct 12:26:36 - Client 9813146835658699 disconnected
+21 Oct 12:27:14 - Initializing client with transport "websocket"
+21 Oct 12:27:14 - Client 7557738237082958 connected
+21 Oct 12:27:20 - Initializing client with transport "websocket"
+21 Oct 12:27:20 - WebSocket connection invalid or Origin not verified
+21 Oct 12:27:21 - Initializing client with transport "websocket"
+21 Oct 12:27:21 - WebSocket connection invalid or Origin not verified
+21 Oct 12:27:23 - Initializing client with transport "websocket"
+21 Oct 12:27:23 - WebSocket connection invalid or Origin not verified
+21 Oct 12:27:25 - Initializing client with transport "xhr-polling"
+21 Oct 12:27:25 - Client 0448333730455488 connected
+21 Oct 12:27:50 - Client 0448333730455488 disconnected
+
+/www/development/TumblrChat/socket.io/lib/socket.io/transports/xhr-polling.js:67
+  if (this.request.headers.origin && this._verifyOrigin(this.request.headers.o
+                  ^
+TypeError: Cannot read property 'headers' of null
+    at [object Object]._write (/www/development/TumblrChat/socket.io/lib/socket.io/transports/xhr-polling.js:67:19)
+    at Timer.callback (/www/development/TumblrChat/socket.io/lib/socket.io/transports/xhr-polling.js:24:14)
+    at node.js:604:9

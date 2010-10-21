@@ -18,6 +18,10 @@ socket.on('connection', function(client)
 
     client.on('message', function(response)
     {
+	if (response.message) {
+            response.message = response.message.substr(0, 200);
+        }
+
         buffer.push(response);
         if (buffer.length > 15) {
             buffer.shift();
