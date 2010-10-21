@@ -46,8 +46,7 @@ $(function() {
     socket.on('message', function(response)
     {
         if ('buffer' in response) {
-            $('#form').show('blind', 200);
-            $('#chat').val('');
+            $('#form').show('blind', 200);            
 
             for (var i in response.buffer) {
                 displayMessage(response.buffer[i]);
@@ -56,4 +55,6 @@ $(function() {
             displayMessage(response);
         }
     });
+
+    $('#chat').val('');
 });
