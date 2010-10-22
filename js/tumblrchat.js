@@ -182,7 +182,7 @@ $(function() {
                 lastTimestamp = timestamp;
 
                 // I hate follow me requests
-                message = message.replace(/follow me/i, "...I am lonely...");
+                message = message.replace(/follow (me)?/i, "...I am lonely...");
 
                 // I also hate capslocking
                 if (message.search(/[a-z]/) == -1) {
