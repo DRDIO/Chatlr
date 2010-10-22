@@ -183,7 +183,7 @@ $(function() {
 
                 // I hate follow me requests
                 message = message.replace(/follow (me)?/i, "...I am lonely...");
-                message = message.replace(/what is this\??i, "...This is Tumblr Chat...");
+                message = message.replace(/what is this\??/i, "...This is Tumblr Chat...");
                 message = message.replace(/is this (for )?real\??/i, "...Tumblr Chat is real...");
 
                 // I hate similar charactesr in a row
