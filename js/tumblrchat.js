@@ -80,14 +80,18 @@ $(function() {
                 if (serverRes.mode == 'connect' && 'user' in serverRes) {
                     users[serverRes.id] = serverRes.user;
                     $('#count').text(1 + parseInt($('#count').text()));
-                    displayUser(serverRes.id);                    
-                    displayMessage(serverRes);
+                    displayUser(serverRes.id);
+                    if (parseInt($('#count').text()) < 20) {
+                        displayMessage(serverRes);
+                    }
                     
                 // Awh, a user left, let's remove from user list
                 } else if (serverRes.mode == 'disconnect') {
                     // Pull users from local list and display disconnect
                     serverRes.user = users[serverRes.id];
-                    displayMessage(serverRes);
+                    if (parseInt($('#count').text()) < 20) {
+                        displayMessage(serverRes);
+                    }
 
                     // Remove local user
                     $('#count').text(-1 + parseInt($('#count').text()));
