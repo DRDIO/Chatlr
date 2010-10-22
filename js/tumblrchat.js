@@ -184,9 +184,12 @@ $(function() {
                 // I hate follow me requests
                 message = message.replace(/follow (me)?/i, "...I am lonely...");
 
+                // I hate similar charactesr in a row
+                message = message.replace(/(.)\1{3,}/g, '$1');
+                
                 // I also hate capslocking
-                if (message.search(/[a-z]/) == -1) {
-                    message = '...your capslock god is dead... ' + message.toLowerCase();
+                if (message.search(/[a-z]/) == -1 && message.search(/[A-Z]/ != -1)) {
+                    message = message.toLowerCase() + ' ...death to capslock!';
                 }
 
                 // Send to server for broadcast
