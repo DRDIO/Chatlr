@@ -181,6 +181,8 @@ $(function() {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
+                message = message.replace(/follow me/i, "...I am lonely...");
+
                 // Send to server for broadcast
                 socket.send({
                     type: 'message',

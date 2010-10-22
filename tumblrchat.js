@@ -75,7 +75,7 @@ socket.on('connection', function(client)
                     'timestamp' in last[client.sessionId] &&
                     message != last[client.sessionId].message &&
                     timestamp - last[client.sessionId].timestamp > 3000) {
-                    
+
                     // Store last message to track griefing
                     last[client.sessionId] = {
                         timestamp: timestamp,
