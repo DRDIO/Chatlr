@@ -38,7 +38,9 @@ socket.on('connection', function(client)
                 'avatar' in clientRes && typeof clientRes.avatar == 'string') {
 
                 // Initialize last message for griefing
-                last[client.sessionId] = '';
+                last[client.sessionId] = {
+                    timestamp: 0,
+                    message: ''};
 
                 // connect is the first message from client
                 // we need to add their credentials to the user list
@@ -59,11 +61,14 @@ socket.on('connection', function(client)
 
             // user is sending a message to everyone
             } else if ('message' in clientRes && typeof clientRes.message == 'string') {
-                var message = clientRes.message.substr(0, 500);
+                var timestamp = new Date().getTime();
+                var message   = clientRes.message.substr(0, 500);
                 // If there is a message and it isn't the same as their last (griefing)
-                if (message.length > 0 && message != last[client.sessionId]) {
+                if (message.length > 0 && message != last[client.sessionId].message && timestamp - last[client.sessionId].timestamp > 2500) {
                     // Store last message to track griefing
-                    last[client.sessionId] = message;
+                    last[client.sessionId] = {
+                        timestamp: timestamp,
+                        message:   message};
 
                     // Push messages into buffer for user logins
                     buffer.push({

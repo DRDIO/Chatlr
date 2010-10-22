@@ -64,7 +64,7 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/json.js"></script>
-        <script type="text/javascript" src="http://tumblrchat.com:8080/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>"></script>
         <script type="text/javascript" src="/js/tumblrchat.js"></script>
         <script type="text/javascript">
             var tumblrTitle     = '<?php echo $tumblr['title']; ?>',
