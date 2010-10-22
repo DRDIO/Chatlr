@@ -191,7 +191,7 @@ $(function() {
                 message = message.replace(/(.+?)\1{3,}/g, '$1');
                 
                 // I also hate capslocking
-                if (message.search(/[a-z]/) == -1 && message.search(/[A-Z]{2,}/) != -1) {
+                if (message.search(/[A-Z ]{4,}/) != -1) {
                     message = message.toLowerCase();
                 }
 
