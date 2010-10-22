@@ -167,12 +167,12 @@ $(function() {
             var message   = $('#text').val();
             var timestamp = new Date().getTime();
 
-            if (message == lastMessage || timestamp - lastTimestamp < 2500) {
+            if (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 500) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
                     user:    users[clientId],
-                    message: 'Ignored as spam due to repetition or frequency.'});
+                    message: 'Ignored as spam due to repetition, length, or frequency.'});
             } else {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
