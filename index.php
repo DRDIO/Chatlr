@@ -41,7 +41,7 @@ $connection = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oaut
 $content = $connection->post('api/authenticate');
 if (!$content || !isset($content->tumblelog) || !isset($content->tumblelog[0])) {
     session_unset();
-    header('Location: ./');
+    die('Cannot connect!');
 }
 
 $tumblr  = (array) $content->tumblelog[0];
