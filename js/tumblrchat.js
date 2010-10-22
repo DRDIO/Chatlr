@@ -186,7 +186,7 @@ $(function() {
 
                 // I also hate capslocking
                 if (message.search(/[a-z]/) == -1) {
-                    message = message.toLowerCase();
+                    message = '...your capslock god is dead... ' + message.toLowerCase();
                 }
 
                 // Send to server for broadcast
