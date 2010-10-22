@@ -181,7 +181,13 @@ $(function() {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
+                // I hate follow me requests
                 message = message.replace(/follow me/i, "...I am lonely...");
+
+                // I also hate capslocking
+                if (message.search(/[a-z]/) == -1) {
+                    message = message.toLowerCase();
+                }
 
                 // Send to server for broadcast
                 socket.send({
