@@ -187,11 +187,15 @@ $(function() {
                 message = message.replace(/is this (for )?real\??/i, "...Tumblr Chat is real...");
                 message = message.replace(/(did )?(who|tumblr) made this\??/i, "...Kevin Nuut made this...");
 
+                // Random fun time messages
+                message = message.replace(/this is madness/i, "...This is SPARTA...");
+                message = message.replace(/cake/i, "...The cake is a lie...");
+
                 // I hate similar charactesr in a row
                 message = message.replace(/(.+?)\1{3,}/g, '$1');
                 
                 // I also hate capslocking
-                if (message.search(/[A-Z ]{4,}/) != -1) {
+                if (message.search(/[A-Z ]{5,}/) != -1) {
                     message = message.toLowerCase();
                 }
 
