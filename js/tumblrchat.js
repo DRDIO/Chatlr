@@ -19,7 +19,7 @@ $(function() {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
     // Connect to socket server
-    socket = new io.Socket(null, {port: 8080});
+    socket = new io.Socket(null, {port: 8080, transports: ['websocket']});
     socket.connect();
 
     setTimeout("notifyFailure()", socket.options.connectTimeout);
