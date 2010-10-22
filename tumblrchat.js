@@ -19,8 +19,14 @@ socket.on('connection', function(client)
 {
     // Send the client their init message
     // along with last 15 messages and user list
+    var topic = 'No topic today, folks!';
+    if (2 in process.argv) {
+        topic = process.argv[2];
+    }
+
     client.send({
         type:   'init',
+        topic:  topic,
         id:     client.sessionId,
         buffer: buffer,
         users:  users});

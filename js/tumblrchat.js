@@ -81,9 +81,9 @@ $(function() {
                     var joinedRes = {
                         type:    'status',
                         user:    users[clientId],
-                        message: 'joined the chat!'};
+                        message: 'joined the chat! The topic is ' + serverRes.topic + '...'};
                     displayMessage(joinedRes);
-
+                    
                     $('#loading').fadeOut(1000);
 
                 // If a new user is coming or going, update list accordingly

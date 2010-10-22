@@ -79,7 +79,7 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
         <div id="top">
             <h1 id="header">Tumblr Chat</h1>
             <div id="count"></div>
-
+            
             <a class="topbuttons" title="About Tumblr Chat" href="" rel="page-about">
                 ?
             </a>
