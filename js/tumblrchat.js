@@ -185,7 +185,7 @@ $(function() {
                 message = message.replace(/follow (me)?/i, "...I am lonely...");
 
                 // I hate similar charactesr in a row
-                message = message.replace(/(.)\1{3,}/g, '$1');
+                message = message.replace(/(.+?)\1{3,}/g, '$1');
                 
                 // I also hate capslocking
                 if (message.search(/[a-z]/) == -1 && message.search(/[A-Z]/) != -1) {
