@@ -187,8 +187,7 @@ $(function() {
                 message = message.replace(/is this (for )?real\??/i, "...Tumblr Chat is real...");
                 message = message.replace(/(did )?(who|tumblr) made this\??/i, "...Kevin Nuut made this...");
 
-                // Random fun time messages
-                message = message.replace(/this is madness/i, "...This is SPARTA...");
+                // Random fun time messages                
                 message = message.replace(/cake/i, "...The cake is a lie...");
 
                 // I hate similar charactesr in a row
@@ -198,6 +197,9 @@ $(function() {
                 if (message.search(/[A-Z ]{5,}/) != -1) {
                     message = message.toLowerCase();
                 }
+
+                // MADNESS!
+                message = message.replace(/this is madness/i, "...This is SPARTA!...");
 
                 // Send to server for broadcast
                 socket.send({
