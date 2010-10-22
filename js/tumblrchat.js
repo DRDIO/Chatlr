@@ -93,7 +93,9 @@ $(function() {
                         users[serverRes.id] = serverRes.user;
                         $('#count').text(1 + parseInt($('#count').text()));
                         displayUser(serverRes.id);
-                        if (parseInt($('#count').text()) < 20) {
+
+                        // Don't display if so many people are on, its too spammy
+                        if (parseInt($('#count').text()) < 10) {
                             displayMessage(serverRes);
                         }
 
@@ -101,7 +103,9 @@ $(function() {
                     } else if (serverRes.mode == 'disconnect') {
                         // Pull users from local list and display disconnect
                         serverRes.user = users[serverRes.id];
-                        if (parseInt($('#count').text()) < 20) {
+
+                        // Don't display if so many people are on, its too spammy
+                        if (parseInt($('#count').text()) < 10) {
                             displayMessage(serverRes);
                         }
 
@@ -167,7 +171,7 @@ $(function() {
             var message   = $('#text').val();
             var timestamp = new Date().getTime();
 
-            if (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 500) {
+            if (message == lastMessage || timestamp - lastTimestamp < 3000 || message.length > 350) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
