@@ -90,6 +90,10 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
                 <img src="<?php echo htmlspecialchars($tumblr['avatar']); ?>" alt="<?php echo htmlspecialchars($tumblr['name']); ?>" />
                 <?php echo $tumblr['title']; ?>
             </a>
+            <a class="toplink login" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
+                <img src="http://28.media.tumblr.com/avatar_6ef19d797abb_16.png" alt="Visit KevinNuut.com" />
+                Visit KevinNuut.com!
+            </a>
         </div>
 
         <div id="usersbox">

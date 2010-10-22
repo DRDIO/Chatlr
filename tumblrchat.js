@@ -64,7 +64,12 @@ socket.on('connection', function(client)
                 var timestamp = new Date().getTime();
                 var message   = clientRes.message.substr(0, 500);
                 // If there is a message and it isn't the same as their last (griefing)
-                if (message.length > 0 && message != last[client.sessionId].message && timestamp - last[client.sessionId].timestamp > 2500) {
+                if (message.length > 0 && client.sessionId in last &&
+                    'message' in last[client.sessionId] &&
+                    'timestamp' in last[client.sessionId] &&
+                    message != last[client.sessionId].message &&
+                    timestamp - last[client.sessionId].timestamp > 2500) {
+                    
                     // Store last message to track griefing
                     last[client.sessionId] = {
                         timestamp: timestamp,

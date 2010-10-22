@@ -47,7 +47,7 @@ body, input {
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.topbuttons {
+.topbuttons, .toplink {
     float: right;
     display: block;
     padding: 0.333em 0.5em 0.167em 0.5em;
@@ -62,16 +62,16 @@ body, input {
     text-align: center;
 }
 
-    .topbuttons:hover {
+    .topbuttons:hover, .toplink:hover {
         background: rgba(255, 255, 255, 0.35);
     }
 
-#login {
+#login, .login {
     padding: 0.333em 0.5em 0.333em 0.25em;
     height: 1.333em;
 }
 
-#login img {
+#login img, .login img {
     border-radius: 0.25em;
     width: 16px;
     height: 16px;
