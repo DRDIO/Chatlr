@@ -1,18 +1,34 @@
-var http   = require('http'),
-    url    = require('url'),
-    fs     = require('fs'),
-    io     = require('./socket.io'),
-    sys    = require('sys'),
-    server = http.createServer();
+var http = require('http'),
+    url  = require('url'),
+    fs   = require('fs'),
+    io   = require('./socket.io'),
+    sys  = require('sys'),
+    net  = require('net');
+
+var creds  = {},
+    buffer = [],
+    rooms  = {},
+    users  = {},
+    last   = {},
+
+    server = http.createServer(),
+
+    unix   = net.createServer(function(stream) {
+        stream.setEncoding('utf8');
+        stream.on('data', function(data) {
+            console.log('Streaming');
+            var cred = JSON.parse(data);
+            if (typeof cred == 'object' && 'id' in cred) {
+                 creds[cred.id] = cred;
+                 console.log('Credentials for ' + cred.title + ' established');
+            }
+        });
+    });
 
 server.listen(8080);
-		
-// socket.io, I choose you
-// simplest chat application evar
-var socket = io.listen(server, {transports: ['websocket']}),
-    buffer = [],
-    users  = {},
-    last   = {};
+unix.listen('unix.socket');
+
+var socket = io.listen(server, {transports: ['websocket']});
 
 // EVENT: user has connected, initialize them and ask for credentials
 socket.on('connection', function(client)

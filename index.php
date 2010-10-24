@@ -44,13 +44,30 @@ if (!$content || !isset($content->tumblelog) || !isset($content->tumblelog[0])) 
     die('Cannot connect!');
 }
 
-$tumblr  = (array) $content->tumblelog[0];
-$tumblr  = $tumblr['@attributes'];
+$tumblr = (array) $content->tumblelog[0];
+$tumblr = $tumblr['@attributes'];
 
 $avatarType = substr($tumblr['avatar-url'], -4);
 
 $tumblr['title']  = str_replace("'", "\'", $tumblr['title']);
 $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
+
+chmod('unix.socket', 0777);
+$fp = fsockopen('unix://unix.socket', 0, $errNo, $errStr, 30);
+if (!$fp) {
+    die('Cannot establish credentials!' . $errStr);
+} else {
+    $result = fwrite($fp, json_encode(array(
+        'id'     => $access_token['oauth_token'], 
+        'title'  => $tumblr['title'],
+        'name'   => $tumblr['name'],
+        'url'    => $tumblr['url'],
+        'avatar' => $tumblr['avatar'])));
+  
+    if (!$result) {
+        die('Cannot write credentials!');
+    }
+}
 
 ?>
 
@@ -79,7 +96,12 @@ $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
         <div id="top">
             <h1 id="header">Tumblr Chat</h1>
             <div id="count"></div>
-            
+            <div style="float: left; padding: 0.9em 0 0 0.25em; color: 
+#fff; 
+text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); opacity: 0.5; ">
+		This is not an official chat by Tumblr!
+	    </div>
+
             <a class="topbuttons" title="About Tumblr Chat" href="" rel="page-about">
                 ?
             </a>

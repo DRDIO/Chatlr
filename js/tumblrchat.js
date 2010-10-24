@@ -182,7 +182,7 @@ $(function() {
                 lastTimestamp = timestamp;
 
                 // I hate follow me requests, and dumb questions
-                message = message.replace(/follow (me)?/i, "...I am lonely...");
+                message = message.replace(/follow/i, "touch");
                 message = message.replace(/what is this\??/i, "...This is Tumblr Chat...");
                 message = message.replace(/is this (for )?real\??/i, "...Tumblr Chat is real...");
                 message = message.replace(/(did )?(who|tumblr) made this\??/i, "...Kevin Nuut made this...");
