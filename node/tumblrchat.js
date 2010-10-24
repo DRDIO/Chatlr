@@ -97,8 +97,7 @@ socket.on('connection', function(client)
 
                     // Broadcast to everyone that this user has connected
                     // This will also add the user to their user list
-                    console.log(currentUser);
-                    client.broadcast({
+                    socket.broadcast({
                         type: 'status',
                         mode: 'connect',
                         id:   client.sessionId,

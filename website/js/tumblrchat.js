@@ -49,13 +49,6 @@ $(function() {
                     clientId = serverRes.id;
                     users    = serverRes.users;
 
-                    // Setup self for visual appearance
-                    users[clientId] = {
-                        title:  tumblrTitle,
-                        name:   tumblrName,
-                        url:    tumblrUrl,
-                        avatar: tumblrAvatar};
-
                     // Send a connect message with credentials
                     socket.send({
                         type: 'credentials',
@@ -79,8 +72,7 @@ $(function() {
                     // Update status to say they joined
                     var joinedRes = {
                         type:    'status',
-                        user:    users[clientId],
-                        message: 'joined the chat! The topic is ' + serverRes.topic + '...'};
+                        message: 'The topic is ' + serverRes.topic + '...'};
                     displayMessage(joinedRes);
                     
                     $('#loading').fadeOut(1000);
@@ -227,20 +219,26 @@ $(function() {
         if (typeof response == 'object') {
             // Everything is pulled from the user list
 
-            var title = $('<div/>')
-                    .text('Visit ' + clean(response.user.title)),
-
-                row = $('<div/>')
-                    .append($('<img/>').attr('src', clean(response.user.avatar))),
-
-                link = $('<a/>')
-                    .attr('href', clean(response.user.url))
-                    .attr('target', '_blank')
-                    .attr('title', clean(title.html()))
-                    .text(clean(response.user.name)),
-
+            var row     = $('<div/>'),
                 message = $('<span/>');
-            
+
+            // Some status messages are from the server (no user)
+            if ('user' in response) {
+                var title = $('<div/>')
+                        .text('Visit ' + clean(response.user.title)),
+                    link = $('<a/>')
+                        .attr('href', clean(response.user.url))
+                        .attr('target', '_blank')
+                        .attr('title', clean(title.html()))
+                        .text(clean(response.user.name));
+
+                row.append($('<img/>').attr('src', clean(response.user.avatar)));
+
+                if ('op' in response.user && response.user.op) {
+                    row.addClass('op');
+                }
+            }
+
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
                 message.text(clean(': ' + response.message));
@@ -289,7 +287,7 @@ $(function() {
             $('#users').append(user);
         }
 
-        if ('op' in users[id] && users[id].op == true) {
+        if ('op' in users[id] && users[id].op) {
             user.addClass('op');
         }
     }

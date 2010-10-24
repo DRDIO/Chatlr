@@ -180,7 +180,7 @@ body, input {
 }
 
 #chat div.status {
-    opacity: 0.25;
+    opacity: 0.5;
 }
 
 #chat div.personal {
@@ -189,6 +189,10 @@ body, input {
 
 #chat div.personal:nth-child(odd) {
     background: #FFE5E5;
+}
+
+#chat div.op a {
+    color: #E53F29;
 }
 
 #form {
