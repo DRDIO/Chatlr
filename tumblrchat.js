@@ -16,7 +16,7 @@ var creds  = {},
     unix   = net.createServer(function(stream) {
         stream.setEncoding('utf8');
         stream.on('data', function(data) {
-            console.log('Streaming');
+            console.log(data);
             var cred = JSON.parse(data);
             if (typeof cred == 'object' && 'id' in cred) {
                  creds[cred.id] = cred;
