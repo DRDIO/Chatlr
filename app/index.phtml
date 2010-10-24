@@ -7,16 +7,8 @@
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>"></script>
-        <script type="text/javascript" src="/js/tumblrchat.js"></script>
-        <script type="text/javascript">
-            var tumblrKey    = '<?php echo $access_token['oauth_token']; ?>',
-                tumblrTitle  = '<?php echo $tumblr['title']; ?>',
-                tumblrName   = '<?php echo $tumblr['name']; ?>',
-                tumblrUrl    = '<?php echo $tumblr['url']; ?>',
-                tumblrAvatar = '<?php echo $tumblr['avatar']; ?>';
-        </script>
-
+        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>?key=<?php echo $access_token['oauth_token']; ?>"></script>
+        <script type="text/javascript" src="/js/tumblrchat.js"></script>        
         <link rel="stylesheet" type="text/css" href="/css/design.css" />
     </head>
     <body>

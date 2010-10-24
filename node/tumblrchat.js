@@ -58,8 +58,8 @@ socket.on('connection', function(client)
     // along with last 15 messages and user list
     client.send({
         type:   'init',
-        topic:  topic,
         id:     client.sessionId,
+        topic:  topic,
         buffer: buffer,
         users:  users});
 
