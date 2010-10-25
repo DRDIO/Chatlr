@@ -85,7 +85,7 @@ $(function() {
                     topic = serverRes.topic;
                     displayMessage({
                         type:    'status',
-                        message: 'The topic is \'' + topic + '\'...'});
+                        message: 'Welcome to Tumblr Chat. Type /help to learn basic commands. The current topic is \'' + topic + '\'...'});
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -200,6 +200,11 @@ $(function() {
 
                 // Clear text box
                 $('#text').val('');
+            } else if (message.search(/^\/help$/) == 0) {
+                displayMessage({
+                    type:    'status',
+                    message: 'Welcome to Tumblr Chat! You may type /topic to read the current topic, /away to go idle, or /help to read this prompt at any time.'});
+
             } else if (message == lastMessage || timestamp - lastTimestamp < 3000 || message.length > 350) {
                 // Quickly display message to self in pink
                 displayMessage({
