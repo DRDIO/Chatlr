@@ -72,20 +72,20 @@ socket.on('connection', function(client)
         if ('type' in clientRes && typeof clientRes.type == 'string' && clientRes.type in {'message': '', 'credentials': ''}) {
 
             // CREDENTIALS: passed from client with authkey to pull from PHP unix socket CREDS
-            if (clientRes.type == 'credentials' && 'key' in clientRes && typeof clientRes.key == 'string' && clientRes.key in creds) {
+            if (clientRes.type == 'credentials' && 'token' in clientRes && typeof clientRes.token == 'string' && clientRes.token in creds) {
                 try {
                     // Check if user is already in chat to prevent duplicates
                     for (var i in users) {
-                        if (users[i].name == creds[clientRes.key].name) {
+                        if (users[i].name == creds[clientRes.token].name) {
                             console.log('User already in chat!');
-                            delete creds[clientRes.key];
+                            delete creds[clientRes.token];
                             client.connection.end();
                         }
                     }
                     
                     // Transfer creds to user list and delete from php server creds
-                    var currentUser = users[client.sessionId] = creds[clientRes.key];
-                    delete creds[clientRes.key];
+                    var currentUser = users[client.sessionId] = creds[clientRes.token];
+                    delete creds[clientRes.token];
 
                     // Setup user as OPERATOR if in the approval list above
                     currentUser.op = (currentUser.name in ops);
@@ -103,7 +103,6 @@ socket.on('connection', function(client)
                         id:   client.sessionId,
                         user: currentUser});
                 } catch(err) {
-                    console.log('INVALID CREDENTIALS ' + clientRes);
                     client.disconnect.end();
                     console.log(err);
                 }
@@ -146,13 +145,15 @@ socket.on('connection', function(client)
 
             } else {
                 // Invalid message type sent, disconnect user
-                console.log('INVALID MESSAGE ' + clientRes);
+                console.log('invalid message');
+                console.log(clientRes);
                 client.connection.end();
             }
             
         } else {
             // Invalid properties sent, disconnect user
-            console.log('INVALID TYPE ' + clientRes);
+            console.log('invalid type');
+            console.log(clientRes);
             client.connection.end();
         }
     });

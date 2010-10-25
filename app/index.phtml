@@ -7,8 +7,11 @@
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>?key=<?php echo $access_token['oauth_token']; ?>"></script>
-        <script type="text/javascript" src="/js/tumblrchat.js"></script>        
+        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>"></script>
+        <script type="text/javascript" src="/js/tumblrchat.js"></script>
+        <script type="text/javascript">
+            var tumblrToken = '<?php echo $access_token['oauth_token']; ?>';
+        </script>
         <link rel="stylesheet" type="text/css" href="/css/design.css" />
     </head>
     <body>
@@ -19,20 +22,20 @@
 		This is not an official chat by Tumblr!
 	    </div>
 
+            <a class="toplink login" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
+                <img src="http://28.media.tumblr.com/avatar_6ef19d797abb_16.png" alt="Visit KevinNuut.com" />
+                Visit KevinNuut.com!
+            </a>
             <a class="topbuttons" title="About Tumblr Chat" href="" rel="page-about">
                 ?
             </a>
             <a class="topbuttons" title="Find Another Room" href="">
                 English Room
             </a>
-            <a id="login" class="topbuttons" href="<?php echo htmlspecialchars($tumblr['url']); ?>" title="Change Chat Tumblr" target="_blank">
+<!--            <a id="login" class="topbuttons" href="<?php echo htmlspecialchars($tumblr['url']); ?>" title="Change Chat Tumblr" target="_blank">
                 <img src="<?php echo htmlspecialchars($tumblr['avatar']); ?>" alt="<?php echo htmlspecialchars($tumblr['name']); ?>" />
                 <?php echo $tumblr['title']; ?>
-            </a>
-            <a class="toplink login" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
-                <img src="http://28.media.tumblr.com/avatar_6ef19d797abb_16.png" alt="Visit KevinNuut.com" />
-                Visit KevinNuut.com!
-            </a>
+            </a>-->
         </div>
 
         <div id="usersbox">

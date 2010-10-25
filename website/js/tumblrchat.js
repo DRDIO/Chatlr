@@ -31,7 +31,9 @@ $(function() {
         notifyFailure(false);
     } else {
 
-        socket = new io.Socket(null, {port: 8080, transports: ['websocket']});
+        socket = new io.Socket(null, {
+            port: 8080,
+            transports: ['websocket']});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
@@ -43,16 +45,17 @@ $(function() {
             // Only accept messages with type property
             if ('type' in serverRes && serverRes.type in {'init': '', 'message': '', 'status': ''}) {
                 // First message sent from server, initalize chat
-                if (serverRes.type == 'init' && 'id' in serverRes && 'users' in serverRes) {
+                if (serverRes.type == 'init') {
+                    socket.send({
+                        type:  'credentials',
+                        token: tumblrToken});
+
+                    // Save self ID for later reference
+                    clientId = serverRes.id;
+
                     // Initialize self user with php vars
                     // On init, a list of users is grabbed (and add yourself)
-                    clientId = serverRes.id;
-                    users    = serverRes.users;
-
-                    // Send a connect message with credentials
-                    socket.send({
-                        type: 'credentials',
-                        key:  tumblrKey});
+                    users = serverRes.users;
 
                     // Add users to the chat list
                     var userCount = 0;
@@ -60,13 +63,10 @@ $(function() {
                         displayUser(i);
                         userCount++;
                     }
-
-                    // Update user count up top
-                    $('#count').text(userCount);
-
+                    
                     // Output buffer messages
-                    for (var i in serverRes.buffer) {
-                        displayMessage(serverRes.buffer[i]);
+                    for (var j in serverRes.buffer) {
+                        displayMessage(serverRes.buffer[j]);
                     }
 
                     // Update status to say they joined
@@ -74,7 +74,11 @@ $(function() {
                         type:    'status',
                         message: 'The topic is ' + serverRes.topic + '...'};
                     displayMessage(joinedRes);
-                    
+
+                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+                    $('#count').text(userCount);
+                    $('title').text('Tumblr Chat');
                     $('#loading').fadeOut(1000);
 
                 // If a new user is coming or going, update list accordingly
