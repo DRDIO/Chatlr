@@ -205,6 +205,8 @@ $(function() {
                     type:    'status',
                     message: 'Welcome to Tumblr Chat! You may type /topic to read the current topic, /away to go idle, or /help to read this prompt at any time.'});
 
+                // Clear text box
+                $('#text').val('');
             } else if (message == lastMessage || timestamp - lastTimestamp < 3000 || message.length > 350) {
                 // Quickly display message to self in pink
                 displayMessage({
