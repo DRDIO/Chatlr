@@ -21,6 +21,7 @@ $(function() {
     // Initialize variables
     var clientId,
         users,
+        userCount     = 0,
         lastTimestamp = 0,
         lastMessage   = '',
         topic         = '';
@@ -70,7 +71,6 @@ $(function() {
                     users = serverRes.users;
 
                     // Add users to the chat list
-                    var userCount = 0;
                     for (var i in users) {
                         displayUser(i);
                         userCount++;
@@ -96,30 +96,30 @@ $(function() {
                 // If a new user is coming or going, update list accordingly
                 } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'connect': '', 'disconnect': ''} && 'id' in serverRes) {
                     // new user joined, let's add to user list!
-                    if (serverRes.mode == 'connect' && 'user' in serverRes) {
+                    if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
                         users[serverRes.id] = serverRes.user;
-                        $('#count').text(1 + parseInt($('#count').text()));
+                        $('#count').text(++userCount);
                         displayUser(serverRes.id);
 
                         // Don't display if so many people are on, its too spammy
-                        if (parseInt($('#count').text()) < 10) {
+                        if (userCount < 10) {
                             serverRes.message = ' has joined the chat!';
                             displayMessage(serverRes);
                         }
 
                     // Awh, a user left, let's remove from user list
-                    } else if (serverRes.mode == 'disconnect') {
+                    } else if (serverRes.mode == 'disconnect' && serverRes.id in users) {
                         // Pull users from local list and display disconnect
                         serverRes.user = users[serverRes.id];
 
                         // Don't display if so many people are on, its too spammy
-                        if (parseInt($('#count').text()) < 10) {
+                        if (userCount < 10) {
                             serverRes.message = ' has left the chat...';
                             displayMessage(serverRes);
                         }
 
                         // Remove local user
-                        $('#count').text(-1 + parseInt($('#count').text()));
+                        $('#count').text(--userCount);
                         removeUser(serverRes.id);
                         delete users[serverRes.id];
                     }
