@@ -20,7 +20,7 @@
     ExpiresByType image/x-icon "access plus 1 years"
     ExpiresByType image/ico "access plus 1 years"
     ExpiresByType text/css "access plus 1 years"
-    ExpiresByType text/javascript "access plus 1 years"
+    ExpiresByType text/javascript "access plus 1 seconds"
     ExpiresByType application/x-javascript "access plus 1 years"
     ExpiresByType application/javascript "access plus 1 years"
 </IfModule>

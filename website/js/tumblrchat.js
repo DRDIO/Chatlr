@@ -22,7 +22,8 @@ $(function() {
     var clientId,
         users,
         lastTimestamp = 0,
-        lastMessage   = '';
+        lastMessage   = '',
+        topic         = '';
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -40,12 +41,23 @@ $(function() {
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+        socket.on('disconnect', function()
+        {
+            notifyFailure(false);
+        });
+
         socket.on('message', function(serverRes)
         {
             // Only accept messages with type property
-            if ('type' in serverRes && serverRes.type in {'init': '', 'message': '', 'status': ''}) {
+            if ('type' in serverRes && serverRes.type in {'init': '', 'message': '', 'status': '', 'topic': ''}) {
                 // First message sent from server, initalize chat
-                if (serverRes.type == 'init') {
+                if (serverRes.type == 'topic') {
+                    topic = serverRes.topic;
+                    displayMessage({
+                        type: 'status',
+                        message: 'The topic is now \'' + topic + '\'...'});
+
+                } else if (serverRes.type == 'init') {
                     socket.send({
                         type:  'credentials',
                         token: tumblrToken});
@@ -70,10 +82,10 @@ $(function() {
                     }
 
                     // Update status to say they joined
-                    var joinedRes = {
+                    topic = serverRes.topic;
+                    displayMessage({
                         type:    'status',
-                        message: 'The topic is ' + serverRes.topic + '...'};
-                    displayMessage(joinedRes);
+                        message: 'The topic is \'' + topic + '\'...'});
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -168,7 +180,14 @@ $(function() {
             var message   = $('#text').val();
             var timestamp = new Date().getTime();
 
-            if (message == lastMessage || timestamp - lastTimestamp < 3000 || message.length > 350) {
+            if (message.search(/^\/topic$/) == 0) {
+                displayMessage({
+                    type:    'status',
+                    message: 'The topic is \'' + topic + '\'...'});
+
+                // Clear text box
+                $('#text').val('');
+            } else if (message == lastMessage || timestamp - lastTimestamp < 3000 || message.length > 350) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
@@ -201,12 +220,6 @@ $(function() {
                 // Send to server for broadcast
                 socket.send({
                     type: 'message',
-                    message: message});
-
-                // Quickly display message to self in pink
-                displayMessage({
-                    type:    'personal',
-                    user:    users[clientId],
                     message: message});
 
                 // Clear text box
@@ -246,11 +259,9 @@ $(function() {
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
                 message.text(clean(': ' + response.message));
-
-            // PERSONAL: Personal messages are pink but otherwise look like messages
-            } else if (response.type == 'personal') {
-                row.addClass('personal');
-                message.text(clean(': ' + response.message));
+                if (clientId in users && response.user.name == users[clientId].name) {
+                    row.addClass('personal');
+                }
 
             // STATUS: Status messages just show a faded message
             } else if (response.type == 'status') {

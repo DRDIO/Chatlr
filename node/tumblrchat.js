@@ -113,6 +113,37 @@ socket.on('connection', function(client)
                     var timestamp = new Date().getTime();
                     var message   = clientRes.message.substr(0, 350);
 
+                    if (users[client.sessionId].op) {;
+                        if (message.search(/^\/topic/) == 0) {
+                            topic = message.substr(7);
+                            socket.broadcast({
+                                type:  'topic',
+                                topic: topic});
+                            return;
+                        } else if (message.search(/^\/kick/) == 0) {
+                            var name = message.substr(6);
+                            for (var i in users) {
+                                if (users[i].name == name) {
+                                    socket.clients[i].connection.end();
+
+                                    // Remove user and last grief from server
+                                    delete users[i];
+                                    delete last[i];
+
+                                    // Broadcast to everyone that this user has disconnected
+                                    // This will remove user from their list
+                                    socket.broadcast({
+                                        type:    'status',
+                                        mode:    'disconnect',
+                                        id:      i,
+                                        message: 'left the chat...'});
+
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
                     // If there is a message and it isn't the same as their last (griefing)
                     if (message.length > 0 && client.sessionId in last &&
                         message != last[client.sessionId].message &&
@@ -134,7 +165,7 @@ socket.on('connection', function(client)
                         }
 
                         // Broadcast message to everyone
-                        client.broadcast({
+                        socket.broadcast({
                             type:    'message',
                             id:      client.sessionId,
                             message: message});
