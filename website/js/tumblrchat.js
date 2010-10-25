@@ -94,9 +94,20 @@ $(function() {
                     $('#loading').fadeOut(1000);
 
                 // If a new user is coming or going, update list accordingly
-                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'connect': '', 'disconnect': ''} && 'id' in serverRes) {
+                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {                    
+                    // User is set to away
+                    if (serverRes.mode == 'away' && serverRes.id in users) {
+                        $('#u' + serverRes.id).addClass('idle');
+
+                        // Don't display if so many people are on, its too spammy
+                        if (userCount < 10) {
+                            serverRes.user    = users[serverRes.id];
+                            serverRes.message = ' has gone away...';
+                            displayMessage(serverRes);
+                        }
+
                     // new user joined, let's add to user list!
-                    if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
+                    } else if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
                         users[serverRes.id] = serverRes.user;
                         $('#count').text(++userCount);
                         displayUser(serverRes.id);
@@ -126,6 +137,8 @@ $(function() {
 
                 // Otherwise, process whatever message or generic status comes in
                 } else if (serverRes.type == 'message' || serverRes.type == 'status') {
+                    $('#u' + serverRes.id).removeClass('idle');
+
                     // Pull users from local array and display message or status
                     serverRes.user = users[serverRes.id];
                     displayMessage(serverRes);

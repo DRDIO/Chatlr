@@ -119,7 +119,7 @@ socket.on('connection', function(client)
                             socket.broadcast({
                                 type:  'topic',
                                 topic: topic});
-                            return;
+
                         } else if (message.search(/^\/kick/) == 0) {
                             var name = message.substr(6);
                             for (var i in users) {
@@ -138,16 +138,21 @@ socket.on('connection', function(client)
                                         id:      i,
                                         message: 'left the chat...'});
 
-                                    return;
                                 }
                             }
                         }
-                    }
-
                     // If there is a message and it isn't the same as their last (griefing)
-                    if (message.length > 0 && client.sessionId in last &&
+                    } else if (message.length > 0 && client.sessionId in last &&
                         message != last[client.sessionId].message &&
                         timestamp - last[client.sessionId].timestamp > 3000) {
+
+                        if (message.search(/^\/topic/) == 0) {
+                            socket.broadcast({
+                                type:    'status',
+                                mode:    'away',
+                                id:      client.sessionId});
+
+                        }
 
                         // Store last message to track griefing
                         last[client.sessionId] = {

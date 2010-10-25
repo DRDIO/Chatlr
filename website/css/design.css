@@ -135,6 +135,10 @@ body, input {
             background: #FFE5E5;
         }
 
+        #users div.idle {
+            opacity: 0.5;
+        }
+
         #users div.op a {
             color: #E53F29;
         }
