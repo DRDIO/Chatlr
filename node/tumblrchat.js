@@ -144,9 +144,8 @@ socket.on('connection', function(client)
                                         delete banned[name];
                                     } else {
                                         banned[name] = '';
-                                    }
-
-                                    dropUser(name, 'has been banned...');
+                                        dropUser(name, 'has been banned...');
+                                    }                                    
                                     return;
                                 }
                             }
