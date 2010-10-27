@@ -235,7 +235,7 @@ $(function() {
                     }
                 }
 
-            } else if (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 350) {
+            } else if (message == lastMessage || (!users[clientId].op && timestamp - lastTimestamp < 2500) || message.length > 350) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
@@ -245,6 +245,9 @@ $(function() {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
+                message = message.replace(/(niggah|nigger|nigga)/i, 'ninja');
+                message = message.replace(/follow(ing|ed)?( me)?/i, 'avoid$1$2');
+                
                 // I hate similar charactesr in a row
                 message = message.replace(/(.+?)\1{4,}/g, '$1');
                 
