@@ -111,6 +111,9 @@ $(function() {
                     } else if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
                         users[serverRes.id] = serverRes.user;
                         $('#count').text(++userCount);
+                        $('title').html('Tumblr Chat (' + userCount + ')');
+
+                        // Display user on side
                         displayUser(serverRes.id);
 
                         // Don't display if so many people are on, its too spammy
@@ -132,6 +135,9 @@ $(function() {
 
                         // Remove local user
                         $('#count').text(--userCount);
+                        $('title').html('Tumblr Chat (' + userCount + ')');
+
+                        // Remove user from side and delete
                         removeUser(serverRes.id);
                         delete users[serverRes.id];
                     }
