@@ -12,6 +12,7 @@ var http = require('http'),
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'brittanyforks': '', 'kelseym': ''},
+    banned  = {},
     creds   = {},
     buffer  = [],
     rooms   = {},
@@ -83,7 +84,15 @@ socket.on('connection', function(client)
                                     console.log('User already in chat!');
                                     delete creds[clientRes.token];
                                     client.connection.end();
+                                    return;
                                 }
+                            }
+
+                            if (creds[clientRes.token].name in banned) {
+                                console.log('User is banned!');
+                                delete creds[clientRes.token];
+                                client.connection.end();
+                                return;
                             }
 
                             // Transfer creds to user list and delete from php server creds
@@ -122,37 +131,30 @@ socket.on('connection', function(client)
                                     socket.broadcast({
                                         type:  'topic',
                                         topic: topic});
-                                    return
+                                    return;
 
-                                } else if (message.search(/^\/kick/) == 0) {
+                                } else if (message.search(/^\/kick [a-z0-9-]+/i) == 0) {
                                     var name = message.substr(6);
-                                    for (var i in users) {
-                                        if (users[i].name == name) {
-                                            socket.clients[i].connection.end();
+                                    dropUser(name, 'has been kicked...');
+                                    return;
 
-                                            // Remove user and last grief from server
-                                            delete users[i];
-
-                                            if (i in last) {
-                                                delete last[i];
-                                            }
-
-                                            // Broadcast to everyone that this user has disconnected
-                                            // This will remove user from their list
-                                            socket.broadcast({
-                                                type:    'status',
-                                                mode:    'disconnect',
-                                                id:      i,
-                                                message: 'left the chat...'});
-                                            return;
-                                        }
+                                } else if (message.search(/^\/ban [a-z0-9-]+/i) == 0) {
+                                    var name = message.substr(5);
+                                    if (name in banned) {
+                                        delete banned[name];
+                                    } else {
+                                        banned[name] = '';
                                     }
+
+                                    dropUser(name, 'has been banned...');
+                                    return;
                                 }
                             }
 
                             // If there is a message and it isn't the same as their last (griefing)
-                            if (message.length > 0 && client.sessionId in last &&
+                            if (message.length > 0 && client.sessionId in last &&                                
                                 (users[client.sessionId].op || (
+                                    !(users[client.sessionId].name in banned) &&
                                     message != last[client.sessionId].message &&
                                     timestamp - last[client.sessionId].timestamp > 2500))) {
 
@@ -163,6 +165,21 @@ socket.on('connection', function(client)
                                         id:      client.sessionId});
                                     return;
                                 }
+
+                                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+                                message = message.replace(/(niggah|nigger|nigga)/i, 'ninja');
+                                message = message.replace(/follow(ing|ed)?( me)?/i, 'avoid$1$2');
+
+                                // I hate similar charactesr in a row
+                                message = message.replace(/(.+?)\1{4,}/g, '$1');
+
+                                // I also hate capslocking
+                                if (message.search(/[A-Z ]{5,}/) != -1) {
+                                    message = message.toLowerCase();
+                                }
+
+                                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                                 // Store last message to track griefing
                                 last[client.sessionId] = {
@@ -251,6 +268,29 @@ socket.on('connection', function(client)
         }
     }
 });
+
+function dropUser(name, message) {
+    for (var i in users) {
+        if (users[i].name == name && !users[i].op) {
+            socket.clients[i].connection.end();
+
+            // Remove user and last grief from server
+            delete users[i];
+
+            if (i in last) {
+                delete last[i];
+            }
+
+            // Broadcast to everyone that this user has disconnected
+            // This will remove user from their list
+            socket.broadcast({
+                type:    'status',
+                message: message,
+                id:      i});
+            return;
+        }
+    }
+}
 
 // Perform memoery cleanup on everything
 setInterval(function()
