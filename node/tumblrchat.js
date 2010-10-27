@@ -111,7 +111,7 @@ socket.on('connection', function(client)
                         }
 
                     // MESSAGE: user is sending a message to everyone
-                    } else if ('message' in clientRes && typeof clientRes.message == 'string') {
+                    } else if ('message' in clientRes && typeof clientRes.message == 'string' && client.sessionId in users) {
                         try {
                             var timestamp = new Date().getTime();
                             var message   = clientRes.message.substr(0, 350);
