@@ -251,6 +251,7 @@ socket.on('connection', function(client)
     }
 });
 
+// Perform memoery cleanup on everything
 setInterval(function()
 {
     var userCount = 0,
@@ -261,7 +262,22 @@ setInterval(function()
         time      = new Date().getTime();
 
     for (var i in users) {
-        userCount++;
+        var userExists = false;
+        for (var i in socket.clients) {
+            if (socket.clients[i].sessionId == i) {
+                userExists = true;
+                break;
+            }
+        }
+
+        if (!userExists) {
+            delete users[i];
+            if (i in last) {
+                delete last[i];
+            }
+        } else {
+            userCount++;
+        }
     }
 
     for (var i in creds) {
@@ -285,4 +301,4 @@ setInterval(function()
     }
 
     console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount);
-}, 5000);
+}, 300000);
