@@ -287,4 +287,4 @@ setInterval(function()
     }
 
     console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount);
-}, 300000);
+}, 60000);

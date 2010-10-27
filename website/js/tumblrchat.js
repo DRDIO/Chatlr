@@ -325,6 +325,10 @@ $(function() {
                 .attr('title', clean('Visit ' + users[id].title))
                 .text(clean(users[id].name)));
 
+        if (users[id].name in ignore) {
+            user.addClass('ignore');
+        }
+
         if (id == clientId) {
             user.addClass('personal');
             $('#users').prepend(user);
