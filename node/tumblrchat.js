@@ -253,8 +253,6 @@ socket.on('connection', function(client)
 
 setInterval(function()
 {
-    console.log('test');
-    
     var userCount = 0,
         credCount = 0,
         roomCount = 0,
@@ -287,4 +285,4 @@ setInterval(function()
     }
 
     console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount);
-}, 60000);
+}, 5000);
