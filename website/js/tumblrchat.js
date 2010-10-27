@@ -20,7 +20,8 @@ $(function() {
     
     // Initialize variables
     var clientId,
-        users,
+        users         = {},
+        ignore        = {},
         userCount     = 0,
         lastTimestamp = 0,
         lastMessage   = '',
@@ -139,9 +140,12 @@ $(function() {
                 } else if (serverRes.type == 'message' || serverRes.type == 'status') {
                     $('#u' + serverRes.id).removeClass('idle');
 
-                    // Pull users from local array and display message or status
-                    serverRes.user = users[serverRes.id];
-                    displayMessage(serverRes);
+                    // If user isn't being ignored, display message
+                    if (serverRes.id in users && !(users[serverRes.id].name in ignore)) {
+                        // Pull users from local array and display message or status
+                        serverRes.user = users[serverRes.id];
+                        displayMessage(serverRes);
+                    }
                 }
             }
         });
@@ -197,17 +201,33 @@ $(function() {
                 displayMessage({
                     type:    'status',
                     message: 'The topic is \'' + topic + '\'...'});
-
-                // Clear text box
                 $('#text').val('');
+
             } else if (message.search(/^\/help$/) == 0) {
                 displayMessage({
                     type:    'status',
                     message: 'Welcome to Tumblr Chat! You may type /topic to read the current topic, /away to go idle, or /help to read this prompt at any time.'});
-
-                // Clear text box
                 $('#text').val('');
-            } else if (message == lastMessage || timestamp - lastTimestamp < 3000 || message.length > 350) {
+
+            } else if (message.search(/^\/ignore [a-z0-9-]+$/) == 0) {
+                var name = message.substr(8);
+                if (name in ignore) {
+                    delete ignore[name];
+                    for (var i in users) {
+                        if (name in users[i].name) {
+                            $('#u' + i).removeClass('ignore');
+                        }
+                    }
+                } else {
+                    ignore[name] = '';
+                    for (var i in users) {
+                        if (name in users[i].name) {
+                            $('#u' + i).addClass('ignore');
+                        }
+                    }
+                }
+
+            } else if (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 350) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
@@ -217,25 +237,13 @@ $(function() {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
-                // I hate follow me requests, and dumb questions
-                message = message.replace(/follow/i, "touch");
-                message = message.replace(/what is this\??/i, "...This is Tumblr Chat...");
-                message = message.replace(/is this (for )?real\??/i, "...Tumblr Chat is real...");
-                message = message.replace(/(did )?(who|tumblr) made this\??/i, "...Kevin Nuut made this...");
-
-                // Random fun time messages                
-                message = message.replace(/cake/i, "...The cake is a lie...");
-
                 // I hate similar charactesr in a row
-                message = message.replace(/(.+?)\1{3,}/g, '$1');
+                message = message.replace(/(.+?)\1{4,}/g, '$1');
                 
                 // I also hate capslocking
                 if (message.search(/[A-Z ]{5,}/) != -1) {
                     message = message.toLowerCase();
                 }
-
-                // MADNESS!
-                message = message.replace(/this is madness/i, "...This is SPARTA!...");
 
                 // Send to server for broadcast
                 socket.send({
