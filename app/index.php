@@ -65,6 +65,7 @@ if (!$fp) {
 
 $result = fwrite($fp, json_encode(array(
     'key'    => $access_token['oauth_token'],
+    'time'   => time(),
     'user'   => array(
         'name'   => $tumblr['name'],
         'title'  => isset($tumblr['title'])  ? $tumblr['title']  : $tumblr['name'],

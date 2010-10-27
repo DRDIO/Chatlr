@@ -132,7 +132,10 @@ socket.on('connection', function(client)
 
                                             // Remove user and last grief from server
                                             delete users[i];
-                                            delete last[i];
+
+                                            if (i in last) {
+                                                delete last[i];
+                                            }
 
                                             // Broadcast to everyone that this user has disconnected
                                             // This will remove user from their list
@@ -212,6 +215,11 @@ socket.on('connection', function(client)
                 // Remove user and last grief from server
                 if (client.sessionId in users) {
                     delete users[client.sessionId];
+                    delete last[client.sessionId];
+                }
+
+                if (client.sessionId in last) {
+                    delete last[client.sessionId];
                 }
                 
                 // Broadcast to everyone that this user has disconnected
@@ -236,6 +244,10 @@ socket.on('connection', function(client)
         if (client.sessionId in users) {
             delete users[client.sessionId];
         }
+
+        if (client.sessionId in last) {
+            delete last[client.sessionId];
+        }
     }
 });
 
@@ -247,14 +259,19 @@ setInterval(function()
         credCount = 0,
         roomCount = 0,
         buffCount = 0,
-        lastCount = 0;
+        lastCount = 0,
+        time      = new Date().getTime();
 
     for (var i in users) {
         userCount++;
     }
 
     for (var i in creds) {
-        credCount++;
+        if (time - creds[i].time > 5000) {
+            delete creds[i];
+        } else {
+            credCount++;
+        }
     }
 
     for (var i in rooms) {
