@@ -152,8 +152,9 @@ socket.on('connection', function(client)
 
                             // If there is a message and it isn't the same as their last (griefing)
                             if (message.length > 0 && client.sessionId in last &&
-                                message != last[client.sessionId].message &&
-                                timestamp - last[client.sessionId].timestamp > 2500) {
+                                (users[client.sessionId].op || (
+                                    message != last[client.sessionId].message &&
+                                    timestamp - last[client.sessionId].timestamp > 2500))) {
 
                                 if (message.search(/^\/away/) == 0) {
                                     socket.broadcast({

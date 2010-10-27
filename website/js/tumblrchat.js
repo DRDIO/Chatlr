@@ -235,7 +235,7 @@ $(function() {
                     }
                 }
 
-            } else if (message == lastMessage || (!users[clientId].op && timestamp - lastTimestamp < 2500) || message.length > 350) {
+            } else if (!users[clientId].op && (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 350)) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
