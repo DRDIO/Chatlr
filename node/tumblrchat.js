@@ -11,13 +11,13 @@ var http = require('http'),
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-var ops    = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'brittanyforks': '', 'kelseym': ''},
-    creds  = {},
-    buffer = [],
-    rooms  = {},
-    users  = {},
-    last   = {},
-    topic  = 'Anything',
+var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'brittanyforks': '', 'kelseym': ''},
+    creds   = {},
+    buffer  = [],
+    rooms   = {},
+    users   = {},
+    last    = {},
+    topic   = 'Anything',
 
     // Create server to listen on port 8080 for IO
     server = http.createServer(),
@@ -238,3 +238,36 @@ socket.on('connection', function(client)
         }
     }
 });
+
+setInterval(function()
+{
+    console.log('test');
+    
+    var userCount = 0,
+        credCount = 0,
+        roomCount = 0,
+        buffCount = 0,
+        lastCount = 0;
+
+    for (var i in users) {
+        userCount++;
+    }
+
+    for (var i in creds) {
+        credCount++;
+    }
+
+    for (var i in rooms) {
+        roomCount++;
+    }
+
+    for (var i in buffer) {
+        buffCount++;
+    }
+
+    for (var i in last) {
+        lastCount++;
+    }
+
+    console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount);
+}, 300000);
