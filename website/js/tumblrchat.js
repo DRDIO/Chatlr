@@ -213,15 +213,17 @@ $(function() {
                 var name = message.substr(8);
                 if (name in ignore) {
                     delete ignore[name];
+                    $('#text').val('');
                     for (var i in users) {
-                        if (name in users[i].name) {
+                        if (name == users[i].name) {
                             $('#u' + i).removeClass('ignore');
                         }
                     }
                 } else {
                     ignore[name] = '';
+                    $('#text').val('');
                     for (var i in users) {
-                        if (name in users[i].name) {
+                        if (name == users[i].name) {
                             $('#u' + i).addClass('ignore');
                         }
                     }

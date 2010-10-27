@@ -143,6 +143,10 @@ body, input {
             color: #E53F29;
         }
 
+        #users div.ignore {
+            opacity: 0.25;
+        }
+
 #chatbox {
     position: absolute;
     top: 0;
