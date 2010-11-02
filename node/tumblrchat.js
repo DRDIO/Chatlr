@@ -28,14 +28,20 @@ var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'br
     // Create unix socket to talk to PHP server
     unix   = net.createServer(function(stream) {
         try {
-            // stream.setEncoding('utf8');
+            stream.setEncoding('utf8');
             stream.on('data', function(data) {
                 var cred = JSON.parse(data);
-                if (typeof cred == 'object' && 'key' in cred) {
-                    console.log('Credentials for ' + cred.user.name + ' received.');
+                if (typeof cred == 'object' && 'key' in cred && 'user' in cred) {
                     cred.user.time  = new Date().getTime();
                     creds[cred.key] = cred.user;
+                } else {
+                    console.log('Trouble parsing credentials');
+                    console.log(data);
                 }
+            });
+
+            stream.on('end', function() {
+                stream.end();
             });
         } catch(err) {
             console.log(err);
@@ -218,7 +224,7 @@ socket.on('connection', function(client)
                 }
             } catch(err) {
                 // Something didn't work during connection, disconnect user
-                console.log('Unable to parse message ' + client.sessionId);
+                console.log('Unable to parse message');
                 console.log(err);
             }
         });
@@ -248,14 +254,14 @@ socket.on('connection', function(client)
 
             } catch(err) {
                 // Something didn't work during disconnect
-                console.log('Unable to disconnect ' + client.sessionId);
+                console.log('Unable to Disconnect');
                 console.log(err);
             }
         });
 
     } catch(err) {
         // Something didn't work during connection, disconnect user
-        console.log('Unable to connect ' + client.sessionId);
+        console.log('Unable to Connect');
         console.log(err);
         
         if (client.sessionId in users) {
@@ -294,51 +300,57 @@ function dropUser(name, message) {
 // Perform memoery cleanup on everything
 setInterval(function()
 {
-    var userCount = 0,
-        credCount = 0,
-        roomCount = 0,
-        buffCount = 0,
-        lastCount = 0,
-        time      = new Date().getTime();
+    try {
+        var i,
+            userCount = 0,
+            credCount = 0,
+            roomCount = 0,
+            buffCount = 0,
+            lastCount = 0,
+            time      = new Date().getTime();
 
-    for (var i in users) {
-        var userExists = false;
-        for (var i in socket.clients) {
-            if (socket.clients[i].sessionId == i) {
-                userExists = true;
-                break;
+        for (i in users) {
+            var userExists = false;
+            for (var i in socket.clients) {
+                if (socket.clients[i].sessionId == i) {
+                    userExists = true;
+                    break;
+                }
+            }
+
+            if (!userExists) {
+                delete users[i];
+                if (i in last) {
+                    delete last[i];
+                }
+            } else {
+                userCount++;
             }
         }
 
-        if (!userExists) {
-            delete users[i];
-            if (i in last) {
-                delete last[i];
+        for (i in creds) {
+            if (time - creds[i].time > 5000) {
+                delete creds[i];
+            } else {
+                credCount++;
             }
-        } else {
-            userCount++;
         }
-    }
 
-    for (var i in creds) {
-        if (time - creds[i].time > 5000) {
-            delete creds[i];
-        } else {
-            credCount++;
+        for (i in rooms) {
+            roomCount++;
         }
-    }
 
-    for (var i in rooms) {
-        roomCount++;
-    }
+        for (i in buffer) {
+            buffCount++;
+        }
 
-    for (var i in buffer) {
-        buffCount++;
-    }
+        for (i in last) {
+            lastCount++;
+        }
 
-    for (var i in last) {
-        lastCount++;
+        console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount + ' unix: ' + unix.connections);
+    } catch(err) {
+        console.log('Error with data cleanup');
+        console.log(err);
     }
-
-    console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount);
 }, 300000);
