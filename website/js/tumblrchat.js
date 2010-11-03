@@ -25,7 +25,8 @@ $(function() {
         userCount     = 0,
         lastTimestamp = 0,
         lastMessage   = '',
-        topic         = '';
+        topic         = '',
+        lastScroll    = 0;
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -158,21 +159,9 @@ $(function() {
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-        // EVENT: If mouse is down, prevent scroll from moving to bottom of screen
-        $(window).mousedown(function(e) {
-           mouseDown = true;
-        });
-
-        // EVENT: If mouse is up, scrolling is cool
-        $(window).mouseout(function(e) {
-            mouseDown = false;
-        });
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
         // EVENT: On resize, move to bottom of the screen
         $(window).resize(function(e) {
-            $('#chat').scrollTop($('#chat')[0].scrollHeight);
+            var position = $('#chat').scrollTop($('#chat')[0].scrollHeight);
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -313,7 +302,11 @@ $(function() {
         }
         
         // Scroll to the end of the page unless mouse is down
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        var thisScroll = $('#chat').scrollTop();
+        if (thisScroll > lastScroll) {
+            lastScroll = thisScroll;
+            $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        }
     }
 
     function displayUser(id)

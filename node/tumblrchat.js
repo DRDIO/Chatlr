@@ -41,7 +41,7 @@ var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'br
             });
 
             stream.on('end', function() {
-                stream.end();
+                // stream.end();
             });
         } catch(err) {
             console.log(err);
@@ -353,4 +353,4 @@ setInterval(function()
         console.log('Error with data cleanup');
         console.log(err);
     }
-}, 300000);
+}, 5000);
