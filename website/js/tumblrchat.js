@@ -285,7 +285,7 @@ $(function() {
                         }
                     },
                     width: $(window).width() * 0.8,
-                    maxWidth: '320',
+                    maxWidth: 320,
                     resizable: false})
                 .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
                 .parent().position({my: 'center', at: 'center', of: document});
@@ -420,8 +420,8 @@ function notifyFailure(hasSocket)
         $('<div/>')
             .attr('title', 'Unable to Connect')
             .dialog({
-                width: '40%',
-                minWidth: '320px',
+                width: $(window).width() * 0.8,
+                maxWidth: 320,
                 resizable: false})
             .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
             .parent().position({my: 'top', at: 'top', of: document, offset: '0 24'});
