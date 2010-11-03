@@ -290,13 +290,13 @@ $(function() {
                 row.append($('<img/>').attr('src', clean(response.user.avatar)));
 
                 if ('op' in response.user && response.user.op) {
-                    row.addClass('op');
+                    link.addClass('op');
                 }
             }
 
             // Clean message then update usernames to tumblr links
             response.message = strip(response.message);
-            response.message = response.message.replace(/(^| )@([a-z0-9-]+)($| )/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!"><strong>$2</strong></a>$3');
+            response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[ !?.,:;])/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
 
             // MESSAGE: The default message from a user
             if (response.type == 'message') {

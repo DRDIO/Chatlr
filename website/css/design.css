@@ -199,9 +199,15 @@ body, input {
     background: #FFE5E5;
 }
 
-#chat div.op a {
+#chat a.op {
     color: #E53F29;
 }
+
+#chat span a {
+    color: #2C4762;
+}
+
+
 
 #form {
     display: block;
