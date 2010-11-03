@@ -112,7 +112,7 @@ $(function() {
                     } else if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
                         users[serverRes.id] = serverRes.user;
                         $('#count').text(++userCount);
-                        $('title').html('Tumblr Chat (' + userCount + ')');
+                        $('title').html('(' + userCount + ') Tumblr Chat');
 
                         // Display user on side
                         displayUser(serverRes.id);
