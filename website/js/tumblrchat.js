@@ -301,8 +301,16 @@ $(function() {
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
                 message.html(': ' + response.message);
-                if (clientId in users && response.user.name == users[clientId].name) {
-                    row.addClass('personal');
+                if (clientId in users) {
+                    if (response.user.name == users[clientId].name) {
+                        row.addClass('personal');
+                    } else {
+                        // Try to save having to do a rege exp all the time
+                        var selfMatch = new RegExp('@' + users[clientId].name, 'gi');
+                        if (response.message.search(selfMatch) != -1) {
+                            row.addClass('personal');
+                        }
+                    }
                 }
 
             // STATUS: Status messages just show a faded message
