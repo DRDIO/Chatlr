@@ -211,7 +211,7 @@ $(function() {
             } else if (message.search(/^\/help$/) == 0) {
                 displayMessage({
                     type:    'status',
-                    message: 'Welcome to Tumblr Chat! You may type /topic to read the current topic, /away to go idle, /ignore USERNAME to ignore someone, /users to toggle user window, or /help to read this prompt at any time. We don\'t allow caps because they hold too much power, follow gets filtered because you shouldn\'t be so desperate, and everything else is out of pure boredom. Enjoy!'});
+                    message: 'Welcome to Tumblr Chat!You may type /topic to read the current topic, /away to go idle, /ignore USERNAME to ignore someone, /users to toggle user window, or /help to read this prompt at any time. We don\'t allow caps because they hold too much power, follow gets filtered because you shouldn\'t be so desperate, and everything else is out of pure boredom. Enjoy!'});
                 $('#text').val('');
 
             } else if (message.search(/^\/ignore [a-z0-9-]+$/) == 0) {
@@ -294,9 +294,13 @@ $(function() {
                 }
             }
 
+            // Clean message then update usernames to tumblr links
+            response.message = clean(response.message);
+            response.message = response.message.replace(/@([a-z0-9-]+)/i, '@<a href="$1.tumblr.com"><strong>$1</strong></a>');
+
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
-                message.text(clean(': ' + response.message));
+                message.text(': ' + response.message);
                 if (clientId in users && response.user.name == users[clientId].name) {
                     row.addClass('personal');
                 }
@@ -304,7 +308,7 @@ $(function() {
             // STATUS: Status messages just show a faded message
             } else if (response.type == 'status') {
                 row.addClass('status');
-                message.text(clean(' ' + response.message));
+                message.text(' ' + response.message);
             }
 
             // insert message

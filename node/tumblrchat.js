@@ -11,7 +11,7 @@ var http = require('http'),
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'brittanyforks': '', 'kelseym': ''},
+var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'brittanyforks': '', 'kelseym': '', 'fajita': '', 'vernonvan': ''},
     banned  = {},
     creds   = {},
     buffer  = [],
