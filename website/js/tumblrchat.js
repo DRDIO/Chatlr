@@ -303,7 +303,7 @@ $(function() {
         
         // Scroll to the end of the page unless mouse is down
         var thisScroll = $('#chat').scrollTop();
-        if (thisScroll > lastScroll) {
+        if (thisScroll >= lastScroll) {
             lastScroll = thisScroll;
             $('#chat').scrollTop($('#chat')[0].scrollHeight);
         }
