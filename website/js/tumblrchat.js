@@ -192,7 +192,17 @@ $(function() {
             var message   = $('#text').val();
             var timestamp = new Date().getTime();
 
-            if (message.search(/^\/topic$/) == 0) {
+            if (message.search(/^\/users/) == 0) {
+                if ($('#usersbox').width()) {
+                    $('#usersbox').animate({width: '0%', opacity: 0}, 250);
+                    $('#chatbox').animate({width: '100%'}, 250);
+                } else {
+                    $('#usersbox').animate({width: '15%', opacity: 1}, 250);
+                    $('#chatbox').animate({width: '85%'}, 250);
+                }
+                $('#text').val('');
+
+            } else if (message.search(/^\/topic$/) == 0) {
                 displayMessage({
                     type:    'status',
                     message: 'The topic is \'' + topic + '\'...'});
