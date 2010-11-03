@@ -256,6 +256,10 @@ body, input {
     padding: 0 1em 1em;
 }
 
+.ui-dialog .ui-dialog-titlebar-close {
+    right: 1em;
+}
+
 .ui-dialog .ui-dialog-buttonpane {
     background-image: none;
     border: none;
