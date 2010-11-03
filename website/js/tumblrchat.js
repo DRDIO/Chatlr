@@ -295,12 +295,12 @@ $(function() {
             }
 
             // Clean message then update usernames to tumblr links
-            response.message = clean(response.message);
-            response.message = response.message.replace(/@([a-z0-9-]+)/i, '@<a href="$1.tumblr.com"><strong>$1</strong></a>');
+            response.message = strip(response.message);
+            response.message = response.message.replace(/(^| )@([a-z0-9-]+)($| )/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!"><strong>$2</strong></a>$3');
 
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
-                message.text(': ' + response.message);
+                message.html(': ' + response.message);
                 if (clientId in users && response.user.name == users[clientId].name) {
                     row.addClass('personal');
                 }
@@ -308,7 +308,7 @@ $(function() {
             // STATUS: Status messages just show a faded message
             } else if (response.type == 'status') {
                 row.addClass('status');
-                message.text(' ' + response.message);
+                message.html(' ' + response.message);
             }
 
             // insert message
@@ -365,6 +365,11 @@ $(function() {
     function clean(message)
     {
         return $('<div/>').text(message).text();
+    }
+
+    function strip(message)
+    {
+        return $('<div/>').text(message).html();
     }
 });
 
