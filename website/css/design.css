@@ -253,7 +253,7 @@ body, input {
 .ui-dialog .ui-dialog-content {
     border-radius: 0 0 0.25em 0.25em;
     line-height: 1.5em;
-    padding: 0.5em 1em 1em;
+    padding: 0 1em 1em;
 }
 
 .ui-dialog .ui-dialog-buttonpane {
