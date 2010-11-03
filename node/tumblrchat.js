@@ -173,8 +173,8 @@ socket.on('connection', function(client)
 
                                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-                                message = message.replace(/(niggah|nigger|nigga)/i, 'ninja');
-                                message = message.replace(/follow(ing|ed)?( me)?/i, 'avoid$1$2');
+                                message = message.replace(/(niggah|nigger|nigga)/gi, 'ninja');
+                                message = message.replace(/follow(ing|ed)?( me)?/gi, 'avoid$1$2');
 
                                 // I hate similar charactesr in a row
                                 message = message.replace(/(.+?)\1{4,}/g, '$1');
