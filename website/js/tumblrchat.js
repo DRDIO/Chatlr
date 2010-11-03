@@ -253,6 +253,29 @@ $(function() {
                 $('#text').val('');
             }
         });
+
+        $('.external').live('click', function(e) {
+            e.preventDefault();
+            
+            var url = $(this).attr('href');
+            
+            $('<div/>')
+                .attr('title', 'Visit External Link?')
+                .dialog({
+                    buttons: {
+                        'No': function() {
+                            $(this).dialog('close');
+                        },
+                        'Yes': function() {
+                            window.open(url);
+                        }
+                    },
+                    width: '40%',
+                    minWidth: '320px',
+                    resizable: false})
+                .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
+                .parent().position({my: 'center', at: 'center', of: document});
+        });
     }
     
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -285,8 +308,9 @@ $(function() {
 
             // Clean message then update usernames to tumblr links
             response.message = strip(response.message);
+            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.]*(\?\S+)?)?)?)/, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>&raquo;</strong></a>');
             response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
-
+            
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
                 message.html(': ' + response.message);
