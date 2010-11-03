@@ -308,7 +308,7 @@ $(function() {
 
             // Clean message then update usernames to tumblr links
             response.message = strip(response.message);
-            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.]*(\?\S+)?)?)?)/, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>&raquo;</strong></a>');
+            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.]*(\?\S+)?)?)?)/, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
             response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
             
             // MESSAGE: The default message from a user
