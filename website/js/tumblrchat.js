@@ -26,6 +26,7 @@ $(function() {
         lastTimestamp = 0,
         lastMessage   = '',
         topic         = '',
+        isMobile      = false,
         lastScroll    = 0;
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -192,11 +193,17 @@ $(function() {
             var message   = $('#text').val();
             var timestamp = new Date().getTime();
 
-            if (message.search(/^\/users/) == 0) {
-                if ($('#usersbox').width()) {
+            if (message.search(/^\/mobile/) == 0) {
+                if (!isMobile) {
+                    isMobile = true;
+                    $('.topbuttons, .toplink, #notice').fadeOut(250);
+                    $('#chat').css({overflowY: 'hidden'});
                     $('#usersbox').animate({width: '0%', opacity: 0}, 250);
                     $('#chatbox').animate({width: '100%'}, 250);
                 } else {
+                    isMobile = false;
+                    $('.topbuttons, .toplink, #notice').fadeIn(250);
+                    $('#chat').css({overflowY: 'auto'});
                     $('#usersbox').animate({width: '15%', opacity: 1}, 250);
                     $('#chatbox').animate({width: '85%'}, 250);
                 }
@@ -210,8 +217,9 @@ $(function() {
 
             } else if (message.search(/^\/help$/) == 0) {
                 displayMessage({
-                    type:    'status',
-                    message: 'Welcome to Tumblr Chat!You may type /topic to read the current topic, /away to go idle, /ignore USERNAME to ignore someone, /users to toggle user window, or /help to read this prompt at any time. We don\'t allow caps because they hold too much power, follow gets filtered because you shouldn\'t be so desperate, and everything else is out of pure boredom. Enjoy!'});
+                    type:     'status',
+                    override: true,
+                    message:  'Welcome to Tumblr Chat!You may type /topic to read the current topic, /away to go idle, /ignore USERNAME to ignore someone, /users to toggle user window, or /help to read this prompt at any time. We don\'t allow caps because they hold too much power, follow gets filtered because you shouldn\'t be so desperate, and everything else is out of pure boredom. Enjoy!'});
                 $('#text').val('');
 
             } else if (message.search(/^\/ignore [a-z0-9-]+$/) == 0) {
@@ -234,7 +242,7 @@ $(function() {
                     }
                 }
 
-            } else if (!users[clientId].op && (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 350)) {
+            } else if (clientId in users && 'op' in users[clientId] && !users[clientId].op && (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 350)) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',
@@ -308,7 +316,7 @@ $(function() {
 
             // Clean message then update usernames to tumblr links
             response.message = strip(response.message);
-            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.]*(\?\S+)?)?)?)/, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
+            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?)?)?)/, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
             response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
             
             // MESSAGE: The default message from a user
