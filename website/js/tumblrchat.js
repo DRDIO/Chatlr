@@ -162,7 +162,8 @@ $(function() {
 
         // EVENT: On resize, move to bottom of the screen
         $(window).resize(function(e) {
-            var position = $('#chat').scrollTop($('#chat')[0].scrollHeight);
+            lastScroll = $('#chat').scrollTop();
+            $('#chat').scrollTop($('#chat')[0].scrollHeight);
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -207,6 +208,10 @@ $(function() {
                     $('#usersbox').animate({width: '15%', opacity: 1}, 250);
                     $('#chatbox').animate({width: '85%'}, 250);
                 }
+
+                // No matter what, go to bottom of the page
+                lastScroll = $('#chat').scrollTop();
+                $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 $('#text').val('');
 
             } else if (message.search(/^\/topic$/) == 0) {
@@ -276,6 +281,7 @@ $(function() {
                         },
                         'Yes': function() {
                             window.open(url);
+                            $(this).dialog('close');
                         }
                     },
                     width: '40%',

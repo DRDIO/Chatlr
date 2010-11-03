@@ -256,6 +256,14 @@ body, input {
     padding: 0.5em 1em 1em;
 }
 
+.ui-dialog .ui-dialog-buttonpane {
+    background-image: none;
+    border: none;
+    margin: 0;
+    padding: 0.3em 0.4em 0.7em;
+    text-align: left;
+}
+
 .page {
     display: none;
 }
