@@ -179,8 +179,8 @@ $(function() {
             $('<div/>')
                 .attr('title', $(this).attr('title'))
                 .dialog({
-                    width: '40%',
-                    minWidth: 320,
+                    width: $(window).width() * 0.8,
+                    maxWidth: 320,
                     minHeight: 0,
                     resizable: false})
                 .html(message)
