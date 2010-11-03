@@ -180,7 +180,8 @@ $(function() {
                 .attr('title', $(this).attr('title'))
                 .dialog({
                     width: '40%',
-                    minWidth: '320px',
+                    minWidth: 320,
+                    minHeight: 0,
                     resizable: false})
                 .html(message)
                 .parent().position({my: 'center', at: 'center', of: document});
@@ -286,6 +287,7 @@ $(function() {
                     },
                     width: $(window).width() * 0.8,
                     maxWidth: 320,
+                    minHeight: 0,
                     resizable: false})
                 .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
                 .parent().position({my: 'center', at: 'center', of: document});
@@ -422,6 +424,7 @@ function notifyFailure(hasSocket)
             .dialog({
                 width: $(window).width() * 0.8,
                 maxWidth: 320,
+                minHeight: 0,
                 resizable: false})
             .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
             .parent().position({my: 'top', at: 'top', of: document, offset: '0 24'});
