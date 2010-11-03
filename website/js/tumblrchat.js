@@ -136,7 +136,7 @@ $(function() {
 
                         // Remove local user
                         $('#count').text(--userCount);
-                        $('title').html('Tumblr Chat (' + userCount + ')');
+                        $('title').html('(' + userCount + ') Tumblr Chat');
 
                         // Remove user from side and delete
                         removeUser(serverRes.id);

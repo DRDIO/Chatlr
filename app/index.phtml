@@ -13,6 +13,13 @@
             var tumblrToken = '<?php echo $access_token['oauth_token']; ?>';
         </script>
         <link rel="stylesheet" type="text/css" href="/css/design.css" />
+
+<?php if(isset($_SESSION['mobile']) && $_SESSION['mobile']): ?>
+
+        <link rel="stylesheet" type="text/css" href="/css/mobile.css" />
+
+<?php endif; ?>
+        
     </head>
     <body>
         <div id="top">
