@@ -260,8 +260,12 @@ body, input {
     background-image: none;
     border: none;
     margin: 0;
-    padding: 0.3em 0.4em 0.7em;
+    padding: 0 0.5em;
     text-align: left;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: 0 0.5em 0.5em;
 }
 
 .page {
