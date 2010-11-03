@@ -284,8 +284,8 @@ $(function() {
                             $(this).dialog('close');
                         }
                     },
-                    width: '40%',
-                    minWidth: '320px',
+                    width: '90%',
+                    maxWidth: '320px',
                     resizable: false})
                 .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
                 .parent().position({my: 'center', at: 'center', of: document});
