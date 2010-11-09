@@ -277,7 +277,7 @@ $(function() {
                     }
                 }
 
-            } else if (clientId in users && 'op' in users[clientId] && !users[clientId].op && (message == lastMessage || timestamp - lastTimestamp < 2500 || message.length > 350)) {
+            } else if (clientId in users && 'op' in users[clientId] && !users[clientId].op && (message == lastMessage || timestamp - lastTimestamp < 2000 || message.length > 350)) {
                 // Quickly display message to self in pink
                 displayMessage({
                     type:    'status',

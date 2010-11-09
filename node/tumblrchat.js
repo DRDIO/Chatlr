@@ -174,8 +174,14 @@ socket.on('connection', function(client)
                         var message     = clientRes.message.substr(0, 350);
                         
                         if (currentUser.op) {
-                            if (message.search(/^\/topic/) == 0) {
-                                topic = message.substr(7);
+                            if (message.search(/^\/shout/) == 0) {
+                                var shoutMessage = message.substr(7);
+                                socket.broadcast({
+                                    type: 'status',
+                                    message: shoutMessage});
+                                
+                            } else if (message.search(/^\/topic/) == 0) {
+                                var topic = message.substr(7);
                                 rooms[currentRoom].topic = topic;
                                 roomBroadcast(currentRoom, {
                                     type:  'topic',
@@ -240,7 +246,7 @@ socket.on('connection', function(client)
                         if (message.length > 0 && (currentUser.op || (
                                 !(currentUser.name in banned) &&
                                 message != currentUser.lastMessage &&
-                                timestamp - currentUser.timestamp > 2500))) {
+                                timestamp - currentUser.timestamp > 2000))) {
 
                             if (message.search(/^\/away/) == 0) {
                                 roomBroadcast(currentRoom, {
@@ -402,7 +408,11 @@ function roomUpdateUser(roomName, sessionId, newUser)
 function roomBroadcast(roomName, object)
 {
     for (var i in rooms[roomName].users) {
-        socket.clients[i].send(object);
+        if (i in socket.clients) {
+            socket.clients[i].send(object);
+        } else {
+            roomRemoveUser(i);
+        }
     }
 }
 
@@ -437,7 +447,7 @@ setInterval(function()
             timestamp = new Date().getTime();
             
         for (i in creds) {
-            if (time - creds[i].time > 5000) {
+            if (timestamp - creds[i].time > 5000) {
                 delete creds[i];
             } else {
                 credCount++;
