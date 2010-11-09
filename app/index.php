@@ -39,6 +39,7 @@ $connection = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oaut
 
 /* If method is set change API call made. Test is called by default. */
 $content = $connection->post('api/authenticate');
+
 if (!$content || !isset($content->tumblelog) || !isset($content->tumblelog[0])) {
     session_unset();
     die('Cannot connect!');

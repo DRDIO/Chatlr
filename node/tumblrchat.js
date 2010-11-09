@@ -26,7 +26,7 @@ var ops     = {'kevinnuut': '', 'lacey': '', 'gompr': '', 'topherchris': '', 'br
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
     // Create unix socket to talk to PHP server
-    unix   = net.createServer(function(stream) {
+    unix = net.createServer(function(stream) {
         try {
             stream.setEncoding('utf8');
             stream.on('data', function(data) {
@@ -79,10 +79,51 @@ socket.on('connection', function(client)
         {
             try {
                 // Server can receive either credentials or a message to share
-                if ('type' in clientRes && typeof clientRes.type == 'string' && clientRes.type in {'message': '', 'credentials': ''}) {
+                if ('type' in clientRes && typeof clientRes.type == 'string' && clientRes.type in {'message': '', 'credentials': '', 'roomchange': ''}) {
 
+                    // ROOM CHANGE: User is requesting to change rooms
+                    if (clientRes.type == 'roomchange' && 'room' in clientRes && typeof clientRes.room == 'string' && clientRes.room.search(/^[a-z0-9-]+$/i) != -1) {
+                        try {
+                            // If Room does not exist, CREATE IT
+                            if (!(clientRes.room in rooms)) {
+                                rooms[clientRes.room]           = {};
+                                rooms[clientRes.room].users     = {};
+                                rooms[clientRes.room].userCount = 0;
+
+                                console.log(users[client.sessionId].name + ' created room ' + clientRes.room);
+                            }
+
+                            // If user is not moving to the same room
+                            if (!(client.sessionId in rooms[clientRes.room].users)) {
+                                rooms[clientRes.room].users[client.sessionId] = new Date().getTime();
+                                rooms[clientRes.room].userCount++;
+
+                                console.log(users[client.sessionId].name + ' added to room ' + clientRes.room);
+
+                                // Find user in its previous room and remove it
+                                for (var i in rooms) {
+                                    if (i != clientRes.room && client.sessionId in rooms[i].users) {
+                                        delete(rooms[i].users[client.sessionId]);
+                                        rooms[i].userCount--;
+
+                                        console.log(users[client.sessionId].name + ' removed from room ' + i);
+
+                                        // Delete empty rooms
+                                        if (rooms[i].userCount <= 0) {
+                                            delete(rooms[i]);
+
+                                            console.log('room ' + i + ' deleted');
+                                        }
+                                    }
+                                }
+                            }
+                        } catch(err) {
+                            console.log('roomchange');
+                            console.log(err);
+                        }
+                    
                     // CREDENTIALS: passed from client with authkey to pull from PHP unix socket CREDS
-                    if (clientRes.type == 'credentials' && 'token' in clientRes && typeof clientRes.token == 'string' && clientRes.token in creds) {
+                    } else if (clientRes.type == 'credentials' && 'token' in clientRes && typeof clientRes.token == 'string' && clientRes.token in creds) {
                         try {
                             // Check if user is already in chat to prevent duplicates
                             for (var i in users) {
@@ -122,6 +163,7 @@ socket.on('connection', function(client)
                                 user: currentUser});
                         } catch(err) {
                             client.disconnect.end();
+                            console.log('credentials');
                             console.log(err);
                         }
 
@@ -144,13 +186,22 @@ socket.on('connection', function(client)
                                     dropUser(name, 'has been kicked...');
                                     return;
 
-                                } else if (message.search(/^\/ban [a-z0-9-]+/i) == 0) {
-                                    var name = message.substr(5);
+                                } else if (message.search(/^\/ban [a-z0-9-]+( \d+)?/i) == 0) {
+                                    // Get the name and duration of ban in minutes
+                                    // If duration is blank, set the ban to infinity
+                                    var split = message.split(' ');
+                                    var name  = split[1];                                    
+
                                     if (name in banned) {
                                         delete banned[name];
                                     } else {
-                                        banned[name] = '';
-                                        dropUser(name, 'has been banned...');
+                                        // Duration in milliseconds
+                                        var currentTime = new Date().getTime();
+                                        var duration    = (2 in split ? (currentTime + parseInt(split[2]) * 60000) : -1);
+                                        banned[name]    = duration;
+
+                                        // Tell everyone they have been banned, with possible time
+                                        dropUser(name, 'has been banned' + (duration != -1 ? ' for ' + split[2] + ' minutes' : '') + '...');
                                     }                                    
                                     return;
                                 }
@@ -173,14 +224,11 @@ socket.on('connection', function(client)
 
                                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-                                message = message.replace(/(niggah|nigger|nigga)/gi, 'ninja');
-                                message = message.replace(/follow(ing|ed)?( me)?/gi, 'avoid$1$2');
-
-                                // I hate similar charactesr in a row
-                                message = message.replace(/(.+?)\1{4,}/g, '$1');
+                                // Replace repetitive characters
+                                message = message.replace(/(.+?)\1{4,}/g, '$1$1$1$1');
 
                                 // I also hate capslocking
-                                if (message.search(/[A-Z ]{5,}/) != -1) {
+                                if (message.search(/[A-Z ]{6,}/) != -1) {
                                     message = message.toLowerCase();
                                 }
 
@@ -208,6 +256,7 @@ socket.on('connection', function(client)
                                     message: message});
                             }
                         } catch(err) {
+                            console.log('message');
                             console.log(err);
                         }
 
@@ -281,7 +330,6 @@ function dropUser(name, message) {
 
             // Remove user and last grief from server
             delete users[i];
-
             if (i in last) {
                 delete last[i];
             }
@@ -348,9 +396,17 @@ setInterval(function()
             lastCount++;
         }
 
+        var currentTime = new Date().getTime();
+        for (i in banned) {
+            if (banned[i] != -1 && banned[i] < currentTime) {
+                delete(banned[i]);
+                console.log(i + ' has been unbanned');
+            }
+        }
+
         console.log('users: ' + userCount + ' creds: ' + credCount + ' rooms: ' + roomCount + ' buffer: ' + buffCount + ' last: ' + lastCount + ' unix: ' + unix.connections);
     } catch(err) {
         console.log('Error with data cleanup');
         console.log(err);
     }
-}, 300000);
+}, 60000);

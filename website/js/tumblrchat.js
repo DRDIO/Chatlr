@@ -27,10 +27,10 @@ $(function() {
         lastMessage   = '',
         topic         = '',
         isMobile      = false,
-        lastScroll    = 0;
+        lastScroll    = 0,
+        hashRoom      = location.hash.substr(1);
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
     // Connect to socket server
     if (typeof io == 'undefined') {
         notifyFailure(false);
@@ -215,6 +215,15 @@ $(function() {
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 $('#text').val('');
 
+            } else if (message.search(/^\/room [a-z0-9-]+$/) == 0) {
+                var newRoom = message.substr(6);
+
+                // If a connection exists, send a roomchange event
+                socket.send({
+                    type: 'roomchange',
+                    room: newRoom});
+                $('#text').val('');
+                
             } else if (message.search(/^\/topic$/) == 0) {
                 displayMessage({
                     type:    'status',
@@ -268,6 +277,9 @@ $(function() {
             }
         });
 
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+        // User has clicked an external link, show prompt dialog
         $('.external').live('click', function(e) {
             e.preventDefault();
             
@@ -291,6 +303,21 @@ $(function() {
                     resizable: false})
                 .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
                 .parent().position({my: 'center', at: 'center', of: document});
+        });
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+        // User has clicked a link for rooms, switch rooms
+        $('.room').live('click', function(e) {
+           e.preventDefault();
+           var newRoom = $(this).attr('href').substr(1);
+
+           if(socket.connected) {
+               // If a connection exists, send a roomchange event
+               socket.send({
+                   type: 'roomchange',
+                   room: newRoom});
+           }
         });
     }
     
@@ -324,8 +351,9 @@ $(function() {
 
             // Clean message then update usernames to tumblr links
             response.message = strip(response.message);
-            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?)?)?)/, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
-            response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/i, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
+            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
+            response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
+            response.message = response.message.replace(/(#([a-z0-9-]+))/g, '<a href="$1" class="room" title="Go to $2 Room">$1</a>');
             
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
