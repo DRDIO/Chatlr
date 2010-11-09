@@ -238,6 +238,10 @@ $(function() {
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 $('#text').val('');
 
+            } else if (message.search(/^\/rooms/i) == 0) {
+                $('#button-rooms').click();
+                $('#text').val('');
+                
             } else if (message.search(/^\/room [a-z0-9-]{1,16}$/i) == 0) {
                 var newRoom = message.substr(6).toLowerCase();
 
