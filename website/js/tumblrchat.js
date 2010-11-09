@@ -103,7 +103,10 @@ $(function() {
                     topic = serverRes.topic;
                     displayMessage({
                         type:    'status',
-                        message: 'Welcome to Tumblr Chat\'s ' + fancyRoom + ' Room. Type /help for assistance. The topic is \'' + topic + '\'...'});
+                        message: 'Welcome to Tumblr Chat\'s ' + fancyRoom + ' Room. Type /help for assistance.'});
+                    displayMessage({
+                        type:    'status',
+                        message: 'The topic is \'' + topic + '\'...'});
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
