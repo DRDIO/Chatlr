@@ -218,7 +218,7 @@ $(function() {
             var message   = $('#text').val();
             var timestamp = new Date().getTime();
 
-            if (message.search(/^\/mobile/) == 0) {
+            if (message.search(/^\/mobile/i) == 0) {
                 if (!isMobile) {
                     isMobile = true;
                     $('.topbuttons, .toplink, #notice').fadeOut(250);
@@ -238,8 +238,8 @@ $(function() {
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 $('#text').val('');
 
-            } else if (message.search(/^\/room [a-z0-9-]{1,16}$/) == 0) {
-                var newRoom = message.substr(6);
+            } else if (message.search(/^\/room [a-z0-9-]{1,16}$/i) == 0) {
+                var newRoom = message.substr(6).toLowerCase();
 
                 // If a connection exists, send a roomchange event
                 socket.send({
@@ -247,17 +247,17 @@ $(function() {
                     room: newRoom});
                 $('#text').val('');
                 
-            } else if (message.search(/^\/topic$/) == 0) {
+            } else if (message.search(/^\/topic$/i) == 0) {
                 displayMessage({
                     type:    'status',
                     message: 'The topic is \'' + topic + '\'...'});
                 $('#text').val('');
 
-            } else if (message.search(/^\/help$/) == 0) {
+            } else if (message.search(/^\/help$/i) == 0) {
                 $('#button-help').click();
                 $('#text').val('');
 
-            } else if (message.search(/^\/ignore [a-z0-9-]+$/) == 0) {
+            } else if (message.search(/^\/ignore [a-z0-9-]+$/i) == 0) {
                 var name = message.substr(8);
                 if (name in ignore) {
                     delete ignore[name];
