@@ -20,6 +20,7 @@ $(function() {
     
     // Initialize variables
     var clientId,
+        roomName      = 'main',
         users         = {},
         ignore        = {},
         userCount     = 0,
@@ -45,6 +46,15 @@ $(function() {
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+        // CONNECT > SEND CREDENTIALS
+        // As soon as we connect, send credentials. Chat is still disabled at this time.
+        socket.on('connect', function() {
+            socket.send({
+                type:  'credentials',
+                room:  hashRoom,
+                token: tumblrToken});
+        });
+
         socket.on('disconnect', function()
         {
             notifyFailure(false);
@@ -53,7 +63,7 @@ $(function() {
         socket.on('message', function(serverRes)
         {
             // Only accept messages with type property
-            if ('type' in serverRes && serverRes.type in {'init': '', 'message': '', 'status': '', 'topic': ''}) {
+            if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': ''}) {
                 // First message sent from server, initalize chat
                 if (serverRes.type == 'topic') {
                     topic = serverRes.topic;
@@ -61,19 +71,19 @@ $(function() {
                         type: 'status',
                         message: 'The topic is now \'' + topic + '\'...'});
 
-                } else if (serverRes.type == 'init') {
-                    socket.send({
-                        type:  'credentials',
-                        token: tumblrToken});
+                } else if (serverRes.type == 'approved') {
 
                     // Save self ID for later reference
                     clientId = serverRes.id;
-
+                    roomName = serverRes.room;
+                    
                     // Initialize self user with php vars
                     // On init, a list of users is grabbed (and add yourself)
                     users = serverRes.users;
 
                     // Add users to the chat list
+                    clearUsers(i);
+                    userCount = 0;
                     for (var i in users) {
                         displayUser(i);
                         userCount++;
@@ -84,17 +94,24 @@ $(function() {
                         displayMessage(serverRes.buffer[j]);
                     }
 
+                    var fancyRoom = roomName.substr(0,1).toUpperCase() + roomName.substr(1);
+
+                    // Update room hash
+                    location.hash = (roomName != 'main' ? roomName : '');
+                    
                     // Update status to say they joined
                     topic = serverRes.topic;
                     displayMessage({
                         type:    'status',
-                        message: 'Welcome to Tumblr Chat. Type /help to learn basic commands. The current topic is \'' + topic + '\'...'});
+                        message: 'Welcome to Tumblr Chat\'s ' + fancyRoom + ' Room. Type /help for assistance. The topic is \'' + topic + '\'...'});
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                     $('#count').text(userCount);
-                    $('title').text('Tumblr Chat');
+                    $('title').text('(' + userCount + ') Tumblr Chat | ' + fancyRoom + ' Room');
                     $('#loading').fadeOut(1000);
+                    $('#button-rooms').html(fancyRoom + ' Room');
+                    $('#dialog').remove();
 
                 // If a new user is coming or going, update list accordingly
                 } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {                    
@@ -178,11 +195,14 @@ $(function() {
 
             $('<div/>')
                 .attr('title', $(this).attr('title'))
+                .attr('id', 'dialog')
                 .dialog({
                     width: $(window).width() * 0.8,
                     maxWidth: 320,
                     minHeight: 0,
-                    resizable: false})
+                    resizable: false,
+                    close: function() {
+                        $(this).remove()}})
                 .html(message)
                 .parent().position({my: 'center', at: 'center', of: document});
         });
@@ -215,7 +235,7 @@ $(function() {
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 $('#text').val('');
 
-            } else if (message.search(/^\/room [a-z0-9-]+$/) == 0) {
+            } else if (message.search(/^\/room [a-z0-9-]{1,16}$/) == 0) {
                 var newRoom = message.substr(6);
 
                 // If a connection exists, send a roomchange event
@@ -231,10 +251,7 @@ $(function() {
                 $('#text').val('');
 
             } else if (message.search(/^\/help$/) == 0) {
-                displayMessage({
-                    type:     'status',
-                    override: true,
-                    message:  'Welcome to Tumblr Chat!You may type /topic to read the current topic, /away to go idle, /ignore USERNAME to ignore someone, /users to toggle user window, or /help to read this prompt at any time. We don\'t allow caps because they hold too much power, follow gets filtered because you shouldn\'t be so desperate, and everything else is out of pure boredom. Enjoy!'});
+                $('#button-help').click();
                 $('#text').val('');
 
             } else if (message.search(/^\/ignore [a-z0-9-]+$/) == 0) {
@@ -388,11 +405,16 @@ $(function() {
         }
     }
 
+    function clearUsers()
+    {
+        $('#users').html('');
+    }
+
     function displayUser(id)
     {
         var user;
         if ($('#users #u' + id).length) {
-            user = $('#users #u' + id);
+            user = $('#users #u' + id).empty();
         } else {
             user = $('<div/>').attr('id', 'u' + id);
         }
