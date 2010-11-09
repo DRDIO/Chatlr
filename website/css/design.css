@@ -300,7 +300,7 @@ body, input {
     float: left;
     background: rgba(0, 0, 0, 0.1);
     padding: 0.333em 0.5em 0.167em;
-    margin-right: 0.5em;
+    margin: 0 0.5em 0.5em 0;
     border-radius: 0.25em;
 }
 
