@@ -298,13 +298,13 @@ body, input {
 
 #dialog li {
     float: left;
-}
-
-#dialog li {
     background: rgba(0, 0, 0, 0.1);
     padding: 0.333em 0.5em 0.167em;
     margin-right: 0.5em;
     border-radius: 0.25em;
+}
+
+#dialog li a {    
     text-decoration: none;
 }
 
