@@ -42,10 +42,11 @@ body, input {
     font-weight: bold;
     color: #fff;
     border-radius: 0.3em;
-    -moz-border-radius: 0.25em;
+    -moz-border-radius: 0.3em;
     min-width: 0.6em;
     text-align: center;
     -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 #notice {
@@ -96,6 +97,7 @@ body, input {
     top: 0;
     left: 0;
     -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     padding: 3em 0 3em 0.5em;
     width: 15%;
     height: 100%;
@@ -104,6 +106,7 @@ body, input {
     #users {
         background: #fff;
         border-radius: 0.5em;
+        -moz-border-radius: 0.5em;
         height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
@@ -117,6 +120,7 @@ body, input {
         #users img {
             margin-right: 0.5em;
             border-radius: 0.25em;
+            -moz-border-radius: 0.25em;
             vertical-align: middle;
         }
 
@@ -155,6 +159,7 @@ body, input {
     top: 0;
     right: 0;
     -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     padding: 3em 0.5em;
     width: 85%;
     height: 100%;
@@ -163,6 +168,7 @@ body, input {
 #chat {
     background: #fff;
     border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
     width: 100%;
     height: 100%;
     overflow-x: hidden;
@@ -176,6 +182,7 @@ body, input {
 #chat img {
     margin-right: 0.5em;
     border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
     vertical-align: middle;
 }
 
@@ -220,12 +227,15 @@ body, input {
     width: 100%;
     padding: 0.5em;
     -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 #text {
     -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
     outline: none;
     border-radius: 0.5em;
+    -moz-border-radius: 0.5em;
     display: block;
     width: 100%;
     padding: 0.5em;
@@ -250,11 +260,13 @@ body, input {
 
 .ui-dialog .ui-dialog-titlebar {
     border-radius: 0.25em 0.25em 0 0;
+    -moz-border-radius: 0.25em 0.25em 0 0;
     padding: 1em;
 }
 
 .ui-dialog .ui-dialog-content {
     border-radius: 0 0 0.25em 0.25em;
+    -moz-border-radius: 0 0 0.25em 0.25em;
     line-height: 1.5em;
     padding: 0 1em 1em;
 }
