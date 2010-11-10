@@ -63,8 +63,8 @@ unix.listen('unix.socket');
 // Create IO socket
 var socket = io.listen(server, {transports: ['websocket']});
 
-// Setup a main room for everyone
-roomCreate('main');
+// Setup featured rooms that last forever
+roomCreateFeatured({'main': '', 'spam': '', 'german': '', 'italian': '', 'japanese': '', 'spanish': '', 'tagalog': ''});
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -143,6 +143,9 @@ socket.on('connection', function(client)
                         roomUpdateUser(clientRes.room, client.sessionId, currentUser);
 
                         roomSendInit(clientRes.room, client);
+
+                        // Send giant list of existing rooms when user joins
+                        roomNotifyInit();
 
                         // Broadcast to everyone that this user has connected
                         // This will also add the user to their user list
@@ -355,14 +358,19 @@ function roomRemoveUser(sessionId)
             console.log(sessionId + ' removed from room ' + i);
 
             // Delete empty rooms (Except for main room)
-            if (i != 'main' && rooms[i].userCount <= 0) {
+            if (!rooms[i].featured && rooms[i].userCount <= 0) {
                 delete rooms[i];
+                roomCount--;
                 console.log('room ' + i + ' deleted');
+
+                roomNotifyDelete(i);
             } else {
                 roomBroadcast(i, {
                     type: 'status',
                     mode: 'disconnect',
                     id:   sessionId});
+
+                roomNotifyChange(i, rooms[i].userCount, rooms[i].featured);
             }
             
             return oldUser;
@@ -372,7 +380,32 @@ function roomRemoveUser(sessionId)
     return false;
 }
 
-function roomCreate(roomName)
+function roomNotifyDelete(roomName)
+{
+    socket.broadcast({
+        type: 'room',
+        mode: 'delete',
+        room: roomName});
+}
+
+function roomNotifyChange(roomName, userCount, featured)
+{
+    socket.broadcast({
+        type: 'room',
+        mode: 'change',
+        room: roomName,
+        count: userCount,
+        featured: featured});
+}
+
+function roomNotifyInit()
+{
+    for (var i in rooms) {
+        roomNotifyChange(i, rooms[i].userCount, rooms[i].featured);
+    }
+}
+
+function roomCreate(roomName, featured)
 {
     // If Room does not exist, CREATE IT
     if (!(roomName in rooms)) {
@@ -380,12 +413,20 @@ function roomCreate(roomName)
             topic:     'Anything',
             buffer:    [],
             users:     {},
-            userCount: 0};
+            userCount: 0,
+            featured:  featured};
         roomCount++;
         console.log(roomName + ' created.');
+
+        roomNotifyChange(roomName, 0, rooms[roomName].featured);
     }
 }
 
+function roomCreateFeatured(roomNames) {
+    for (var i in roomNames) {
+        roomCreate(i, true);
+    }
+}
 function roomUpdateUser(roomName, sessionId, newUser)
 {
     // If user is not moving to the same room
@@ -402,6 +443,8 @@ function roomUpdateUser(roomName, sessionId, newUser)
             mode: 'connect',
             id:   sessionId,
             user: user});
+
+        roomNotifyChange(roomName, rooms[roomName].userCount, rooms[roomName].featured);
     }
 }
 
@@ -465,7 +508,7 @@ setInterval(function()
                 }
             }
 
-            if (rooms[i].userCount != 0 || i == 'main') {
+            if (rooms[i].userCount != 0 || rooms[i].featured) {
                 userCount += rooms[i].userCount;
                 roomCount++;
             } else {

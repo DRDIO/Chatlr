@@ -63,9 +63,38 @@ $(function() {
         socket.on('message', function(serverRes)
         {
             // Only accept messages with type property
-            if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': ''}) {
+            if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': '', 'room': ''}) {
+                // ROOMS
+                if (serverRes.type == 'room' && 'mode' in serverRes && serverRes.mode in {'delete': '', 'change': ''}) {
+                    if (serverRes.mode == 'delete') {
+                        // Delete room from list
+                        $('#page-rooms #r' + serverRes.room).remove();
+                    } else {
+                        // Update or add room to list
+                        var fancyRoom = serverRes.room.substr(0,1).toUpperCase() + serverRes.room.substr(1);
+                        var display   = '(' + serverRes.count + ') ' + fancyRoom + ' Room';                        
+                        var roomObj   = $('#page-rooms #r' + serverRes.room);
+                        
+                        if (roomObj.length) {
+                            roomObj.find('a').text(display);
+                        } else {
+                            roomObj = $('<li/>')
+                                .attr('id', 'r' + serverRes.room)
+                                .append($('<a/>')
+                                    .addClass('room')
+                                    .attr('href', '#' + serverRes.room)
+                                    .text(display));
+                            if (serverRes.featured) {
+                                $('#rooms-featured').append(roomObj);
+                            } else {
+                                $('#rooms-users').append(roomObj);
+                            }
+                        }
+                    }
+                }
+
                 // First message sent from server, initalize chat
-                if (serverRes.type == 'topic') {
+                else if (serverRes.type == 'topic') {
                     topic = serverRes.topic;
                     displayMessage({
                         type: 'status',
@@ -199,14 +228,15 @@ $(function() {
             $('<div/>')
                 .attr('title', $(this).attr('title'))
                 .attr('id', 'dialog')
+                .html(message)
                 .dialog({
                     width: $(window).width() * 0.8,
                     maxWidth: 320,
                     minHeight: 0,
+                    height: $(window).height() * 0.8,
                     resizable: false,
                     close: function() {
-                        $(this).remove()}})
-                .html(message)
+                        $(this).remove()}})                
                 .parent().position({my: 'center', at: 'center', of: document});
         });
 
@@ -311,6 +341,7 @@ $(function() {
             
             $('<div/>')
                 .attr('title', 'Visit External Link?')
+                .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
                 .dialog({
                     buttons: {
                         'No': function() {
@@ -324,8 +355,8 @@ $(function() {
                     width: $(window).width() * 0.8,
                     maxWidth: 320,
                     minHeight: 0,
+                    maxHeight: $(window).height() * 0.8,
                     resizable: false})
-                .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
                 .parent().position({my: 'center', at: 'center', of: document});
         });
 
@@ -478,12 +509,13 @@ function notifyFailure(hasSocket)
 
         $('<div/>')
             .attr('title', 'Unable to Connect')
+            .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
             .dialog({
                 width: $(window).width() * 0.8,
                 maxWidth: 320,
                 minHeight: 0,
+                maxHeight: $(window).height() * 0.8,
                 resizable: false})
-            .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
             .parent().position({my: 'top', at: 'top', of: document, offset: '0 24'});
     }
 }
