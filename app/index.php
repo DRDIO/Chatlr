@@ -20,9 +20,9 @@ if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_t
     /* If last connection failed don't display authorization link. */
     switch ($connection->http_code) {
         case 200:
-            /* Build authorize URL and redirect user to Twitter. */
+            /* Build authorize URL and redirect user to Twitter. */            
             $url = $connection->getAuthorizeURL($token);
-            header('Location: ' . $url);
+            require_once 'store.phtml';
         default:
             /* Show notification if something went wrong. */
             echo 'Could not connect to Tumblr. Refresh the page or try again later.';

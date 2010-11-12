@@ -12,7 +12,12 @@ $.fn.dotdotend = function() {
     });
 };
 
-var socket;
+var socket,
+    tempHash = sessionStorage.getItem('hash');
+if (tempHash != null) {
+    location.hash = tempHash;
+}
+sessionStorage.clear();
 
 $(function() {
     $('title').text('Tumblr Chat (Connecting...)');
