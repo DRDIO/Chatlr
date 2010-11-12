@@ -80,7 +80,7 @@ socket.on('connection', function(client)
             // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
             // ROOM CHANGE: User is requesting to change rooms
-            if (clientRes.type == 'roomchange' && 'room' in clientRes && typeof clientRes.room == 'string' && clientRes.room.search(/^[a-z0-9-]{1,16}$/i) != -1) {
+            if (clientRes.type == 'roomchange' && 'room' in clientRes && typeof clientRes.room == 'string' && clientRes.room.search(/^!?[a-z0-9-]{1,16}$/i) != -1) {
                 try {
                     clientRes.room = clientRes.room.toLowerCase();
                     
@@ -99,7 +99,7 @@ socket.on('connection', function(client)
                 try {
                     if (clientRes.token in creds) {
                         // Step 1: Get Room (Or set to main room)
-                        if (!('room' in clientRes) || typeof clientRes.room != 'string' || clientRes.room.search(/^[a-z0-9-]{1,16}$/i) == -1) {
+                        if (!('room' in clientRes) || typeof clientRes.room != 'string' || clientRes.room.search(/^!?[a-z0-9-]{1,16}$/i) == -1) {
                             clientRes.room = 'main';
                         } else {
                             // They are providing a room name, make sure it exists
@@ -182,6 +182,7 @@ socket.on('connection', function(client)
                                 socket.broadcast({
                                     type: 'status',
                                     message: shoutMessage});
+                                return;
                                 
                             } else if (message.search(/^\/topic/) == 0) {
                                 var topic = message.substr(7);
@@ -191,7 +192,7 @@ socket.on('connection', function(client)
                                     topic: topic});
                                 return;
 
-                            } else if (message.search(/^\/kick [a-z0-9-]+( [a-z0-9-]{1,16})?/i) == 0) {
+                            } else if (message.search(/^\/kick [a-z0-9-]+( !?[a-z0-9-]{1,16})?/i) == 0) {
                                 var split = message.split(' ');
                                 var name  = split[1];
                                 var room  = (2 in split ? split[2] : false);
@@ -370,7 +371,9 @@ function roomRemoveUser(sessionId)
                     mode: 'disconnect',
                     id:   sessionId});
 
-                roomNotifyChange(i, rooms[i].userCount, rooms[i].featured);
+                if (!rooms[i].hidden) {
+                    roomNotifyChange(i, rooms[i].userCount, rooms[i].featured);
+                }
             }
             
             return oldUser;
@@ -401,12 +404,14 @@ function roomNotifyChange(roomName, userCount, featured)
 function roomNotifyInit()
 {
     for (var i in rooms) {
-        roomNotifyChange(i, rooms[i].userCount, rooms[i].featured);
+        if (!rooms[i].hidden) {
+            roomNotifyChange(i, rooms[i].userCount, rooms[i].featured);
+        }
     }
 }
 
 function roomCreate(roomName, featured)
-{
+{    
     // If Room does not exist, CREATE IT
     if (!(roomName in rooms)) {
         rooms[roomName] = {
@@ -414,11 +419,14 @@ function roomCreate(roomName, featured)
             buffer:    [],
             users:     {},
             userCount: 0,
-            featured:  featured};
+            featured:  featured,
+            hidden:    (roomName.substr(0, 1) == '!')};
         roomCount++;
         console.log(roomName + ' created.');
 
-        roomNotifyChange(roomName, 0, rooms[roomName].featured);
+        if (!rooms[roomName].hidden) {
+            roomNotifyChange(roomName, 0, rooms[roomName].featured);
+        }
     }
 }
 
@@ -444,7 +452,9 @@ function roomUpdateUser(roomName, sessionId, newUser)
             id:   sessionId,
             user: user});
 
-        roomNotifyChange(roomName, rooms[roomName].userCount, rooms[roomName].featured);
+        if (!rooms[roomName].hidden) {
+            roomNotifyChange(roomName, rooms[roomName].userCount, rooms[roomName].featured);
+        }
     }
 }
 

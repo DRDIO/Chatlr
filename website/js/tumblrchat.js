@@ -14,6 +14,7 @@ $.fn.dotdotend = function() {
 
 var socket,
     tempHash = sessionStorage.getItem('hash');
+    
 if (tempHash != null) {
     location.hash = tempHash;
 }
@@ -76,7 +77,7 @@ $(function() {
                         $('#page-rooms #r' + serverRes.room).remove();
                     } else {
                         // Update or add room to list
-                        var fancyRoom = serverRes.room.substr(0,1).toUpperCase() + serverRes.room.substr(1);
+                        var fancyRoom = roomGetFancyName(serverRes.room);
                         var display   = '(' + serverRes.count + ') ' + fancyRoom + ' Room';                        
                         var roomObj   = $('#page-rooms #r' + serverRes.room);
                         
@@ -128,7 +129,7 @@ $(function() {
                         displayMessage(serverRes.buffer[j]);
                     }
 
-                    var fancyRoom = roomName.substr(0,1).toUpperCase() + roomName.substr(1);
+                    var fancyRoom = roomGetFancyName(roomName);
 
                     // Update room hash
                     location.hash = (roomName != 'main' ? roomName : '');
@@ -277,7 +278,7 @@ $(function() {
                 $('#button-rooms').click();
                 $('#text').val('');
                 
-            } else if (message.search(/^\/room [a-z0-9-]{1,16}$/i) == 0) {
+            } else if (message.search(/^\/room !?[a-z0-9-]{1,16}$/i) == 0) {
                 var newRoom = message.substr(6).toLowerCase();
 
                 // If a connection exists, send a roomchange event
@@ -382,6 +383,20 @@ $(function() {
     }
     
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+    function roomGetFancyName(roomName)
+    {
+        if (roomName.charAt(0) == '!') {
+            roomName = roomName.substr(1);
+        }
+        
+        var parts = roomName.split('-');
+        for (var i in parts) {
+            parts[i] = parts[i].substr(0, 1).toUpperCase() + parts[i].substr(1);
+        }
+        
+        return parts.join(' ');
+    }
 
     // FUNCTION: Display various message types to the screen
     function displayMessage(response)
