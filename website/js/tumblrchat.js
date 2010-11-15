@@ -21,9 +21,10 @@ if (tempHash != null) {
 sessionStorage.clear();
 
 $(function() {
-    $('title').text('Tumblr Chat (Connecting...)');
+    document.title = 'Tumblr Chat (Connecting...)'
     $('#loading-pulse').dotdotdot();
-    
+
+
     // Initialize variables
     var clientId,
         roomName      = 'main',
@@ -43,9 +44,8 @@ $(function() {
         notifyFailure(false);
     } else {
 
-        socket = new io.Socket(null, {
-            port: 8080,
-            transports: ['websocket']});
+        // socket = new io.Socket(null, {port: 8080, transports: ['websocket']});
+        socket = new io.Socket(null, {port: 8080});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
@@ -78,9 +78,9 @@ $(function() {
                     } else {
                         // Update or add room to list
                         var fancyRoom = roomGetFancyName(serverRes.room);
-                        var display   = '(' + serverRes.count + ') ' + fancyRoom + ' Room';                        
+                        var display   = '(' + serverRes.count + ') ' + fancyRoom + ' Room';
                         var roomObj   = $('#page-rooms #r' + serverRes.room);
-                        
+
                         if (roomObj.length) {
                             roomObj.find('a').text(display);
                         } else {
@@ -111,7 +111,7 @@ $(function() {
                     // Save self ID for later reference
                     clientId = serverRes.id;
                     roomName = serverRes.room;
-                    
+
                     // Initialize self user with php vars
                     // On init, a list of users is grabbed (and add yourself)
                     users = serverRes.users;
@@ -123,7 +123,7 @@ $(function() {
                         displayUser(i);
                         userCount++;
                     }
-                    
+
                     // Output buffer messages
                     for (var j in serverRes.buffer) {
                         displayMessage(serverRes.buffer[j]);
@@ -133,7 +133,7 @@ $(function() {
 
                     // Update room hash
                     location.hash = (roomName != 'main' ? roomName : '');
-                    
+
                     // Update status to say they joined
                     topic = serverRes.topic;
                     displayMessage({
@@ -146,13 +146,13 @@ $(function() {
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                     $('#count').text(userCount);
-                    $('title').text('(' + userCount + ') Tumblr Chat | ' + fancyRoom + ' Room');
+                    document.title = '(' + userCount + ') Tumblr Chat | ' + fancyRoom + ' Room'
                     $('#loading').fadeOut(1000);
                     $('#button-rooms').html(fancyRoom + ' Room');
                     $('#dialog').remove();
 
                 // If a new user is coming or going, update list accordingly
-                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {                    
+                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {
                     // User is set to away
                     if (serverRes.mode == 'away' && serverRes.id in users) {
                         $('#u' + serverRes.id).addClass('idle');
@@ -168,7 +168,7 @@ $(function() {
                     } else if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
                         users[serverRes.id] = serverRes.user;
                         $('#count').text(++userCount);
-                        $('title').html('(' + userCount + ') Tumblr Chat');
+                        document.title = '(' + userCount + ') Tumblr Chat';
 
                         // Display user on side
                         displayUser(serverRes.id);
@@ -192,7 +192,7 @@ $(function() {
 
                         // Remove local user
                         $('#count').text(--userCount);
-                        $('title').html('(' + userCount + ') Tumblr Chat');
+                        document.title = '(' + userCount + ') Tumblr Chat';
 
                         // Remove user from side and delete
                         removeUser(serverRes.id);
@@ -201,17 +201,18 @@ $(function() {
 
                 // Otherwise, process whatever message or generic status comes in
                 } else if (serverRes.type == 'message' || serverRes.type == 'status') {
-                    $('#u' + serverRes.id).removeClass('idle');
-
-                    // If user isn't being ignored, display message
                     if (serverRes.id in users && !(users[serverRes.id].name in ignore)) {
+                        $('#u' + serverRes.id).removeClass('idle');
+                        
                         // Pull users from local array and display message or status
                         serverRes.user = users[serverRes.id];
+                        displayMessage(serverRes);
+                    } else {
                         displayMessage(serverRes);
                     }
                 }
             }
-        });
+        }); // end onMessage()
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -278,7 +279,7 @@ $(function() {
                 $('#button-rooms').click();
                 $('#text').val('');
                 
-            } else if (message.search(/^\/room !?[a-z0-9-]{1,16}$/i) == 0) {
+            } else if (message.search(/^\/room !?[a-z0-9-]{2,16}$/i) == 0) {
                 var newRoom = message.substr(6).toLowerCase();
 
                 // If a connection exists, send a roomchange event
@@ -428,7 +429,7 @@ $(function() {
             response.message = strip(response.message);
             response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
             response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
-            response.message = response.message.replace(/(#(!?[a-z0-9-]+))/gi, '<a href="$1" class="room" title="Go to $2 Room">$1</a>');
+            response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$1" class="room" title="Go to $2 Room">$1</a>');
             
             // MESSAGE: The default message from a user
             if (response.type == 'message') {
@@ -525,7 +526,7 @@ function notifyFailure(hasSocket)
         $('#loading-pulse').dotdotend();
         $('#loading').fadeIn(250);
 
-        $('title').text('Tumblr Chat (Error!)');
+        document.title = 'Tumblr Chat (Error!)'
 
         $('<div/>')
             .attr('title', 'Unable to Connect')

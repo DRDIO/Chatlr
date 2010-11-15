@@ -1,84 +1,107 @@
 <?php
 
-session_start();
-require_once 'auth/TumblrOAuth.php';
-require_once '../config/credentials.php';
+try {
+    session_start();
+    require_once 'auth/TumblrOAuth.php';
+    require_once '../config/credentials.php';
 
-if (empty($_SESSION['access_token']) || empty($_SESSION['access_token']['oauth_token']) || empty($_SESSION['access_token']['oauth_token_secret'])) {
-    session_unset();
+    // No session created so set one up.  This will route to Tumblr.
+    if (!isset($_SESSION['access_token']) || !isset($_SESSION['access_token']['oauth_token']) || !isset($_SESSION['access_token']['oauth_token_secret'])) {
+        session_unset();
 
-    /* Build TumblrOAuth object with client credentials. */
-    $connection = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET);
+        /* Build TumblrOAuth object with client credentials. */
+        $connection = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET);
 
-    /* Get temporary credentials. */
-    $request_token = $connection->getRequestToken(OAUTH_CALLBACK);
+        /* Get temporary credentials. */
+        $requestToken = $connection->getRequestToken(OAUTH_CALLBACK);
+        if (empty($requestToken)) {
+            throw new Exception('Could not make initial request to Tumblr.');
+        }
+        
+        /* Save temporary credentials to session. */
+        $_SESSION['oauth_token'] = $token = $requestToken['oauth_token'];
+        $_SESSION['oauth_token_secret'] = $requestToken['oauth_token_secret'];
 
-    /* Save temporary credentials to session. */
-    $_SESSION['oauth_token'] = $token = $request_token['oauth_token'];
-    $_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
+        /* If last connection failed don't display authorization link. */
+        switch ($connection->http_code) {
+            case 200:
+                // Build authorize URL and redirect user to Twitter.
+                $url = $connection->getAuthorizeURL($token);
+                require_once 'store.phtml';
+                break;
+            default:
+                throw new Exception('Could not connect to Tumblr (' . $connection->http_code . ').');
+        }
+    } else {
+        // Create a TumblrOAuth object with consumer/user tokens.
+        $accessToken = $_SESSION['access_token'];
+        $connection  = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET, $accessToken['oauth_token'], $accessToken['oauth_token_secret']);
 
-    /* If last connection failed don't display authorization link. */
-    switch ($connection->http_code) {
-        case 200:
-            /* Build authorize URL and redirect user to Twitter. */            
-            $url = $connection->getAuthorizeURL($token);
-            require_once 'store.phtml';
-        default:
-            /* Show notification if something went wrong. */
-            echo 'Could not connect to Tumblr. Refresh the page or try again later.';
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+        // If method is set change API call made. Test is called by default.
+        $content = $connection->post('api/authenticate');
+
+        if (!$content) {
+            throw new Exception('Cannot connect to api/authenticate.');
+        }
+
+        if (!isset($content->tumblelog) || !isset($content->tumblelog[0])) {
+            throw new Exception('Invalid response from api/authenticate.');
+        }
+
+        $tumblr = (array) $content->tumblelog[0];
+        $tumblr = $tumblr['@attributes'];
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+        if (!isset($tumblr['name'])) {            
+            throw new Exception('Invalid or non-existant Tumblr name!');
+        }
+
+        if (isset($tumblr['avatar-url'])) {
+            // Switch from 128 to 16 pixel avatars
+            $tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . substr($tumblr['avatar-url'], -4);
+        } else {
+            logError('Non existent avatar URL.');
+            $tumblr['avatar'] = 'img/space.png';
+        }
+
+        $tumblr['title'] = isset($tumblr['title']) ? $tumblr['title'] : $tumblr['name'];
+        $tumblr['url']   = isset($tumblr['url'])   ? $tumblr['url']   : 'http://tumblr.com/';
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+        $fp = fsockopen('unix://../unix.socket', 0, $errNo, $errStr, 30);
+        if (!$fp) {
+            throw new Exception('Cannot establish socket credentials. ' . $errStr . '.');
+        }
+
+        $jsonCreds = json_encode(array(
+            'key'  => $accessToken['oauth_token'],
+            'user' => array(
+                'name'      => $tumblr['name'],
+                'title'     => $tumblr['title'],
+                'url'       => $tumblr['url'],
+                'avatar'    => $tumblr['avatar'])));
+        
+        $result = fwrite($fp, $jsonCreds);
+
+        if (!$result) {
+            throw new Exception('Cannot write socket credentials.');
+        }
+
+        // Load HTML
+        require_once 'index.phtml';
+        session_unset();
     }
-
-    exit;
+} catch (Exception $e) {
+    logError($e->getMessage(), true);
 }
 
-/* Get user access tokens out of the session. */
-$access_token = $_SESSION['access_token'];
-
-/* Create a TumblrOAuth object with consumer/user tokens. */
-$connection = new TumblrOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
-
-/* If method is set change API call made. Test is called by default. */
-$content = $connection->post('api/authenticate');
-
-if (!$content || !isset($content->tumblelog) || !isset($content->tumblelog[0])) {
-    session_unset();
-    die('Cannot connect!');
+function logError($message, $die = false) {
+    error_log($message . "\n", 3, '../phperr.out');
+    if ($die) {
+        require_once 'error.phtml';
+    }
 }
-
-$tumblr = (array) $content->tumblelog[0];
-$tumblr = $tumblr['@attributes'];
-
-if (!isset($tumblr['name'])) {
-    session_unset();
-    die('Invalid Tumblr name!');
-}
-
-$avatarType = substr($tumblr['avatar-url'], -4);
-
-$tumblr['title']  = str_replace("'", "\'", $tumblr['title']);
-$tumblr['avatar'] = substr($tumblr['avatar-url'], 0, -7) . '16' . $avatarType;
-
-$fp = fsockopen('unix://../unix.socket', 0, $errNo, $errStr, 30);
-if (!$fp) {
-    session_unset();
-    die('Cannot establish credentials!' . $errStr);
-}
-
-$result = fwrite($fp, json_encode(array(
-    'key'    => $access_token['oauth_token'],
-    'time'   => time(),
-    'user'   => array(
-        'name'   => $tumblr['name'],
-        'title'  => isset($tumblr['title'])  ? $tumblr['title']  : $tumblr['name'],
-        'url'    => isset($tumblr['url'])    ? $tumblr['url']    : '',
-        'avatar' => isset($tumblr['avatar']) ? $tumblr['avatar'] : '/img/space.png'))));
-
-if (!$result) {
-    session_unset();
-    die('Cannot write credentials!');
-}
-
-// Load HTML
-require_once 'index.phtml';
-
-?>

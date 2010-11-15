@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On    
-#    RewriteRule ^.*$ http://kevinnuut.com/post/1362677042/tumblrchat-com-update-thanks-for-all-the-alpha [QSA,L]
+#   RewriteRule ^.*$ http://kevinnuut.com/post/1362677042/tumblrchat-com-update-thanks-for-all-the-alpha [QSA,L]
 </IfModule>
 
 <IfModule mod_deflate.c>

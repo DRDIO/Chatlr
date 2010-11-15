@@ -7,19 +7,13 @@
 
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>"></script>
-        <script type="text/javascript" src="/js/tumblrchat.js"></script>
+        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="<?php echo SOCKET_URL; ?>js/tumblrchat.js"></script>
         <script type="text/javascript">
-            var tumblrToken = '<?php echo $access_token['oauth_token']; ?>';
+            WEB_SOCKET_SWF_LOCATION = '/img/WebSocketMainInsecure.swf';
+            var tumblrToken = '<?php echo $accessToken['oauth_token']; ?>';
         </script>
         <link rel="stylesheet" type="text/css" href="/css/design.css" />
-
-<?php if(isset($_SESSION['mobile']) && $_SESSION['mobile']): ?>
-
-        <link rel="stylesheet" type="text/css" href="/css/mobile.css" />
-
-<?php endif; ?>
-
         <link rel="icon" href="favicon.ico" sizes="16x16" />
         <link rel="icon" href="favicon.ico" sizes="48x48" />
     </head>

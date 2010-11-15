@@ -11,48 +11,80 @@ var http = require('http'),
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-var ops       = {
-        'kevinnuut':     '',
-        'lacey':         '',
-        'gompr':         '',
-        'topherchris':   '',
-        'brittanyforks': '',
-        'kelseym':       '',
-        'fajita':        '',
-        'vernonvan':     ''},
-    banned    = {},
+var ops = {
+    'kevinnuut':     '',
+    'lacey':         '',
+    'gompr':         '',
+    'topherchris':   '',
+    'brittanyforks': '',
+    'kelseym':       '',
+    'fajita':        '',
+    'vernonvan':     ''};
+
+var banned    = {},
     creds     = {},
     rooms     = {},
     roomCount = 0,
-    userCount = 0,
+    userCount = 0;
 
-    // Create server to listen on port 8080 for IO
-    server = http.createServer(),
+var contentTypes = {
+    'html': 'text/html',
+    'js':   'text/javascript',
+    'ico':  'image/x-icon',
+    'png':  'image/png',
+    'css':  'text/css',
+    'gif':  'image/gif'};
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-    // Create unix socket to talk to PHP server
-    unix = net.createServer(function(stream) {
-        try {
-            stream.setEncoding('utf8');
-            stream.on('data', function(data) {
-                var cred = JSON.parse(data);
-                if (typeof cred == 'object' && 'key' in cred && 'user' in cred) {
-                    cred.user.time  = new Date().getTime();
-                    creds[cred.key] = cred.user;
-                } else {
-                    console.log('Trouble parsing credentials');
-                    console.log(data);
-                }
-            });
+// Create server to listen on port 8080 for IO
+var server = http.createServer(function(req, res) {
+    // your normal server code
+    var path    = url.parse(req.url).pathname;
+    var type    = /[^.]+$/.exec(path);
+    var content = type in contentTypes ? contentTypes[type] : 'text/plain';
 
-            stream.on('end', function() {
-                stream.end();
-            });
-        } catch(err) {
+    fs.readFile(__dirname + '/../website' + path, function(err, data) {
+        if (err) {
             console.log(err);
+            res.writeHead(404);
+            res.write('404');
+            res.end();
+            return;
         }
+
+        res.writeHead(200, {'Content-Type': content})
+        res.write(data, 'utf8');
+        res.end();
     });
+});
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+// Create unix socket to talk to PHP server
+var unix = net.createServer(function(stream) {
+    try {
+        stream.setEncoding('utf8');
+        stream.on('data', function(data) {
+            var cred = JSON.parse(data);
+            if (typeof cred == 'object' && 'key' in cred && 'user' in cred) {
+                cred.user.timestamp = new Date().getTime();
+                creds[cred.key]     = cred.user;
+                console.log(cred.user.name);
+            } else {
+                console.log('ERR 1: Trouble parsing credentials.');
+                console.log(data);
+            }
+        });
+
+        stream.on('end', function() {
+            stream.end();
+        });
+    } catch(err) {
+        console.log('ERR 2: Trouble with socket data.');
+        console.log(err);
+    }
+});
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -60,8 +92,9 @@ var ops       = {
 server.listen(8080);
 unix.listen('unix.socket');
 
-// Create IO socket
-var socket = io.listen(server, {transports: ['websocket']});
+// Create IO socket (Only websocket is allowed)
+// var socket = io.listen(server, {transports: ['websocket']});
+var socket = io.listen(server);
 
 // Setup featured rooms that last forever
 roomCreateFeatured({'main': '', 'spam': '', 'german': '', 'italian': '', 'japanese': '', 'spanish': '', 'tagalog': ''});
@@ -71,6 +104,8 @@ roomCreateFeatured({'main': '', 'spam': '', 'german': '', 'italian': '', 'japane
 // EVENT: user has connected, initialize them and ask for credentials
 socket.on('connection', function(client)
 {
+    console.log(client.sessionId);
+    
     // EVENT: user has sent a message with either credentials or a message
     client.on('message', function(clientRes)
     {
@@ -80,7 +115,7 @@ socket.on('connection', function(client)
             // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
             // ROOM CHANGE: User is requesting to change rooms
-            if (clientRes.type == 'roomchange' && 'room' in clientRes && typeof clientRes.room == 'string' && clientRes.room.search(/^!?[a-z0-9-]{1,16}$/i) != -1) {
+            if (clientRes.type == 'roomchange' && 'room' in clientRes && typeof clientRes.room == 'string' && clientRes.room.search(/^!?[a-z0-9-]{2,16}$/i) != -1) {
                 try {
                     clientRes.room = clientRes.room.toLowerCase();
                     
@@ -99,25 +134,12 @@ socket.on('connection', function(client)
                 try {
                     if (clientRes.token in creds) {
                         // Step 1: Get Room (Or set to main room)
-                        if (!('room' in clientRes) || typeof clientRes.room != 'string' || clientRes.room.search(/^!?[a-z0-9-]{1,16}$/i) == -1) {
+                        if (!('room' in clientRes) || typeof clientRes.room != 'string' || clientRes.room.search(/^!?[a-z0-9-]{2,16}$/i) == -1) {
                             clientRes.room = 'main';
                         } else {
                             // They are providing a room name, make sure it exists
                             clientRes.room = clientRes.room.toLowerCase();
                             roomCreate(clientRes.room);
-                        }
-
-                        // Step 2: Check that user isn't already in room
-                        for (var i in rooms[clientRes.room].users) {
-                            if (rooms[clientRes.room].users[i].name == creds[clientRes.token].name) {
-                                console.log('User already in chat!');
-                                delete creds[clientRes.token];
-                                client.send({
-                                    type:    'notice',
-                                    message: 'You are already in this chat room.'});
-                                client.connection.end();
-                                return;
-                            }
                         }
 
                         if (creds[clientRes.token].name in banned) {
@@ -128,6 +150,14 @@ socket.on('connection', function(client)
                                 message: 'You have been banned.'});
                             client.connection.end();
                             return;
+                        }
+
+                        // Step 2: Check that user isn't already in room
+                        for (var i in rooms[clientRes.room].users) {
+                            if (rooms[clientRes.room].users[i].name == creds[clientRes.token].name) {
+                                roomRemoveUser(i);
+                                break;
+                            }
                         }
 
                         // Transfer creds to user list and delete from php server creds
@@ -178,7 +208,7 @@ socket.on('connection', function(client)
                         
                         if (currentUser.op) {
                             if (message.search(/^\/shout/) == 0) {
-                                var shoutMessage = message.substr(7);
+                                var shoutMessage = 'Server Message: ' + message.substr(7);
                                 socket.broadcast({
                                     type: 'status',
                                     message: shoutMessage});
@@ -192,7 +222,7 @@ socket.on('connection', function(client)
                                     topic: topic});
                                 return;
 
-                            } else if (message.search(/^\/kick [a-z0-9-]+( !?[a-z0-9-]{1,16})?/i) == 0) {
+                            } else if (message.search(/^\/kick [a-z0-9-]+( !?[a-z0-9-]{2,16})?/i) == 0) {
                                 var split = message.split(' ');
                                 var name  = split[1];
                                 var room  = (2 in split ? split[2] : false);
