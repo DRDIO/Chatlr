@@ -1,3 +1,12 @@
 [submodule "socket.io"]
 	path = node/socket.io
 	url = http://github.com/LearnBoost/Socket.IO-node.git
+[submodule "node/oauth"]
+	path = node/oauth
+	url = https://github.com/ciaranj/node-oauth.git
+[submodule "node/xml2js"]
+	path = node/xml2js
+	url = https://github.com/maqr/node-xml2js.git
+[submodule "node/sax"]
+	path = node/sax
+	url = https://github.com/isaacs/sax-js.git
