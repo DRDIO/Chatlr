@@ -1,0 +1,13 @@
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Configuration Variables, YAY!
+//
+exports.requestUrl      = 'http://www.tumblr.com/oauth/request_token';
+exports.accessUrl       = 'http://www.tumblr.com/oauth/access_token';
+exports.authorizeUrl    = 'http://www.tumblr.com/oauth/authorize';
+exports.authenticateUrl = 'http://www.tumblr.com/api/authenticate';
+
+exports.consumerKey    = 'TUMBLR_CONSUMER_KEY';
+exports.consumerSecret = 'TUMBLR_CONSUMER_SECRET';
+exports.callbackUrl    = 'CALLBACK_URL';
+
+exports.ops = {'TUMBLR_NAME_1': '', 'TUMBLR_NAME_2': ''};
