@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Tumblr Chat</title>
+
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css" type="text/css" />
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/tumblrchat2.js"></script>
+        <link rel="stylesheet" type="text/css" href="/css/design.css" />
+        <link rel="icon" href="favicon.ico" sizes="16x16" />
+        <link rel="icon" href="favicon.ico" sizes="48x48" />
+    </head>
+    <body>
+        <div id="top">
+            <h1 id="header">Tumblr Chat</h1>
+            <div id="count"></div>
+            <div id="notice"></div>
+
+            <a id="button-creator" class="toplink login" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
+                <img src="http://28.media.tumblr.com/avatar_6ef19d797abb_16.png" alt="Ask KevinNuut.com" />
+            </a>
+            <a id="button-help" class="topbuttons" title="Tumblr Chat Help" href="" rel="page-about">
+                Help
+            </a>
+            <a id="button-rooms" class="topbuttons" title="Find Another Room" href="" rel="page-rooms">
+                Main Room
+            </a>
+        </div>
+
+        <div id="usersbox">
+            <div id="users"></div>
+        </div>
+
+        <div id="chatbox">
+            <div id="chat">
+            </div>
+        </div>
+
+        <form id="form" action="" method="post">
+            <input id="text" type="text" autocomplete="off" placeholder="Type something and hit enter!" />
+        </form>
+
+        <div id="page-about" class="page">
+            <p style="margin-top: 0;">
+                <strong>Commands</strong> &mdash; Tumblr Chat supports the following commands:                
+            </p>
+
+            <ul style="margin-top: 0.5em;">
+                <li title="View basic help commands.">/help</li>
+                <li title="Get the current topic.">/topic</li>
+                <li title="Set your status to away for others.">/away</li>
+                <li title="Toggle between ignoring and seeing someone.">/ignore USERNAME</li>
+                <li title="Change your current room.">/room ROOMNAME</li>
+                <li title="Pull up room list to pick a new room.">/rooms</li>
+                <li title="Toggle between mobile and standard view.">/mobile</li>
+            </ul>
+            <div style="clear: both;"></div>
+
+            <p>
+                <strong>Rules</strong> &mdash; No bullying or griefing is allowed.  Self promoters and
+                annoying people will be kicked to the Spam Room.  Repeated vulgarity or attacks will
+                result in a ban. If you are in any of the primary language rooms, please remain
+                civil towards others.  All chats are logged, even private ones.
+                Have fun and be nice to others.
+            </p>
+
+            <p>
+                <strong>About</strong> &mdash; Tumblr Chat was created by
+                <a href="http://kevinnuut.com/" title="Visit KevinNuut.com" target="_blank">Kevin Nuut</a>
+                using
+                <a href="http://www.tumblr.com/oauth/apps" title="Visit Tumblr OAuth" target="_blank">Tumblr OAuth</a>,
+                <a href="http://socket.io/" title="Visit Socket.IO" target="_blank">Socket.IO</a>,
+                <a href="http://nodejs.org/" title="Visit Node.JS" target="_blank">Node.JS</a>,
+                <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>, and
+                <a href="http://php.net/" title="Visit PHP" target="_blank">PHP</a>.  The views expressed in this
+                chat do not necessarily represent the views of
+                <a href="http://staff.tumblr.com/" target="_blank">Tumblr</a>. We use your credentials to read your
+                blog titles, names, urls, and avatars.  We do not write anything to your blog.
+            </p>
+
+            <p>
+                <strong>Problems</strong> &mdash; Please report all problems to
+                <a href="http://kevinnuut.com/ask" title="Kevin Nuut's Ask Box" target="_blank">Kevin Nuut's Ask Box</a>.
+            </p>
+        </div>
+
+        <div id="page-rooms" class="page">
+            Featured Rooms:
+            <ul id="rooms-featured" style="margin: 0.5em 0;"></ul>
+            <div style="clear: both;"></div><br />
+            User Created Rooms:
+            <ul id="rooms-users" style="margin: 0.5em 0;"></ul>
+            <div style="clear: both;"></div>
+        </div>
+
+        <div id="page-error" class="page">
+            We are unable to connect you to Tumblr Chat at this time.  The server may be down.
+            Tumblr Chat only works in
+            <a href="http://www.mozilla.com/en-US/firefox/beta/" title="Get Firefox 4 Beta!">Firefox 4 Beta</a>
+            <a href="http://www.apple.com/safari/" title="Get Safari!">Safari</a> and
+            <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>.
+            If you are using Opera or IE, you will need to switch browsers.
+        </div>
+
+        <div id="loading"><div id="loading-pulse"></div></div>
+    </body>
+</html>

@@ -10,3 +10,9 @@
 [submodule "node/sax"]
 	path = node/sax
 	url = https://github.com/isaacs/sax-js.git
+[submodule "node/socketconnect"]
+	path = node/socketconnect
+	url = https://github.com/bnoguchi/Socket.IO-connect.git
+[submodule "node/connect"]
+	path = node/connect
+	url = https://github.com/bnoguchi/connect.git
