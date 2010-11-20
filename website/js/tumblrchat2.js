@@ -45,7 +45,7 @@ $(function() {
     } else {
 
         // socket = new io.Socket(null, {port: 8080, transports: ['websocket']});
-        socket = new io.Socket(null, {port: 8080});
+        socket = new io.Socket(null, {port: 8080, rememberTransport: false});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
@@ -58,7 +58,7 @@ $(function() {
             socket.send({
                 type:  'credentials',
                 room:  hashRoom,
-                token: tumblrToken});
+                token: 'todo'});
         });
 
         socket.on('disconnect', function()
