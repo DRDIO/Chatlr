@@ -1,3 +1,4 @@
 phperr.out
 config/credentials.php
 nohup.out
+node/config.js
