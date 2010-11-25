@@ -8,10 +8,8 @@ process.on('uncaughtException', function (err) {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Too lazy to figure out npm, so add required paths
 //
+require.paths.unshift('/www/tumblrchat/config');
 require.paths.unshift('/www/tumblrchat/node');
-require.paths.unshift('/www/tumblrchat/node/sax/lib');
-require.paths.unshift('/www/tumblrchat/node/xml2js/lib');
-require.paths.unshift('/www/tumblrchat/node/oauth/lib');
 
 var config  = require('config'),
     connect = require('connect'),
@@ -19,7 +17,7 @@ var config  = require('config'),
     fs      = require('fs'),
     xml2js  = require('xml2js'),
     oauth   = require('oauth'),
-    io      = require('./socket.io');
+    io      = require('socket.io');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Chat variables

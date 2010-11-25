@@ -1,4 +1,2 @@
-phperr.out
-config/credentials.php
 nohup.out
-node/config.js
+config/config.js
