@@ -10,6 +10,7 @@ process.on('uncaughtException', function (err) {
 //
 require.paths.unshift('/www/tumblrchat/config');
 require.paths.unshift('/www/tumblrchat/node');
+require.paths.unshift('/www/tumblrchat/node/connect/lib');
 
 var config  = require('config'),
     connect = require('connect'),
