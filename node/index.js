@@ -39,6 +39,11 @@ function socketConnectIo(server) {
     {
         try {
             // TODO: Make this official, not a creds hack
+            if (!('user' in client) || typeof client.user != 'object') {
+                client._onClose();
+                return;
+            }
+            
             creds[client.sessionId]           = client.user || {};
             creds[client.sessionId].timestamp = new Date().getTime();
 
@@ -605,7 +610,7 @@ var server = connect.createServer(
                                         'url':    tumblr['@']['url'],
                                         'avatar': tumblr['@']['avatar-url'].replace(/_128\./, '_16.')
                                     }
-
+                                    
                                     res.writeHead(303, {
                                         'Location': '/'});
                                     res.end();
