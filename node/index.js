@@ -18,7 +18,7 @@ var config  = require('config'),
     fs      = require('fs'),
     xml2js  = require('xml2js'),
     oauth   = require('oauth'),
-    io      = require('socket.io');
+    io      = require('socket');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Chat variables
@@ -552,7 +552,7 @@ var server = connect.createServer(
     connect.cookieDecoder(),
     connect.session({fingerprint: function(req)
     {
-        return connect.utils.md5(req.socket.remoteAddress);
+        return connect.utils.md5(config.fingerprint);
     }}),
     connect.staticProvider(__dirname + '/../website'),
     connect.router(function(app)
@@ -609,7 +609,7 @@ var server = connect.createServer(
                                         'url':    tumblr['@']['url'],
                                         'avatar': tumblr['@']['avatar-url'].replace(/_128\./, '_16.')
                                     }
-                                    
+
                                     res.writeHead(303, {
                                         'Location': '/'});
                                     res.end();
