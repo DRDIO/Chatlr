@@ -34,7 +34,7 @@ var oa = new oauth.OAuth(config.requestUrl, config.accessUrl, config.consumerKey
 function socketConnectIo(server) {
     var listener;
 
-    listener = io.listen(server);
+    listener = io.listen(server, {transports: ['websocket', 'htmlfile']});
     listener.on('connection', function(client)
     {
         try {
