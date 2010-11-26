@@ -3,4 +3,4 @@
 	url = https://github.com/senchalabs/connect.git
 [submodule "socket"]
 	path = node/socket
-	url = https://KevinNuut@github.com/KevinNuut/Socket.IO-node.git
+	url = git://github.com/KevinNuut/Socket.IO-node.git
