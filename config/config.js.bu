@@ -9,5 +9,6 @@ exports.authenticateUrl = 'http://www.tumblr.com/api/authenticate';
 exports.consumerKey    = 'TUMBLR_CONSUMER_KEY';
 exports.consumerSecret = 'TUMBLR_CONSUMER_SECRET';
 exports.callbackUrl    = 'CALLBACK_URL';
+exports.fingerprint    = 'FINGERPRINT_MD5';
 
 exports.ops = {'TUMBLR_NAME_1': '', 'TUMBLR_NAME_2': ''};
