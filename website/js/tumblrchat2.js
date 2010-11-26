@@ -43,9 +43,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-
-        // socket = new io.Socket(null, {port: 8080, transports: ['websocket']});
-        socket = new io.Socket(null, {port: 8080, rememberTransport: false, transports: ['websocket', 'htmlfile']});
+        socket = new io.Socket(null, {port: 8080, rememberTransport: false});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
