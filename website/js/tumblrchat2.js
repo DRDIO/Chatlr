@@ -43,7 +43,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {port: 8080, rememberTransport: false});
+        socket = new io.Socket(null, {port: 8080, rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling']});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
