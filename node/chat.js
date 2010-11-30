@@ -13,7 +13,7 @@ var io        = require('./socket'),
 module.exports = function(server) {
     var listener;
 
-    listener = io.listen(server, {transports: ['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart']});
+    listener = io.listen(server, {transports: ['websocket', 'htmlfile', 'xhr-multipart']});
     listener.on('connection', function(client)
     {
         try {
