@@ -19,6 +19,8 @@ module.exports = function(server) {
         try {
             // TODO: Make this official, not a creds hack
             if (!('user' in client) || typeof client.user != 'object') {
+                console.log('User is not in client list');
+                console.log(client);
                 client._onClose();
                 return;
             }
@@ -507,6 +509,7 @@ module.exports = function(server) {
     {
         if (req.upgrade) {
             if (!listener.check(req, res, true, req.head)) {
+                console.log('Ending response due to invalid check');
                 res.end();
                 res.destroy();
             }
