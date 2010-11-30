@@ -24,7 +24,7 @@ var server = connect.createServer(
     connect.cookieDecoder(),
     connect.session({fingerprint: function(req)
     {
-        return connect.utils.md5(req.session.id + req.socket.remoteAddress);
+        return connect.utils.md5(req.socket.remoteAddress);
     }}),
     connect.staticProvider(__dirname + '/../website'),
     connect.router(require('./redirect'))
