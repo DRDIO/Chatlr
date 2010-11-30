@@ -20,7 +20,7 @@ var config  = require('../config/config'),
 // On CALLBACK: Authenticate with Tumblr, parse XML, store user in a session
 //
 var server = connect.createServer(
-    connect.gzip(),
+    // connect.gzip(),
     connect.cookieDecoder(),
     connect.session({fingerprint: function(req)
     {
