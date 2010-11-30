@@ -111,9 +111,9 @@ module.exports = function(server) {
                                 throw('Not in creds');
                             }
                         } catch(err) {
-                            client.connection.end();
                             console.log('Credentials');
                             console.log(err);
+                            client._onClose();
                         }
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
