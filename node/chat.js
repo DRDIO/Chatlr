@@ -5,7 +5,6 @@ var io        = require('./socket'),
     config    = require('../config/config'),
     
     banned    = {},
-    creds     = {},
     rooms     = {},
     roomCount = 0,
     userCount = 0;
@@ -17,17 +16,62 @@ module.exports = function(server) {
     listener.on('connection', function(client)
     {
         try {
-            // TODO: Make this official, not a creds hack
             if (!('user' in client) || typeof client.user != 'object') {
                 console.log('User is not in client list');
-                console.log(client);
                 client._onClose();
                 return;
             }
 
-            creds[client.sessionId]           = client.user || {};
-            creds[client.sessionId].timestamp = new Date().getTime();
+            if (client.user.name in banned) {
+                console.log('User is banned!');
+                client.send({
+                    type:    'notice',
+                    message: 'You have been banned.'});
+                client._onClose();
+                return;
+            }
 
+            // Step 2: Check that user isn't already in room
+            for (var i in rooms['main'].users) {
+                if (rooms['main'].users[i].name == client.user.name) {
+                    roomRemoveUser(i);
+                    break;
+                }
+            }
+
+            var currentUser = client.user;
+
+            // Setup user as OPERATOR if in the approval list above
+            currentUser.op          = (currentUser.name in config.chatOps) ? true : false;
+            currentUser.timestamp   = new Date().getTime();
+            currentUser.lastMessage = '';
+
+            // Place into proper room
+            roomUpdateUser('main', client.sessionId, currentUser);
+
+            roomSendInit('main', client);
+
+            // Send giant list of existing rooms when user joins
+            roomNotifyInit();
+
+            // Broadcast to everyone that this user has connected
+            // This will also add the user to their user list
+            roomBroadcast('main', {
+                type: 'status',
+                mode: 'connect',
+                id:   client.sessionId,
+                user: currentUser});
+
+        } catch(err) {
+            console.log('Credentials');
+            console.log(err);
+            client._onClose();
+        }
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+        try {
+            
             // EVENT: user has sent a message with either credentials or a message
             client.on('message', function(clientRes)
             {
@@ -47,73 +91,6 @@ module.exports = function(server) {
                         } catch(err) {
                             console.log('roomchange');
                             console.log(err);
-                        }
-
-                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-                    // CREDENTIALS: passed from client with authkey to pull from PHP unix socket CREDS
-                    } else if (clientRes.type == 'credentials' && 'token' in clientRes && typeof clientRes.token == 'string') {
-                        try {
-                            if (client.sessionId in creds) {
-                                // Step 1: Get Room (Or set to main room)
-                                if (!('room' in clientRes) || typeof clientRes.room != 'string' || clientRes.room.search(/^!?[a-z0-9-]{2,16}$/i) == -1) {
-                                    clientRes.room = 'main';
-                                } else {
-                                    // They are providing a room name, make sure it exists
-                                    clientRes.room = clientRes.room.toLowerCase();
-                                    roomCreate(clientRes.room);
-                                }
-
-                                if (creds[client.sessionId].name in banned) {
-                                    console.log('User is banned!');
-                                    delete creds[client.sessionId];
-                                    client.send({
-                                        type:    'notice',
-                                        message: 'You have been banned.'});
-                                    client.connection.end();
-                                    return;
-                                }
-
-                                // Step 2: Check that user isn't already in room
-                                for (var i in rooms[clientRes.room].users) {
-                                    if (rooms[clientRes.room].users[i].name == creds[client.sessionId].name) {
-                                        roomRemoveUser(i);
-                                        break;
-                                    }
-                                }
-
-                                // Transfer creds to user list and delete from php server creds
-                                var currentUser = creds[client.sessionId];
-                                delete creds[client.sessionId];
-
-                                // Setup user as OPERATOR if in the approval list above
-                                currentUser.op          = (currentUser.name in config.chatOps) ? true : false;
-                                currentUser.timestamp   = 0;
-                                currentUser.lastMessage = '';
-
-                                // Place into proper room
-                                roomUpdateUser(clientRes.room, client.sessionId, currentUser);
-
-                                roomSendInit(clientRes.room, client);
-
-                                // Send giant list of existing rooms when user joins
-                                roomNotifyInit();
-
-                                // Broadcast to everyone that this user has connected
-                                // This will also add the user to their user list
-                                roomBroadcast(clientRes.room, {
-                                    type: 'status',
-                                    mode: 'connect',
-                                    id:   client.sessionId,
-                                    user: currentUser});
-
-                            } else {
-                                throw('Not in creds');
-                            }
-                        } catch(err) {
-                            console.log('Credentials');
-                            console.log(err);
-                            client._onClose();
                         }
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -268,6 +245,7 @@ module.exports = function(server) {
             //
             client.on('disconnect', function()
             {
+                console.log('discconect');
                 try {
                     roomRemoveUser(client.sessionId);
 
@@ -460,16 +438,7 @@ module.exports = function(server) {
             roomCount = 0;
             userCount = 0;
 
-            var credCount = 0,
-                timestamp = new Date().getTime();
-
-            for (i in creds) {
-                if (timestamp - creds[i].timestamp > 5000) {
-                    delete creds[i];
-                } else {
-                    credCount++;
-                }
-            }
+            var timestamp = new Date().getTime();
 
             for (i in rooms) {
                 rooms[i].userCount = 0;

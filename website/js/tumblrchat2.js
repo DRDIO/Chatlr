@@ -37,7 +37,7 @@ $(function() {
         isMobile      = false,
         lastScroll    = 0,
         hashRoom      = location.hash.substr(1);
-
+       
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
     if (typeof io == 'undefined') {
@@ -53,10 +53,7 @@ $(function() {
         // CONNECT > SEND CREDENTIALS
         // As soon as we connect, send credentials. Chat is still disabled at this time.
         socket.on('connect', function() {
-            socket.send({
-                type:  'credentials',
-                room:  hashRoom,
-                token: 'todo'});
+            
         });
 
         socket.on('disconnect', function()
@@ -97,14 +94,19 @@ $(function() {
                     }
                 }
 
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
                 // First message sent from server, initalize chat
                 else if (serverRes.type == 'topic') {
                     topic = serverRes.topic;
                     displayMessage({
                         type: 'status',
                         message: 'The topic is now \'' + topic + '\'...'});
+                }
 
-                } else if (serverRes.type == 'approved') {
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+                else if (serverRes.type == 'approved') {
 
                     // Save self ID for later reference
                     clientId = serverRes.id;
