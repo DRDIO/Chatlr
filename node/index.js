@@ -2,7 +2,7 @@
 // Error catching!
 //
 process.on('uncaughtException', function (err) {
-  console.log('Exception: ' + err);
+  console.log('Exception (' + err.lineNumber + '): ' + err);
 });
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

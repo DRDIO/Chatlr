@@ -13,7 +13,7 @@ var io        = require('./socket'),
 module.exports = function(server) {
     var listener;
 
-    listener = io.listen(server, {transports: ['websocket', 'htmlfile', 'xhr-polling']});
+    listener = io.listen(server, {transports: ['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart']});
     listener.on('connection', function(client)
     {
         try {
@@ -85,7 +85,7 @@ module.exports = function(server) {
                                 delete creds[client.sessionId];
 
                                 // Setup user as OPERATOR if in the approval list above
-                                currentUser.op          = (currentUser.name in config.chatOps);
+                                currentUser.op          = (currentUser.name in config.chatOps) ? true : false;
                                 currentUser.timestamp   = 0;
                                 currentUser.lastMessage = '';
 
@@ -110,7 +110,7 @@ module.exports = function(server) {
                             }
                         } catch(err) {
                             client.connection.end();
-                            console.log('credentials');
+                            console.log('Credentials');
                             console.log(err);
                         }
 
