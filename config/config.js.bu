@@ -11,4 +11,5 @@ exports.consumerSecret = 'TUMBLR_CONSUMER_SECRET';
 exports.callbackUrl    = 'CALLBACK_URL';
 exports.fingerprint    = 'FINGERPRINT_MD5';
 
-exports.ops = {'TUMBLR_NAME_1': '', 'TUMBLR_NAME_2': ''};
+exports.chatOps   = {'TUMBLR_NAME_1': '', 'TUMBLR_NAME_2': ''};
+exports.chatRooms = {'ROOM_1': '', 'ROOM_2': ''};
