@@ -245,7 +245,7 @@ module.exports = function(server) {
             //
             client.on('disconnect', function()
             {
-                console.log('discconect');
+                // console.log('disccnnect');
                 try {
                     roomRemoveUser(client.sessionId);
 
@@ -299,13 +299,13 @@ module.exports = function(server) {
 
                 delete rooms[i].users[sessionId];
                 rooms[i].userCount--;
-                console.log(sessionId + ' removed from room ' + i);
+                // console.log(sessionId + ' removed from room ' + i);
 
                 // Delete empty rooms (Except for main room)
                 if (!rooms[i].featured && rooms[i].userCount <= 0) {
                     delete rooms[i];
                     roomCount--;
-                    console.log('room ' + i + ' deleted');
+                    // console.log('room ' + i + ' deleted');
 
                     roomNotifyDelete(i);
                 } else {
@@ -365,7 +365,7 @@ module.exports = function(server) {
                 featured:  featured,
                 hidden:    (roomName.substr(0, 1) == '!')};
             roomCount++;
-            console.log(roomName + ' created.');
+            // console.log(roomName + ' created.');
 
             if (!rooms[roomName].hidden) {
                 roomNotifyChange(roomName, 0, rooms[roomName].featured);
@@ -387,7 +387,7 @@ module.exports = function(server) {
 
             rooms[roomName].users[sessionId] = user;
             rooms[roomName].userCount++;
-            console.log(user.name + ' added to room ' + roomName);
+            // console.log(user.name + ' added to room ' + roomName);
 
             roomBroadcast(roomName, {
                 type: 'status',
@@ -462,7 +462,7 @@ module.exports = function(server) {
             for (i in banned) {
                 if (banned[i] != -1 && banned[i] < timestamp) {
                     delete banned[i];
-                    console.log(i + ' has been unbanned');
+                    // console.log(i + ' has been unbanned');
                 }
             }
         } catch(err) {

@@ -41,7 +41,6 @@ $(function() {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
     if (typeof io == 'undefined') {
-        alert('undefined');
         notifyFailure(false);
     } else {
         socket = new io.Socket(null, {port: 8080, rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling']});
