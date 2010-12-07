@@ -435,7 +435,7 @@ $(function() {
             if (response.type == 'message') {
                 message.html(': ' + response.message);
                 if (clientId in users) {
-                    if ('user' in respone && response.user.name == users[clientId].name) {
+                    if ('user' in response && response.user.name == users[clientId].name) {
                         row.addClass('personal');
                     } else {
                         // Try to save having to do a rege exp all the time
