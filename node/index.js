@@ -2,7 +2,8 @@
 // Error catching!
 //
 process.on('uncaughtException', function (err) {
-  console.log('Exception (' + err.lineNumber + '): ' + err);
+  console.log(err.message);
+  console.log(err.stack);
 });
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -20,7 +21,6 @@ var config  = require('../config/config'),
 // On CALLBACK: Authenticate with Tumblr, parse XML, store user in a session
 //
 var server = connect.createServer(
-    // connect.gzip(),
     connect.cookieDecoder(),
     connect.session({fingerprint: function(req)
     {
@@ -34,4 +34,4 @@ var server = connect.createServer(
 // Attach Socket.IO to Connect, then start listening on port 8080
 //
 server.use('', require('./chat')(server));
-server.listen(8080);
+server.listen(config.port);

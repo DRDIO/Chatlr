@@ -1,6 +1,9 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Configuration Variables, YAY!
 //
+exports.port     = 8080;
+exports.interval = 60000;
+
 exports.requestUrl      = 'http://www.tumblr.com/oauth/request_token';
 exports.accessUrl       = 'http://www.tumblr.com/oauth/access_token';
 exports.authorizeUrl    = 'http://www.tumblr.com/oauth/authorize';
