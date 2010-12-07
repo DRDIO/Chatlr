@@ -37,15 +37,13 @@ $(function() {
         isMobile      = false,
         lastScroll    = 0,
         hashRoom      = location.hash.substr(1);
-
+       
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-
-        // socket = new io.Socket(null, {port: 8080, transports: ['websocket']});
-        socket = new io.Socket(null, {port: 8080});
+        socket = new io.Socket(null, {port: 8080, rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling']});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
@@ -55,10 +53,7 @@ $(function() {
         // CONNECT > SEND CREDENTIALS
         // As soon as we connect, send credentials. Chat is still disabled at this time.
         socket.on('connect', function() {
-            socket.send({
-                type:  'credentials',
-                room:  hashRoom,
-                token: tumblrToken});
+            
         });
 
         socket.on('disconnect', function()
@@ -99,14 +94,19 @@ $(function() {
                     }
                 }
 
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
                 // First message sent from server, initalize chat
                 else if (serverRes.type == 'topic') {
                     topic = serverRes.topic;
                     displayMessage({
                         type: 'status',
                         message: 'The topic is now \'' + topic + '\'...'});
+                }
 
-                } else if (serverRes.type == 'approved') {
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+                else if (serverRes.type == 'approved') {
 
                     // Save self ID for later reference
                     clientId = serverRes.id;
@@ -435,7 +435,7 @@ $(function() {
             if (response.type == 'message') {
                 message.html(': ' + response.message);
                 if (clientId in users) {
-                    if (response.user.name == users[clientId].name) {
+                    if ('user' in respone && response.user.name == users[clientId].name) {
                         row.addClass('personal');
                     } else {
                         // Try to save having to do a rege exp all the time
