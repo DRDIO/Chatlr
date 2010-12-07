@@ -201,14 +201,16 @@ $(function() {
 
                 // Otherwise, process whatever message or generic status comes in
                 } else if (serverRes.type == 'message' || serverRes.type == 'status') {
-                    if (serverRes.id in users && !(users[serverRes.id].name in ignore)) {
-                        $('#u' + serverRes.id).removeClass('idle');
-                        
-                        // Pull users from local array and display message or status
-                        serverRes.user = users[serverRes.id];
-                        displayMessage(serverRes);
-                    } else {
-                        displayMessage(serverRes);
+                    if (!(users[serverRes.id].name in ignore)) {
+                        if (serverRes.id in users) {
+                            $('#u' + serverRes.id).removeClass('idle');
+
+                            // Pull users from local array and display message or status
+                            serverRes.user = users[serverRes.id];
+                            displayMessage(serverRes);
+                        } else {
+                            displayMessage(serverRes);
+                        }
                     }
                 }
             }
