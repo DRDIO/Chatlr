@@ -336,7 +336,8 @@ body, input {
 
 @media all and (max-device-width: 1024px) {
     body {
-        -webkit-text-size-adjust:none;
+        -webkit-text-size-adjust: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
 
     #notice, .topbuttons, .toplink, #usersbox {
