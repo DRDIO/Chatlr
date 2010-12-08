@@ -41,14 +41,13 @@ module.exports = function(app)
     {
         var parsedUrl = url.parse(req.url, true);
 
+        res.writeHead(200, {'Content-type': 'text/html'});
+
         if ('query' in parsedUrl && typeof parsedUrl.query == 'object' && 'oauth_token' in parsedUrl.query) {
             oa.getOAuthAccessToken(parsedUrl.query.oauth_token, req.session.secret, parsedUrl.query.oauth_verifier, function(error, token, secret, results)
             {
                 oa.getProtectedResource(config.authenticateUrl, 'POST', token, secret, function(error, data)
                 {
-                    res.writeHead(200, {
-                        'Content-type': 'text/html'});
-
                     if (typeof data == 'string') {
                         var parser = new xml2js.Parser();
 
@@ -65,8 +64,7 @@ module.exports = function(app)
                                         'avatar': tumblr['@']['avatar-url'].replace(/_128\./, '_16.')
                                     }
 
-                                    res.writeHead(303, {
-                                        'Location': '/'});
+                                    res.writeHead(303, {'Location': '/'});
                                     res.end();
                                 }
                             }
