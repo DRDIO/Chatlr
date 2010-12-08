@@ -21,8 +21,12 @@ if (tempHash != null) {
 sessionStorage.clear();
 
 $(function() {
-    $(window).scrollTop(1);
-    
+    window.scrollTo(0, 1);
+    $('#chatbox').bind('touchmove', function(e) {
+        e.preventDefault(); // the default behaviour is scrolling
+        alert(e.targetTouches[0].pageY);
+    });
+
     document.title = 'TumblrChat (Connecting...)'
     $('#loading-pulse').dotdotdot();
 
