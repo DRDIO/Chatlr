@@ -34,4 +34,4 @@ var server = connect.createServer(
 // Attach Socket.IO to Connect, then start listening on port 8080
 //
 server.use('', require('./chat')(server));
-server.listen(config.port);
+server.listen(config.port, config.ipaddr);
