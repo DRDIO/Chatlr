@@ -41,7 +41,7 @@ module.exports = function(app)
     {
         var parsedUrl = url.parse(req.url, true);
 
-        if ('query' in parsedUrl && 'oauth_token' in parsedUrl.query) {
+        if ('query' in parsedUrl && typeof parsedUrl.query == 'object' && 'oauth_token' in parsedUrl.query) {
             oa.getOAuthAccessToken(parsedUrl.query.oauth_token, req.session.secret, parsedUrl.query.oauth_verifier, function(error, token, secret, results)
             {
                 oa.getProtectedResource(config.authenticateUrl, 'POST', token, secret, function(error, data)

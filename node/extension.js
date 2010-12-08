@@ -101,7 +101,7 @@ io.Listener.prototype.chatMessage = function(clientRes)
                 if (currentUser.op) {
                     if (message.search(/^\/shout/) == 0) {
                         var shoutMessage = 'Server Message: ' + message.substr(7);
-                        socket.broadcast({
+                        this.listener.broadcast({
                             type: 'status',
                             message: shoutMessage});
                         return;
@@ -133,7 +133,7 @@ io.Listener.prototype.chatMessage = function(clientRes)
                             if (moveId) {
                                 this.listener.roomCreate(room);
                                 this.listener.roomUpdateUser(room, moveId);
-                                this.listener.roomSendInit(room, socket.clients[moveId]);
+                                this.listener.roomSendInit(room, this.listener.clients[moveId]);
 
                                 // Let everyone know that someone has been moved
                                 this.listener.roomBroadcast(currentRoom, {

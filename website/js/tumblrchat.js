@@ -49,7 +49,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {port: 8080, rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling']});
+        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling']});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
@@ -207,16 +207,15 @@ $(function() {
 
                 // Otherwise, process whatever message or generic status comes in
                 } else if (serverRes.type == 'message' || serverRes.type == 'status') {
-                    if (!(users[serverRes.id].name in ignore)) {
+                    // Either there is no ID to attach or ID is in user list and not in ignore list
+                    if (!('id' in serverRes) || (serverRes.id in users && !(users[serverRes.id].name in ignore))) {
+                        // Pull users from local array and display message or status
                         if (serverRes.id in users) {
-                            $('#u' + serverRes.id).removeClass('idle');
-
-                            // Pull users from local array and display message or status
+                            $('#u' + serverRes.id).removeClass('idle');                            
                             serverRes.user = users[serverRes.id];
-                            displayMessage(serverRes);
-                        } else {
-                            displayMessage(serverRes);
                         }
+
+                        displayMessage(serverRes);
                     }
                 }
             }
