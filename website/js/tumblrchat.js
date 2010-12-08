@@ -21,7 +21,7 @@ if (tempHash != null) {
 sessionStorage.clear();
 
 $(function() {
-    document.title = 'Tumblr Chat (Connecting...)'
+    document.title = 'TumblrChat (Connecting...)'
     $('#loading-pulse').dotdotdot();
 
 
@@ -138,7 +138,7 @@ $(function() {
                     topic = serverRes.topic;
                     displayMessage({
                         type:    'status',
-                        message: 'Welcome to Tumblr Chat\'s ' + fancyRoom + ' Room. Type /help for assistance.'});
+                        message: 'Welcome to TumblrChat\'s ' + fancyRoom + ' Room. Type /help for assistance.'});
                     displayMessage({
                         type:    'status',
                         message: 'The topic is \'' + topic + '\'...'});
@@ -146,7 +146,7 @@ $(function() {
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                     $('#count').text(userCount);
-                    document.title = '(' + userCount + ') Tumblr Chat | ' + fancyRoom + ' Room'
+                    document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom + ' Room'
                     $('#loading').fadeOut(1000);
                     $('#button-rooms').html(fancyRoom + ' Room');
                     $('#dialog').remove();
@@ -168,7 +168,7 @@ $(function() {
                     } else if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
                         users[serverRes.id] = serverRes.user;
                         $('#count').text(++userCount);
-                        document.title = '(' + userCount + ') Tumblr Chat';
+                        document.title = '(' + userCount + ') TumblrChat';
 
                         // Display user on side
                         displayUser(serverRes.id);
@@ -192,7 +192,7 @@ $(function() {
 
                         // Remove local user
                         $('#count').text(--userCount);
-                        document.title = '(' + userCount + ') Tumblr Chat';
+                        document.title = '(' + userCount + ') TumblrChat';
 
                         // Remove user from side and delete
                         removeUser(serverRes.id);
@@ -528,7 +528,7 @@ function notifyFailure(hasSocket)
         $('#loading-pulse').dotdotend();
         $('#loading').fadeIn(250);
 
-        document.title = 'Tumblr Chat (Error!)'
+        document.title = 'TumblrChat (Error!)'
 
         $('<div/>')
             .attr('title', 'Unable to Connect')

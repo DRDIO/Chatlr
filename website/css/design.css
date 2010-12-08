@@ -331,3 +331,15 @@ body, input {
 #button-creator img {
     margin-right: -0.167em;
 }
+
+/* PHONES AND TABLETS */
+
+@media all and (max-device-width: 1024px) {
+    body {
+        -webkit-text-size-adjust:none;
+    }
+
+    #notice, .topbuttons, .toplink, #usersbox {
+        display: none;
+    }
+}
