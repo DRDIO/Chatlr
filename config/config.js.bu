@@ -1,6 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Configuration Variables, YAY!
 //
+exports.ipaddr   = '';
 exports.port     = 8080;
 exports.interval = 60000;
 
