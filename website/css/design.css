@@ -342,4 +342,9 @@ body, input {
     #notice, .topbuttons, .toplink, #usersbox {
         display: none;
     }
+
+    #chatbox {
+        width: 100%;
+        clear: both;        
+    }
 }
