@@ -21,6 +21,8 @@ if (tempHash != null) {
 sessionStorage.clear();
 
 $(function() {
+    $(window).scrollTop(1);
+    
     document.title = 'TumblrChat (Connecting...)'
     $('#loading-pulse').dotdotdot();
 
