@@ -101,7 +101,7 @@ body, input {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding: 3em 0 0 0.5em;
-    width: 15%;
+    width: 20%;
     height: 66%;
 }
 
@@ -164,7 +164,7 @@ body, input {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding: 0.5em 0 3em 0.5em;
-    width: 15%;
+    width: 20%;
     height: 34%;
 }
 
@@ -196,7 +196,7 @@ body, input {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     padding: 3em 0.5em;
-    width: 85%;
+    width: 80%;
     height: 100%;
 }
 
