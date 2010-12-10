@@ -93,14 +93,15 @@ body, input {
 }
 
 #usersbox {
+    overflow: hidden;
     position: absolute;
     top: 0;
     left: 0;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    padding: 3em 0 3em 0.5em;
+    padding: 3em 0 0 0.5em;
     width: 15%;
-    height: 100%;
+    height: 66%;
 }
 
     #users {
@@ -112,7 +113,7 @@ body, input {
         overflow-y: auto;
     }
 
-        #users div {
+        #users div, #rooms div {
             width: 400px;
             padding: 0.5em;
         }
@@ -124,21 +125,21 @@ body, input {
             vertical-align: middle;
         }
 
-        #users a {
+        #users a, #rooms a {
             color: #333;
             text-decoration: none;
             font-weight: bold;
         }
 
-        #users div:nth-child(odd) {
+        #users div:nth-child(odd), #rooms div:nth-child(even) {
             background: #F6F6F6;
         }
 
-        #users div.personal {
+        #users div.personal, #rooms div.op {
             background: #FFF2F2;
         }
 
-        #users div.personal:nth-child(odd) {
+        #users div.personal:nth-child(odd), #rooms div.op:nth-child(odd) {
             background: #FFE5E5;
         }
 
@@ -154,7 +155,40 @@ body, input {
             opacity: 0.25;
         }
 
+#roomsbox {
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    padding: 0.5em 0 3em 0.5em;
+    width: 15%;
+    height: 34%;
+}
+
+    #rooms {
+        background: #fff;
+        border-radius:  0.5em;
+        -moz-border-radius: 0.5em;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+        #rooms sup {
+            margin-right: 0.5em;
+            width: 1.333em;
+            height: 1.333em;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.833em;
+            vertical-align: text-top;
+            overflow: hidden;
+        }
+
 #chatbox {
+    overflow: hidden;
     position: absolute;
     top: 0;
     right: 0;
@@ -165,57 +199,79 @@ body, input {
     height: 100%;
 }
 
-#chat {
-    background: #fff;
-    border-radius: 0.5em;
-    -moz-border-radius: 0.5em;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
+    #chat {
+        background: #fff;
+        border-radius: 0.5em;
+        -moz-border-radius: 0.5em;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 
-#chat div {
-    padding: 0.5em;
-}
+        #chat div {
+            padding: 0.5em;
+        }
 
-#chat img {
-    margin-right: 0.5em;
-    border-radius: 0.25em;
-    -moz-border-radius: 0.25em;
-    vertical-align: middle;
-}
+        #chat img {
+            margin-right: 0.5em;
+            border-radius: 0.25em;
+            -moz-border-radius: 0.25em;
+            vertical-align: middle;
+        }
 
-#chat a {
-    color: #333;
-    text-decoration: none;
-    font-weight: bold;
-}
+        #chat a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
 
-#chat div:nth-child(odd) {
-    background: #F6F6F6;
-}
+            #chat div:nth-child(odd) {
+                background: #F6F6F6;
+            }
 
-#chat div.status {
-    opacity: 0.5;
-}
+            #chat div.status {
+                opacity: 0.5;
+            }
 
-#chat div.personal {
-    background: #FFF2F2;
-}
+            #chat div.personal {
+                background: #FFF2F2;
+            }
 
-#chat div.personal:nth-child(odd) {
-    background: #FFE5E5;
-}
+            #chat div.personal:nth-child(odd) {
+                background: #FFE5E5;
+            }
 
-#chat a.op {
-    color: #E53F29;
-}
+            #chat a.op, #rooms div.op a {
+                color: #E53F29;
+            }
 
-#chat span a {
-    color: #2C4762;
-}
+            #chat span a {
+                color: #2C4762;
+            }
+
+        #chat .divider {
+            background: #2C4762;
+            display: block;
+        }
+
+        #chat .bottom {
+            background: #ffffff;
+            border-radius: 0 0 0.5em 0.5em;
+            -moz-border-radius: 0 0 0.5em 0.5em;
+            display: block;
+            height: 0.5em;
+        }
+
+        #chat .top {
+            background: #ffffff;
+            margin-top: 0.5em;
+            border-radius: 0.5em 0.5em 0 0;
+            -moz-border-radius: 0.5em 0.5em 0 0;
+            display: block;
+            height: 0.5em;
+        }
 
 
 

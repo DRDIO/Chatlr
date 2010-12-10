@@ -6,12 +6,12 @@ var io     = require('./extension'),
     
 module.exports = function(server) {
     // Create a socket to IO and start listening
-    var listener = io.listen(server, {transports: ['websocket', 'htmlfile', 'xhr-polling']});
+    var listener = io.listen(server);
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Setup featured listener.chatRooms that last forever
     //
-    listener.roomCreateFeatured(config.chatRooms);
+    listener.roomCreateFeatured(config.chatRooms, {transports: ['websocket', 'htmlfile', 'xhr-polling', 'json-polling']});
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Setup all events and attach chat methods

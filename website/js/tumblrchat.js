@@ -12,6 +12,72 @@ $.fn.dotdotend = function() {
     });
 };
 
+/**
+ * jQuery.fn.sortElements
+ * --------------
+ * @param Function comparator:
+ *   Exactly the same behaviour as [1,2,3].sort(comparator)
+ *
+ * @param Function getSortable
+ *   A function that should return the element that is
+ *   to be sorted. The comparator will run on the
+ *   current collection, but you may want the actual
+ *   resulting sort to occur on a parent or another
+ *   associated element.
+ *
+ *   E.g. $('td').sortElements(comparator, function(){
+ *      return this.parentNode;
+ *   })
+ *
+ *   The <td>'s parent (<tr>) will be sorted instead
+ *   of the <td> itself.
+ */
+jQuery.fn.sortElements = (function(){
+
+    var sort = [].sort;
+
+    return function(comparator, getSortable) {
+
+        getSortable = getSortable || function(){return this;};
+
+        var placements = this.map(function(){
+
+            var sortElement = getSortable.call(this),
+                parentNode = sortElement.parentNode,
+
+                // Since the element itself will change position, we have
+                // to have some way of storing its original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                nextSibling = parentNode.insertBefore(
+                    document.createTextNode(''),
+                    sortElement.nextSibling
+                );
+
+            return function() {
+
+                if (parentNode === this) {
+                    throw new Error(
+                        "You can't sort elements if any one is a descendant of another."
+                    );
+                }
+
+                // Insert before flag:
+                parentNode.insertBefore(this, nextSibling);
+                // Remove flag:
+                parentNode.removeChild(nextSibling);
+
+            };
+
+        });
+
+        return sort.call(this, comparator).each(function(i){
+            placements[i].call(getSortable.call(this));
+        });
+
+    };
+
+})();
+
 var socket,
     tempHash = sessionStorage.getItem('hash');
     
@@ -49,7 +115,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling']});
+        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling', 'json-polling']});
         socket.connect();
 
         setTimeout("notifyFailure(true)", socket.options.connectTimeout);
@@ -73,28 +139,30 @@ $(function() {
             if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': '', 'room': ''}) {
                 // ROOMS
                 if (serverRes.type == 'room' && 'mode' in serverRes && serverRes.mode in {'delete': '', 'change': ''}) {
+                    var fancyRoom = roomGetFancyName(serverRes.room);
+
                     if (serverRes.mode == 'delete') {
                         // Delete room from list
-                        $('#page-rooms #r' + serverRes.room).remove();
+                        $('#rooms #r' + serverRes.room).remove();
                     } else {
                         // Update or add room to list
-                        var fancyRoom = roomGetFancyName(serverRes.room);
-                        var display   = '(' + serverRes.count + ') ' + fancyRoom + ' Room';
-                        var roomObj   = $('#page-rooms #r' + serverRes.room);
+                        var roomObj   = $('#rooms #r' + serverRes.room);
 
                         if (roomObj.length) {
-                            roomObj.find('a').text(display);
-                        } else {
-                            roomObj = $('<li/>')
+                            roomObj.find('sup').text(serverRes.count);
+                            roomObj.find('a').text(fancyRoom);
+                        } else {                            
+                            roomObj = $('<div/>')
                                 .attr('id', 'r' + serverRes.room)
+                                .append($('<sup/>').text(serverRes.count))
                                 .append($('<a/>')
-                                    .addClass('room')
                                     .attr('href', '#' + serverRes.room)
-                                    .text(display));
+                                    .text(fancyRoom));
+                                
                             if (serverRes.featured) {
-                                $('#rooms-featured').append(roomObj);
+                                $('#rooms').append(roomObj);
                             } else {
-                                $('#rooms-users').append(roomObj);
+                                $('#rooms').append(roomObj);
                             }
                         }
                     }
@@ -113,6 +181,15 @@ $(function() {
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                 else if (serverRes.type == 'approved') {
+                    if ($('#chat').text() != '') {
+                        $('#chat')
+                            .append($('<b />')
+                                .addClass('divider')
+                                .append($('<b />')
+                                    .addClass('bottom'))
+                                .append($('<b />')
+                                    .addClass('top')));
+                    }
 
                     // Save self ID for later reference
                     clientId = serverRes.id;
@@ -152,9 +229,16 @@ $(function() {
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                     $('#count').text(userCount);
-                    document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom + ' Room'
+                    document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
                     $('#loading').fadeOut(1000);
-                    $('#button-rooms').html(fancyRoom + ' Room');
+
+                    $('#rooms div').sortElements(function(a, b) {
+                        return $(a).find('sup').text() < $(b).find('sup').text() ? 1 : -1;
+                    });
+
+                    $('#rooms div').removeClass('op');
+                    $('#rooms #r' + roomName).addClass('op').prependTo('#rooms');
+
                     $('#dialog').remove();
 
                 // If a new user is coming or going, update list accordingly
@@ -282,10 +366,6 @@ $(function() {
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 $('#text').val('');
 
-            } else if (message.search(/^\/rooms/i) == 0) {
-                $('#button-rooms').click();
-                $('#text').val('');
-                
             } else if (message.search(/^\/room !?[a-z0-9-]{2,16}$/i) == 0) {
                 var newRoom = message.substr(6).toLowerCase();
 
@@ -377,7 +457,7 @@ $(function() {
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
         // User has clicked a link for rooms, switch rooms
-        $('.room').live('click', function(e) {
+        $('#rooms a').live('click', function(e) {
            e.preventDefault();
            var newRoom = $(this).attr('href').substr(1);
 
