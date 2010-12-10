@@ -88,7 +88,7 @@ body, input {
     width: 16px;
     height: 16px;
     vertical-align: middle;
-    margin-right: 0.5em;
+    margin-right: 0.25em;
     margin-top: -0.167em;
 }
 
@@ -382,10 +382,6 @@ body, input {
 
 #button-creator {
     background: #e53f29;
-}
-
-#button-creator img {
-    margin-right: -0.167em;
 }
 
 /* PHONES AND TABLETS */
