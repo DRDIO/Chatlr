@@ -390,7 +390,7 @@ body, input {
 
 /* PHONES AND TABLETS */
 
-@media all and (max-device-width: 1024px) {
+@media all and (max-device-width: 481px) {
     body {
         -webkit-text-size-adjust: none;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
