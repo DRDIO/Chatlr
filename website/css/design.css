@@ -78,7 +78,7 @@ body, input {
     }
 
 #login, .login {
-    padding: 0.333em 0.5em 0.333em 0.25em;
+    padding: 0.333em 0.5em;
     height: 1.333em;
 }
 
@@ -88,6 +88,7 @@ body, input {
     width: 16px;
     height: 16px;
     vertical-align: middle;
+    margin-left: -0.25em;
     margin-right: 0.25em;
     margin-top: -0.167em;
 }
