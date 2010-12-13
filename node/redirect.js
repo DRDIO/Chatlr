@@ -41,13 +41,13 @@ module.exports = function(app)
     {
         var parsedUrl = url.parse(req.url, true);
 
-        res.writeHead(200, {'Content-type': 'text/html'});
-
         if ('query' in parsedUrl && typeof parsedUrl.query == 'object' && 'oauth_token' in parsedUrl.query) {
             oa.getOAuthAccessToken(parsedUrl.query.oauth_token, req.session.secret, parsedUrl.query.oauth_verifier, function(error, token, secret, results)
             {
+                // Get Authentication Information
                 oa.getProtectedResource(config.authenticateUrl, 'POST', token, secret, function(error, data)
                 {
+                    // Make sure we get actual data
                     if (typeof data == 'string') {
                         var parser = new xml2js.Parser();
 
@@ -72,14 +72,16 @@ module.exports = function(app)
 
                         parser.parseString(data);
                     } else {
+                        res.writeHead(200, {'Content-type': 'text/html'});
                         res.end('Invalid response from Tumblr.');
-                        throw new Error('Parse Response');
+                        console.log(error || 'Parse Response Error');
                     }
                 });
             });
         } else {
+            res.writeHead(200, {'Content-type': 'text/html'});
             res.end('The callback did not conntain a login key.');
-            throw new Error('No Oauth Key');
+            console.log(parsedUrl || 'No Oauth Key');
         }
     });
 }
