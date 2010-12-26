@@ -88,18 +88,12 @@ sessionStorage.clear();
 
 $(function() {
     window.scrollTo(0, 1);
-    $('#chatbox').bind('touchmove', function(e) {
-        e.preventDefault(); // the default behaviour is scrolling
-        alert(e.targetTouches[0].pageY);
-    });
 
     document.title = 'TumblrChat (Connecting...)'
     $('#loading-pulse').dotdotdot();
 
-
     // Initialize variables
     var clientId,
-        roomName      = 'main',
         users         = {},
         ignore        = {},
         userCount     = 0,
@@ -108,7 +102,9 @@ $(function() {
         topic         = '',
         isMobile      = false,
         lastScroll    = 0,
-        hashRoom      = location.hash.substr(1);
+        hashRoom      = location.hash.substr(1),
+        timeoutId     = null,
+        attempts      = 0;
        
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
@@ -116,21 +112,31 @@ $(function() {
         notifyFailure(false);
     } else {
         socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling', 'json-polling']});
-        socket.connect();
 
-        setTimeout("notifyFailure(true)", socket.options.connectTimeout);
+        socket.connect();
+        timeoutId = setTimeout("notifyFailure(true)", socket.options.connectTimeout);
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
         // CONNECT > SEND CREDENTIALS
         // As soon as we connect, send credentials. Chat is still disabled at this time.
         socket.on('connect', function() {
-            
+            // Show the chat if not already shown and clear any possible timeouts
+            $('#loading:visible').fadeOut(250);
+            $('#error:visible').remove();
+            $('#loading-pulse').dotdotend();
+            clearTimeout(timeoutId);
+            attempts = 0;
         });
 
         socket.on('disconnect', function()
         {
-            notifyFailure(false);
+            if (attempts++ < 3) {
+                socket.connect();
+                timeoutId = setTimeout("notifyFailure(true)", socket.options.connectTimeout);
+            } else {
+                notifyFailure(false);
+            }
         });
 
         socket.on('message', function(serverRes)
@@ -616,6 +622,7 @@ function notifyFailure(hasSocket)
         document.title = 'TumblrChat (Error!)'
 
         $('<div/>')
+            .attr('id', 'error')
             .attr('title', 'Unable to Connect')
             .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
             .dialog({
