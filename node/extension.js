@@ -381,7 +381,7 @@ io.Listener.prototype.roomDropUser = function(roomName, name, message)
 {
     for (var j in this.chatRooms[roomName].users) {
         // You cannot ban or kick OPs
-        if (this.chatRooms[roomName].users[j].name == name && !this.chatRooms[roomName].users[j].op) {
+        if (j in this.clients && this.chatRooms[roomName].users[j].name == name && !this.chatRooms[roomName].users[j].op) {
             // Broadcast to everyone that this user has disconnected
             // This will remove user from their list
             this.roomBroadcast(roomName, {
