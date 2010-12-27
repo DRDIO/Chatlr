@@ -79,7 +79,9 @@ jQuery.fn.sortElements = (function(){
 })();
 
 var socket,
-    tempHash = sessionStorage.getItem('hash');
+    attempts  = 0,
+    timeoutId = null,
+    tempHash  = sessionStorage.getItem('hash');
     
 if (tempHash != null) {
     location.hash = tempHash;
@@ -102,9 +104,7 @@ $(function() {
         topic         = '',
         isMobile      = false,
         lastScroll    = 0,
-        hashRoom      = location.hash.substr(1),
-        timeoutId     = null,
-        attempts      = 0;
+        hashRoom      = location.hash.substr(1);
        
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
@@ -113,14 +113,15 @@ $(function() {
     } else {
         socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling', 'json-polling']});
 
-        socket.connect();
-        timeoutId = setTimeout("notifyFailure(true)", socket.options.connectTimeout);
+        // Try to connect (using multiple tries if necessary)
+        chatConnect();
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
         // CONNECT > SEND CREDENTIALS
         // As soon as we connect, send credentials. Chat is still disabled at this time.
-        socket.on('connect', function() {
+        socket.on('connect', function()
+        {
             // Show the chat if not already shown and clear any possible timeouts
             $('#loading:visible').fadeOut(250);
             $('#error:visible').remove();
@@ -131,12 +132,7 @@ $(function() {
 
         socket.on('disconnect', function()
         {
-            if (attempts++ < 3) {
-                socket.connect();
-                timeoutId = setTimeout("notifyFailure(true)", socket.options.connectTimeout);
-            } else {
-                notifyFailure(false);
-            }
+            chatConnect();
         });
 
         socket.on('message', function(serverRes)
@@ -611,6 +607,26 @@ $(function() {
         return $('<div/>').text(message).html();
     }
 });
+
+function chatConnect()
+{
+    if (typeof socket != 'undefined') {
+        // Try connecting 3 times (reset to 0 on successful connect)
+        if (attempts < 3) {
+            if (!socket.connecting && !socket.connected) {
+                attempts++;
+                socket.connect();
+            }
+
+            // Check back after timeout for another attempt
+            timeoutId = setTimeout('chatConnect()', socket.options.connectTimeout);
+        } else {
+            notifyFailure();
+        }
+    } else {
+        notifyFailure();
+    }
+}
 
 function notifyFailure(hasSocket)
 {
