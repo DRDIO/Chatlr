@@ -268,7 +268,7 @@ $(function() {
                         // Don't display if so many people are on, its too spammy
                         if (userCount < 10) {
                             serverRes.message = ' has joined the chat!';
-                            displayMessage(serverRes);
+                            // displayMessage(serverRes);
                         }
 
                     // Awh, a user left, let's remove from user list
@@ -279,7 +279,7 @@ $(function() {
                         // Don't display if so many people are on, its too spammy
                         if (userCount < 10) {
                             serverRes.message = ' has left the chat...';
-                            displayMessage(serverRes);
+                            // displayMessage(serverRes);
                         }
 
                         // Remove local user
