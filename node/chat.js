@@ -449,7 +449,7 @@ module.exports = function(serverLambda) {
     var listener;
     return function (req, res, next) {
         if (!listener) {
-            listener = io.listen(serverLambda());
+            listener = io.listen(serverLambda(), {transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling']});
 
             // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
             // Setup featured listener.chatRooms that last forever
