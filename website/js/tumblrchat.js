@@ -111,7 +111,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-polling', 'json-polling']});
+        socket = new io.Socket(null, {rememberTransport: false});
 
         // Try to connect (using multiple tries if necessary)
         chatConnect();

@@ -10,7 +10,9 @@ process.on('uncaughtException', function (err) {
 // Too lazy to figure out npm, so add required paths
 //
 var config  = require('../config/config'),
-    connect = require('./connect/lib/connect');
+    connect = require('./connect/lib/connect'),
+    socket  = require('./socketconnect/socketIO.js'),
+    chat    = require('./chat');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Create a CONNECT server, add routes for a main page to start chat and a callback
@@ -21,10 +23,10 @@ var config  = require('../config/config'),
 // On CALLBACK: Authenticate with Tumblr, parse XML, store user in a session
 //
 var server = connect.createServer(
+    chat(function() { return server; }),
     connect.cookieDecoder(),
-    connect.session({fingerprint: function(req)
-    {
-        return connect.utils.md5(req.socket.remoteAddress);
+    connect.session({fingerprint: function(req) {
+        return '';
     }}),
     connect.staticProvider(__dirname + '/../website'),
     connect.router(require('./redirect'))
@@ -33,5 +35,4 @@ var server = connect.createServer(
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Attach Socket.IO to Connect, then start listening on port 8080
 //
-server.use('', require('./chat')(server));
 server.listen(config.port, config.ipaddr);
