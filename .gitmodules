@@ -1,6 +1,9 @@
 [submodule "connect"]
 	path = node/connect
-	url = https://github.com/senchalabs/connect.git
-[submodule "socket"]
-	path = node/socket
-	url = git://github.com/KevinNuut/Socket.IO-node.git
+	url = git://github.com/senchalabs/connect.git
+[submodule "socketnode"]
+	path = node/socketnode
+	url = git://github.com/LearnBoost/Socket.IO-node.git
+[submodule "socketchat"]
+	path = node/socketchat
+	url = git@github.com:KevinNuut/Socket.IO-node.git
