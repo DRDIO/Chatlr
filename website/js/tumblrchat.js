@@ -104,7 +104,8 @@ $(function() {
         topic         = '',
         isMobile      = false,
         lastScroll    = 0,
-        hashRoom      = location.hash.substr(1);
+        hashRoom      = location.hash.substr(1),
+        connected     = false;
        
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
@@ -183,14 +184,16 @@ $(function() {
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                 else if (serverRes.type == 'approved') {
-                    if ($('#chat').text() != '') {
-                        $('#chat')
-                            .append($('<b />')
-                                .addClass('divider')
+                    if (!connected) {
+                        if ($('#chat').text() != '') {
+                            $('#chat')
                                 .append($('<b />')
-                                    .addClass('bottom'))
-                                .append($('<b />')
-                                    .addClass('top')));
+                                    .addClass('divider')
+                                    .append($('<b />')
+                                        .addClass('bottom'))
+                                    .append($('<b />')
+                                        .addClass('top')));
+                        }
                     }
 
                     // Save self ID for later reference
@@ -209,9 +212,11 @@ $(function() {
                         userCount++;
                     }
 
-                    // Output buffer messages
-                    for (var j in serverRes.buffer) {
-                        displayMessage(serverRes.buffer[j]);
+                    if (!connected) {
+                        // Output buffer messages
+                        for (var j in serverRes.buffer) {
+                            displayMessage(serverRes.buffer[j]);
+                        }
                     }
 
                     var fancyRoom = roomGetFancyName(roomName);
@@ -219,14 +224,16 @@ $(function() {
                     // Update room hash
                     location.hash = (roomName != 'main' ? roomName : '');
 
-                    // Update status to say they joined
-                    topic = serverRes.topic;
-                    displayMessage({
-                        type:    'status',
-                        message: 'Welcome to TumblrChat\'s ' + fancyRoom + ' Room. Type /help for assistance.'});
-                    displayMessage({
-                        type:    'status',
-                        message: 'The topic is \'' + topic + '\'...'});
+                    if (!connected) {
+                        // Update status to say they joined
+                        topic = serverRes.topic;
+                        displayMessage({
+                            type:    'status',
+                            message: 'Welcome to TumblrChat\'s ' + fancyRoom + ' Room. Type /help for assistance.'});
+                        displayMessage({
+                            type:    'status',
+                            message: 'The topic is \'' + topic + '\'...'});
+                    }
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -242,6 +249,8 @@ $(function() {
                     $('#rooms #r' + roomName).addClass('op').prependTo('#rooms');
 
                     $('#dialog').remove();
+
+                    connected = true;
 
                 // If a new user is coming or going, update list accordingly
                 } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {
