@@ -11,7 +11,6 @@ process.on('uncaughtException', function (err) {
 //
 var config  = require('../config/config'),
     connect = require('./connect/lib/connect'),
-    socket  = require('./socketconnect/socketIO.js'),
     chat    = require('./chat');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

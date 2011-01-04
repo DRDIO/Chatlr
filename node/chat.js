@@ -1,7 +1,7 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Chat Extension variables
 //
-var io     = require('./socketconnect/vendor/socket.io-node'),
+var io     = require('./socket'),
     config = require('../config/config');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
