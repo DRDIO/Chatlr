@@ -7,11 +7,12 @@ process.on('uncaughtException', function (err) {
 });
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Too lazy to figure out npm, so add required paths
+// Get Required Components
 //
-var config  = require('../config/config'),
-    connect = require('./connect/lib/connect'),
-    chat    = require('./chat');
+var config   = require('../config/config'),
+    connect  = require('./connect/lib/connect'),
+    socket   = require('./socketconnect'),
+    redirect = require('./redirect');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Create a CONNECT server, add routes for a main page to start chat and a callback
@@ -22,13 +23,13 @@ var config  = require('../config/config'),
 // On CALLBACK: Authenticate with Tumblr, parse XML, store user in a session
 //
 var server = connect.createServer(
-    chat(function() { return server; }),
+    socket(function() { return server; }),
     connect.cookieDecoder(),
     connect.session({fingerprint: function(req) {
         return '';
     }}),
     connect.staticProvider(__dirname + '/../website'),
-    connect.router(require('./redirect'))
+    connect.router(redirect)
 );
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

@@ -1,201 +1,115 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Chat Extension variables
 //
-var io     = require('./socket'),
-    config = require('../config/config');
+var config = require('../config/config'),
+    io     = module.exports = require('./socket');
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Room and Banned User Vars
 //
-io.Listener.prototype.chatBanned    = {};
-io.Listener.prototype.chatRooms     = {};
-io.Listener.prototype.chatRoomCount = 0;
+io.Listener.prototype.chatUsers        = {};
+io.Listener.prototype.chatBanned       = {};
+io.Listener.prototype.chatRooms        = {};
+io.Listener.prototype.chatRoomCount    = 0;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Middleware prefix for Connect stack
-//
-io.Listener.prototype.prefixWithMiddleware = function (fn) {
-    var self = this;
-    return function (client) {
-        var dummyRes = {
-            writeHead: null
-        };
-        // Throw the request down the Connect middleware stack
-        // so we can use Connect middleware for free.
-        self.server.handle(client.request, dummyRes, function () {
-            fn(client, client.request, dummyRes);
-        });
-    };
-};
+io.Listener.prototype.chatMessageTypes = {
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // MESSAGE: user is sending a message to everyone
+    //
+    'message': function(listener, client, response) {
+        if ('message' in response && typeof response.message == 'string') {
+            // Get the current room of the user
+            var user     = listener.chatUsers[client.userName];
+            var roomName = user.roomName;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Chat Connection for a Client
-//
-io.Listener.prototype.chatOnConnection = function(client)
-{
-    var listener = this;
-    
-    try {
-        if (!('user' in client)) {
-            console.log('User is not in client list');
-            client._onClose();
-            return;
-        }
+            if (roomName) {
+                var time    = new Date().getTime();
+                var message = response.message.substr(0, 350);
 
-        if (client.user.name in listener.chatBanned) {
-            console.log('User is banned!');
-            client.send({
-                type:    'notice',
-                message: 'You have been banned.'});
-            client._onClose();
-            return;
-        }
-
-        // Step 2: Check that user isn't already in room
-        for (var i in listener.chatRooms['main'].users) {
-            if (listener.chatRooms['main'].users[i].name == client.user.name) {
-                listener.roomRemoveUser(i);
-                break;
-            }
-        }
-
-        var currentUser = client.user;
-
-        // Setup user as OPERATOR if in the approval list above
-        currentUser.op          = (currentUser.name in config.chatOps) ? true : false;
-        currentUser.timestamp   = new Date().getTime();
-        currentUser.lastMessage = '';
-
-        // Place into proper room
-        listener.roomUpdateUser('main', client.sessionId, currentUser);
-
-        listener.roomSendInit('main', client);
-
-        // Send giant list of existing listener.chatRooms when user joins
-        listener.roomNotifyInit();
-
-        // Broadcast to everyone that listener user has connected
-        // This will also add the user to their user list
-        listener.roomBroadcast('main', {
-            type: 'status',
-            mode: 'connect',
-            id:   client.sessionId,
-            user: currentUser});
-
-    } catch(err) {
-        client._onClose();
-        throw err;
-    }
-}
-
-// 'this' references 'client'
-io.Listener.prototype.chatOnMessage = function(clientRes)
-{
-    // Server can receive either credentials or a message to share
-    if ('type' in clientRes && typeof clientRes.type == 'string' && clientRes.type in {'message': '', 'credentials': '', 'roomchange': ''}) {
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // ROOM CHANGE: User is requesting to change this.listener.chatRooms
-        //
-        if (clientRes.type == 'roomchange' && 'room' in clientRes && typeof clientRes.room == 'string' && clientRes.room.search(/^!?[a-z0-9-]{2,16}$/i) != -1) {
-            clientRes.room = clientRes.room.toLowerCase();
-
-            this.listener.roomCreate(clientRes.room);
-            this.listener.roomUpdateUser(clientRes.room, this.sessionId);
-            this.listener.roomSendInit(clientRes.room, this);
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // MESSAGE: user is sending a message to everyone
-        //
-        } else if ('message' in clientRes && typeof clientRes.message == 'string') {
-            var currentRoom = this.listener.roomUserExists(this.sessionId);
-
-            if (currentRoom) {
-                var currentUser = this.listener.chatRooms[currentRoom].users[this.sessionId];
-                var timestamp   = new Date().getTime();
-                var message     = clientRes.message.substr(0, 350);
-
-                if (currentUser.op) {
-                    if (message.search(/^\/shout/) == 0) {
+                if (user.op) {
+                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                    // OP: Shout to Rooms
+                    //
+                    if (!message.search(/^\/shout/)) {
                         var shoutMessage = 'Server Message: ' + message.substr(7);
-                        this.listener.broadcast({
+                        listener.broadcast({
                             type: 'status',
                             message: shoutMessage});
                         return;
 
+                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                    // OP: Set the Topic
+                    //
                     } else if (message.search(/^\/topic/) == 0) {
                         var topic = message.substr(7);
-                        this.listener.chatRooms[currentRoom].topic = topic;
-                        this.listener.roomBroadcast(currentRoom, {
+                        listener.chatRooms[roomName].topic = topic;
+                        listener.roomBroadcast(roomName, {
                             type:  'topic',
                             topic: topic});
                         return;
 
+                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                    // OP: Kick User Out or to Another Room
+                    //
                     } else if (message.search(/^\/kick [a-z0-9-]+( !?[a-z0-9-]{2,16})?/i) == 0) {
-                        var split = message.split(' ');
-                        var name  = split[1];
-                        var room  = (2 in split ? split[2] : false);
+                        var kickSplit = message.split(' ');
+                        var kickName  = (1 in kickSplit ? kickSplit[1] : false);
 
-                        if (room) {
-                            var moveId = false;
-                            for (var i in this.listener.chatRooms) {
-                                for (var j in this.listener.chatRooms[i].users) {
-                                    if (name == this.listener.chatRooms[i].users[j].name) {
-                                        moveId = j;
-                                        break;
-                                    }
-                                }
-                            }
+                        if (kickName in listener.chatUsers) {
+                            var kickUser = listener.chatUsers[kickName];
+                            var kickRoom = (2 in kickSplit ? kickSplit[2] : false);
 
-                            if (moveId) {
-                                this.listener.roomCreate(room);
-                                this.listener.roomUpdateUser(room, moveId);
-                                this.listener.roomSendInit(room, this.listener.clients[moveId]);
+                            if (kickRoom) {
+                                listener.roomUserAdd(kickRoom, kickName);
+                                listener.userInitRoom(kickRoom, client);
 
                                 // Let everyone know that someone has been moved
-                                this.listener.roomBroadcast(currentRoom, {
+                                listener.roomBroadcast(roomName, {
                                     type: 'status',
-                                    message: 'has been kicked to #' + room + ' Room',
-                                    id: moveId});
+                                    message: 'has been kicked to #' + roomName + ' Room',
+                                    id: user.name});
+                            } else {
+                                listener.roomDropUser(roomName, name, 'has been kicked...');
                             }
-                        } else {
-                            this.listener.roomDropUser(currentRoom, name, 'has been kicked...');
-                        }
+                        } 
 
                         return;
 
+                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                    // OP: Ban User For X Time
+                    //
                     } else if (message.search(/^\/ban [a-z0-9-]+( \d+)?/i) == 0) {
                         // Get the name and duration of ban in minutes
                         // If duration is blank, set the ban to infinity
-                        var split = message.split(' ');
-                        var name  = split[1];
+                        var banSplit = message.split(' ');
+                        var banUser  = (1 in banSplit ? banSplit[1] : false);
 
-                        if (name in this.listener.chatBanned) {
-                            delete this.listener.chatBanned[name];
+                        if (banUser in listener.chatBanned) {
+                            delete listener.chatBanned[banUser];
                         } else {
                             // Duration in milliseconds
-                            var duration    = (2 in split ? (timestamp + parseInt(split[2]) * 60000) : -1);
-                            var durationMsg = (duration != -1 ? ' for ' + split[2] + ' minutes' : '');
-                            this.listener.chatBanned[name]    = duration;
+                            var duration    = (2 in banSplit ? (time + parseInt(banSplit[2]) * 60000) : -1);
+                            var durationMsg = (duration != -1 ? ' for ' + banSplit[2] + ' minutes' : '');
+                            listener.chatBanned[banUser]    = duration;
 
                             // Tell everyone they have been banned, with possible time
-                            this.listener.roomDropUser(currentRoom, name, 'has been banned' + durationMsg + '...');
+                            listener.roomDropUser(roomName, banUser, 'has been banned' + durationMsg + '...');
                         }
                         return;
                     }
                 }
 
                 // If there is a message and it isn't the same as their last (griefing)
-                if (message.length > 0 && (currentUser.op || (
-                        !(currentUser.name in this.listener.chatBanned) &&
-                        message != currentUser.lastMessage &&
-                        timestamp - currentUser.timestamp > 2000))) {
+                if (message.length > 0 && (user.op || (
+                        !(user.name in listener.chatBanned) &&
+                        message != user.lastMessage &&
+                        time - user.tcMessage > 2000))) {
 
                     if (message.search(/^\/away/) == 0) {
-                        this.listener.roomBroadcast(currentRoom, {
+                        listener.roomBroadcast(roomName, {
                             type:    'status',
                             mode:    'away',
-                            id:      this.sessionId});
+                            id:      client.sessionId});
                         return;
                     }
 
@@ -212,268 +126,504 @@ io.Listener.prototype.chatOnMessage = function(clientRes)
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                     // Store last message to track griefing
-                    currentUser.timestamp   = timestamp;
-                    currentUser.lastMessage = message;
+                    user.tcMessage   = time;
+                    user.lastMessage = message;
 
                     // Push messages into buffer for user logins
-                    this.listener.chatRooms[currentRoom].buffer.push({
+                    listener.chatRooms[roomName].buffer.push({
                         type:    'message',
-                        user:    currentUser,
+                        user:    user,
                         message: message});
 
-                    if (this.listener.chatRooms[currentRoom].buffer.length > 15) {
-                        this.listener.chatRooms[currentRoom].buffer.shift();
+                    if (listener.chatRooms[roomName].buffer.length > 15) {
+                        listener.chatRooms[roomName].buffer.shift();
                     }
 
                     // Broadcast message to everyone
-                    this.listener.roomBroadcast(currentRoom, {
+                    listener.roomBroadcast(roomName, {
                         type:    'message',
-                        id:      this.sessionId,
+                        id:      client.sessionId,
                         message: message});
                 }
             }
-
-        } else {
-            // Invalid message type sent, disconnect user
-            console.log('Invalid Message');
         }
+    },
+    
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // ROOM CHANGE: User is requesting to change listener.chatRooms
+    //
+    'roomchange': function(listener, client, response) {
+        if ('room' in response && typeof response.room == 'string' && response.room.search(/^!?[a-z0-9-]{2,16}$/i) != -1) {
+            // standardize room for a link
+            var room = response.room.toLowerCase();
 
-    } else {
-        // Invalid properties sent, disconnect user
-        console.log('Invalid Type');
+            listener.roomUserAdd(room, client.userName);
+            listener.userInitRoom(room, client);
+        }
     }
-}
+};
 
-io.Listener.prototype.chatOnDisconnect = function()
-{
-    this.listener.roomRemoveUser(this.sessionId);
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * chatCleanup
+ * Perform garbage cleanup of rogue users
+ */
+io.Listener.prototype.chatCleanup = function() {
+    var listener = this;
+    var time     = new Date().getTime();
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // USER CLEANUP
+    //
+    for (var userName in listener.chatUsers) {
+        var user      = listener.chatUsers[userName];
+        var sessionId = user.sessionId;
+
+        if (!user.connected) {
+            // If user has been disconnected longer than allowed, drop completely
+            if (time - user.tsDisconnect > config.interval) {
+                listener.userClose(userName);
+            }
+        } else if (!(sessionId in listener.clients)) {
+            // RARE, User says they are connected but no session exists
+            // Set to disconnected and give them a grace
+            user.connected    = false;
+            user.tsDisconnect = time;
+        } else if (!(user.roomName in listener.chatRooms) || !(userName in listener.chatRooms[user.roomName].users)) {
+            // RARE user says in room X which doen'st exist or not in room
+            listener.roomUserAdd('main', userName);
+        }
+    }
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // ROOM CLEANUP
+    //
+    for (var roomName in listener.chatRooms) {
+        var room      = listener.chatRooms[roomName];
+        var userCount = room.userCount;
+        
+        // Reset user count and recalculate
+        room.userCount = 0;
+
+        for (userName in room.users) {
+            if (!(userName in listener.chatUsers)) {
+                // User is in room list but not global, delete
+                listener.userClose(userName);
+            } else {
+                room.userCount++;
+            }
+        }
+        
+        if (!room.userCount) {
+            // Remove room from list
+            listener.roomDestroy(roomName);
+        } else if (userCount != room.userCount) {
+            // Count somehow got off, so update clients with change
+            listener.chatRoomNotify(roomName);
+        }
+    }
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // BAN LIST CLEANUP
+    //
+    for (var banName in listener.chatBanned) {
+        if (listener.chatBanned[banName] != -1 && listener.chatBanned[banName] < time) {
+            delete listener.chatBanned[banName];
+
+            console.log(banName + ' has been unbanned');
+        }
+    }
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// TODO: DOCUMENT EVERYTHING ELSE
-//
-io.Listener.prototype.roomUserExists = function(sessionId) {
-    for (var i in this.chatRooms) {
-        if (sessionId in this.chatRooms[i].users) {
-            return i;
-        }
+
+/**
+ * chatInit
+ * Initialize Chatroom: Setup rooms and timers
+ */
+io.Listener.prototype.chatInit = function()
+{
+    var listener = this;
+
+    for (var roomName in config.chatRooms) {
+        // Create each featured room and update list
+        listener.roomCreate(roomName, true);
     }
-    return false;
+
+    // Perform memory cleanup on everything
+    setInterval(listener.chatCleanup, config.interval);
 }
 
-io.Listener.prototype.roomSendInit = function(room, client)
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * chatRoomNotify
+ * Notify EVERYONE of room additions / removals / user changes
+ */
+io.Listener.prototype.chatRoomNotify = function(roomName)
 {
+    var listener = this;
+
+    if (roomName in listener.chatRooms) {
+        // Room is either new or has user changes, notify
+        var room = listener.chatRooms[roomName];
+
+        if (!room.hidden) {
+            listener.broadcast({
+                type: 'room',
+                mode: 'change',
+                room: roomName,
+                count: room.userCount
+            });
+        }
+    } else {
+        // Room doesn't exist and needs to be removed
+        listener.broadcast({
+            type: 'room',
+            mode: 'delete',
+            room: roomName});
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * roomBroadcast
+ * Broadcast a message to a room
+ */
+io.Listener.prototype.roomBroadcast = function(roomName, object)
+{
+    var listener = this;
+
+    for (var userName in listener.chatRooms[roomName].users) {
+        var sessionId = listener.chatUsers[userName].sessionId;
+        
+        if (sessionId in listener.clients) {
+            listener.clients[sessionId].send(object);
+        } else {
+            // TODO: This means user could be active!
+            listener.userDisable(userName);
+        }
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * roomCreate
+ * Create a room from scratch
+ */
+io.Listener.prototype.roomCreate = function(roomName, featured)
+{
+    var listener = this;
+
+    // If Room does not exist, CREATE IT
+    listener.chatRooms[roomName] = {
+        topic:     'Anything',
+        buffer:    [],
+        users:     {},
+        userCount: 0,
+        featured:  featured,
+        hidden:    (roomName.substr(0, 1) == '!')};
+    listener.chatRoomCount++;
+
+    console.log(roomName + ' created.');
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * roomDestroy
+ * Delete a room (can even destroy featured rooms)
+ */
+io.Listener.prototype.roomDestroy = function(roomName)
+{
+    var listener = this;
+    
+    delete room;
+    listener.chatRoomCount--;
+    listener.chatRoomNotify(roomName);
+
+    console.log(roomName + ' removed');
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * roomUserAdd
+ * Add a user to a room
+ * If room does not exist, create it and remove user from other possible rooms
+ * If room does exist and user does not exist, add user and inform others
+ * If room does exist and user does exist, do nothing
+ */
+io.Listener.prototype.roomUserAdd = function(roomName, userName)
+{
+    var listener = this;
+
+    // Check that the room is actually in the list
+    if (!(roomName in listener.chatRooms)) {
+        listener.roomCreate(roomName);
+    }
+
+    var room = listener.chatRooms[roomName];
+
+    if (!(userName in room)) {
+        var time = new Date().getTime();
+
+        // USER IS NEW: add them and notify other users
+        room.users[userName] = time;
+        room.userCount++;
+
+        // Broadcast to the room of the new user
+        listener.roomBroadcast(roomName, {
+            type: 'status',
+            mode: 'connect',
+            id:   userName,
+            user: listener.chatUsers[userName]
+        });
+
+        // Broadcast to everyone the room count change
+        listener.chatRoomNotify(roomName);
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // Make sure user is removed from other rooms
+        //
+        for (var otherRoomName in listener.chatRooms) {
+            if (otherRoomName != roomName) {
+                listener.roomUserRemove(otherRoomName, userName);
+            }
+        }
+
+        console.log(userName + ' added to room ' + roomName);
+    } else {
+        // TODO: Handle reconnects
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * roomUserRemove
+ * Remove a user from a room
+ */
+io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
+{
+    var listener = this;
+    var room     = listener.chatRooms[roomName];
+    
+    // Check that user is actually in the room
+    if (userName in room.users) {
+        delete room.users[userName];
+        room.userCount--;
+
+        if (!room.featured && room.userCount <= 0) {
+            // Get rid of this room
+            listener.roomDestroy(roomName);
+        } else {
+            if (message) {
+                listener.roomBroadcast(roomName, {
+                    type:    'status',
+                    message: message,
+                    id:      userName
+                });
+            } else {
+                listener.roomBroadcast(roomName, {
+                    type: 'status',
+                    mode: 'disconnect',
+                    id:   userName});
+            }
+
+            listener.chatRoomNotify(roomName);
+        }
+
+        console.log(userName + ' removed from room ' + roomName);
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * userDisable
+ * Disable a user in a room, setting them to idle for the moment
+ */
+io.Listener.prototype.userDisable = function(userName)
+{
+    var listener = this;
+    var time     = new Date().getTime();
+    var user     = listener.chatUsers[userName];
+
+    if (user.connected) {
+        user.connected    = false;
+        user.tsDisconnect = time;
+
+        console.log(userName + ' disabled');
+    }
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * userClose
+ * Remove user from all lists and rooms, close their connection
+ */
+io.Listener.prototype.userClose = function(userName)
+{
+    var listener  = this;
+    var client    = listener.client;
+
+    if (userName in listener.chatUsers) {
+        var user      = listener.chatUsers[userName];
+        var roomName  = user.roomName;
+        var sessionId = user.sessionId;
+
+        // Remove from room if it is attached
+        listener.roomUserRemove(roomName, userName);
+
+        delete user;
+
+        if (sessionId in listener.clients) {
+            // Disconnect user from session
+            listener.clients[sessionId]._onClose();
+        }
+    }
+
+    console.log(userName + ' closed');
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * userInitRoom
+ * Send user all the information about a room
+ */
+io.Listener.prototype.userInitRoom = function(roomName, client)
+{
+    var listener = client.listener;
+
     client.send({
         type:   'approved',
         id:     client.sessionId,
-        room:   room,
-        topic:  this.chatRooms[room].topic,
-        buffer: this.chatRooms[room].buffer,
-        users:  this.chatRooms[room].users});
+        room:   roomName,
+        topic:  listener.chatRooms[roomName].topic,
+        buffer: listener.chatRooms[roomName].buffer,
+        users:  listener.chatRooms[roomName].users});
 }
 
-io.Listener.prototype.roomRemoveUser = function(sessionId)
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * userOnConnect
+ * Chat Connection for a Client (name, title, url, avatar)
+ */
+
+io.Listener.prototype.userOnConnect = function(client)
 {
-    // Find user in its previous room and remove it
-    for (var i in this.chatRooms) {
-        if (sessionId in this.chatRooms[i].users) {
-            var oldUser = this.chatRooms[i].users[sessionId];
+    var listener = this;
+    var user     = client.user;
+    var roomName = 'main';
+    var time     = new Date().getTime();
 
-            delete this.chatRooms[i].users[sessionId];
-            this.chatRooms[i].userCount--;
-            // console.log(sessionId + ' removed from room ' + i);
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Setup message and disconnect events
+    client.on('message', listener.userOnMessage);
+    client.on('disconnect', listener.userOnDisconnect);
 
-            // Delete empty this.chatRooms (Except for main room)
-            if (!this.chatRooms[i].featured && this.chatRooms[i].userCount <= 0) {
-                delete this.chatRooms[i];
-                this.chatRoomCount--;
-                // console.log('room ' + i + ' deleted');
-
-                this.roomNotifyDelete(i);
-            } else {
-                this.roomBroadcast(i, {
-                    type: 'status',
-                    mode: 'disconnect',
-                    id:   sessionId});
-
-                if (!this.chatRooms[i].hidden) {
-                    this.roomNotifyChange(i, this.chatRooms[i].userCount, this.chatRooms[i].featured);
-                }
-            }
-
-            return oldUser;
-        }
-    }
-
-    return false;
-}
-
-io.Listener.prototype.roomNotifyDelete = function(roomName)
-{
-    this.broadcast({
-        type: 'room',
-        mode: 'delete',
-        room: roomName});
-}
-
-io.Listener.prototype.roomNotifyChange = function(roomName, userCount, featured)
-{
-    this.broadcast({
-        type: 'room',
-        mode: 'change',
-        room: roomName,
-        count: userCount,
-        featured: featured});
-}
-
-io.Listener.prototype.roomNotifyInit = function()
-{
-    for (var i in this.chatRooms) {
-        if (!this.chatRooms[i].hidden) {
-            this.roomNotifyChange(i, this.chatRooms[i].userCount, this.chatRooms[i].featured);
-        }
-    }
-}
-
-io.Listener.prototype.roomCreate = function(roomName, featured)
-{    
-    // If Room does not exist, CREATE IT
-    if (!(roomName in this.chatRooms)) {
-        this.chatRooms[roomName] = {
-            topic:     'Anything',
-            buffer:    [],
-            users:     {},
-            userCount: 0,
-            featured:  featured,
-            hidden:    (roomName.substr(0, 1) == '!')};
-        this.chatRoomCount++;
-        // console.log(roomName + ' created.');
-
-        if (!this.chatRooms[roomName].hidden) {
-            this.roomNotifyChange(roomName, 0, this.chatRooms[roomName].featured);
-        }
-    }
-}
-
-io.Listener.prototype.roomCreateFeatured = function(roomNames) {
-    for (var i in roomNames) {
-        this.roomCreate(i, true);
-    }
-}
-
-io.Listener.prototype.roomUpdateUser = function(roomName, sessionId, newUser)
-{
-    // If user is not moving to the same room
-    if (!(sessionId in this.chatRooms[roomName].users)) {
-        var oldUser = this.roomRemoveUser(sessionId);
-        var user    = newUser ? newUser : oldUser;
-
-        this.chatRooms[roomName].users[sessionId] = user;
-        this.chatRooms[roomName].userCount++;
-        // console.log(user.name + ' added to room ' + roomName);
-
-        this.roomBroadcast(roomName, {
-            type: 'status',
-            mode: 'connect',
-            id:   sessionId,
-            user: user});
-
-        if (!this.chatRooms[roomName].hidden) {
-            this.roomNotifyChange(roomName, this.chatRooms[roomName].userCount, this.chatRooms[roomName].featured);
-        }
-    }
-}
-
-io.Listener.prototype.roomBroadcast = function(roomName, object)
-{
-    for (var i in this.chatRooms[roomName].users) {
-        if (i in this.clients) {
-            this.clients[i].send(object);
-        } else {
-            this.roomRemoveUser(i);
-        }
-    }
-}
-
-io.Listener.prototype.roomDropUser = function(roomName, name, message)
-{
-    for (var j in this.chatRooms[roomName].users) {
-        // You cannot ban or kick OPs
-        if (j in this.clients && this.chatRooms[roomName].users[j].name == name && !this.chatRooms[roomName].users[j].op) {
-            // Broadcast to everyone that this user has disconnected
-            // This will remove user from their list
-            this.roomBroadcast(roomName, {
-                type:    'status',
-                message: message,
-                id:      j});
-
-            // Remove user and last grief from server
-            this.clients[j].connection.end();
+    try {
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // BANNED USERS
+        //
+        if (user.name in listener.chatBanned) {            
+            client.send({
+                type:    'notice',
+                message: 'You have been banned.'});
+            
+            console.log(user.name + ' is banned and attempting to connect');            
             return;
         }
-    }
-}
 
-io.Listener.prototype.chatClean = function(listener)
-{
-    var timestamp = new Date().getTime();
-
-    for (i in listener.chatRooms) {
-        listener.chatRooms[i].userCount = 0;
-
-        for (j in listener.chatRooms[i].users) {
-            if (j in listener.clients) {
-                listener.chatRooms[i].userCount++;
-            } else {
-                delete listener.chatRooms[i].users[j];
-            }
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // GLOBAL MANAGEMENT FOR USER
+        //
+        if (user.name in listener.chatUsers) {
+            // If user is already in list, pull from list
+            user = listener.chatUsers[user.name];
+        } else {
+            // Otherwise initialize additional vars
+            user.op             = (user.name in config.chatOps);
+            user.roomName       = roomName;
+            user.lastMessage    = '';
+            user.tsMessage      = 0;
+            user.tsDisconnected = 0;
         }
 
-        if (listener.chatRooms[i].userCount == 0 && !listener.chatRooms[i].featured) {
-            delete listener.chatRooms[i];
-        }
-    }
+        user.sessionId = client.sessionId;
+        user.connected = true;
+        user.tsConnect = time;
 
-    for (i in listener.chatBanned) {
-        if (listener.chatBanned[i] != -1 && listener.chatBanned[i] < timestamp) {
-            delete listener.chatBanned[i];
-            // console.log(i + ' has been unbanned');
-        }
+        // (re)Attach user to the chat users list
+        listener.chatUsers[user.name] = user;
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // ROOM MANAGEMENT FOR USER
+        //
+
+        // Place into proper room
+        listener.roomUserAdd(roomName, user.name);
+
+        // Initialize room and send info on users to client user
+        listener.userInitRoom(roomName, client);
+
+        // Broadcast to everyone that listener user has connected
+        // This will also add the user to their user list
+        listener.roomBroadcast(roomName, {
+            type: 'status',
+            mode: 'connect',
+            id:   user.sessionId,
+            user: user});
+
+    } catch(err) {
+        listener.userClose(client.userName);
+        console.log(err.message);
+        console.log(err.stack);
     }
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Create exports function to call
-//
-module.exports = function(serverLambda) {
-    var listener;
-    return function (req, res, next) {
-        if (!listener) {
-            listener = io.listen(serverLambda(), {transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling']});
 
-            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-            // Setup featured listener.chatRooms that last forever
-            //
-            listener.roomCreateFeatured(config.chatRooms);
+/**
+ * userOnDisconnect
+ * TODO: Handle bad connections, etc
+ */
+io.Listener.prototype.userOnDisconnect = function()
+{
+    var client   = this;
+    var listener = client.listener;
 
-            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-            // Perform memoery cleanup on everything
-            //
-            setInterval(function() {
-                listener.chatClean(listener);
-            }, config.interval);
-            
-            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-            // Form on connection callback
-            //
-            listener.on('connection', listener.prefixWithMiddleware(function(client, req, res) {
-                client.user = req.session.user;
-                
-                listener.chatOnConnection(client);
-                client.on('message', listener.chatOnMessage);
-                client.on('disconnect', listener.chatOnDisconnect);
-            }));
-        }
-        next();
-    };
-};
+    listener.userDisable(client.userName);
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+/**
+ * userOnMessage
+ * Dynamically handle any messages from the user based on a static response type list
+ */
+io.Listener.prototype.userOnMessage = function(response)
+{
+    var client   = this;
+    var listener = client.listener;
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Server can receive either credentials or a message to share
+    //
+    if ('type' in response && response.type in listener.chatMessageTypes) {
+        listener.chatMessageTypes[response.type](listener, client, response);
+
+        console.log(response.type + ' message from ' + client.userName + ' received');
+    } else {
+        // Invalid properties sent, disconnect user
+        console.log('invalid message sent from ' + client.userName);
+    }
+}
