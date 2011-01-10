@@ -103,7 +103,7 @@ io.Listener.prototype.chatMessageTypes = {
                 if (message.length > 0 && (user.op || (
                         !(user.name in listener.chatBanned) &&
                         message != user.lastMessage &&
-                        time - user.tcMessage > 2000))) {
+                        time - user.tsMessage > 2000))) {
 
                     if (message.search(/^\/away/) == 0) {
                         listener.roomBroadcast(roomName, {
@@ -126,7 +126,7 @@ io.Listener.prototype.chatMessageTypes = {
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                     // Store last message to track griefing
-                    user.tcMessage   = time;
+                    user.tsMessage   = time;
                     user.lastMessage = message;
 
                     // Push messages into buffer for user logins
