@@ -10,7 +10,6 @@ var config = require('../config/config'),
 io.Listener.prototype.chatUsers        = {};
 io.Listener.prototype.chatBanned       = {};
 io.Listener.prototype.chatRooms        = {};
-io.Listener.prototype.chatRoomCount    = 0;
 
 io.Listener.prototype.chatMessageTypes = {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -315,7 +314,7 @@ io.Listener.prototype.roomBroadcast = function(roomName, object)
         if (sessionId in listener.clients) {
             listener.clients[sessionId].send(object);
         } else {
-            // TODO: This means user could be active!
+            // Disable user because a disconnect happened
             listener.userDisable(userName);
         }
     }
@@ -339,7 +338,6 @@ io.Listener.prototype.roomCreate = function(roomName, featured)
         userCount: 0,
         featured:  featured,
         hidden:    (roomName.substr(0, 1) == '!')};
-    listener.chatRoomCount++;
 
     console.log(roomName + ' created.');
 }
@@ -354,8 +352,7 @@ io.Listener.prototype.roomDestroy = function(roomName)
 {
     var listener = this;
     
-    delete room;
-    listener.chatRoomCount--;
+    delete roomName;
     listener.chatRoomNotify(roomName);
 
     console.log(roomName + ' removed');
@@ -427,9 +424,6 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
 
         console.log(userName + ' added to room ' + roomName);
     } else {
-        // TODO: Handle reconnects
-        var user = listener.chatUsers[userName];
-
         // Show user as active again
         listener.userEnable(userName);
 
@@ -489,15 +483,20 @@ io.Listener.prototype.userDisable = function(userName)
     var time     = new Date().getTime();
     var user     = listener.chatUsers[userName];
 
-    user.connected    = false;
-    user.tsDisconnect = time;
+    if (user.connected) {
+        // If user is connected, set disconnect and time, inform others of away status
+        user.connected    = false;
+        user.tsDisconnect = time;
 
-    listener.roomBroadcast(user.roomName, {
-        type:    'status',
-        mode:    'idle',
-        id:      userName});
+        listener.roomBroadcast(user.roomName, {
+            type:    'status',
+            mode:    'idle',
+            id:      userName});
 
-    console.log(userName + ' disabled');
+        console.log(userName + ' disabled');
+    } else {
+        console.log(userName + ' already disabled');
+    }
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -663,7 +662,7 @@ io.Listener.prototype.userOnConnect = function(client)
 
 /**
  * userOnDisconnect
- * TODO: Handle bad connections, etc
+ * Generally on a disconnect we merely tag user as disabled and let cleanup remove them
  */
 io.Listener.prototype.userOnDisconnect = function()
 {
@@ -671,6 +670,8 @@ io.Listener.prototype.userOnDisconnect = function()
     var listener = client.listener;
 
     listener.userDisable(client.userName);
+    
+    console.log(client.userName + ' disconnected');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
