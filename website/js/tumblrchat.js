@@ -79,9 +79,10 @@ jQuery.fn.sortElements = (function(){
 })();
 
 var socket,
-    attempts  = 0,
-    timeoutId = null,
-    tempHash  = sessionStorage.getItem('hash');
+    attempts   = 0,
+    timeoutId  = null,
+    reconnects = 0,
+    tempHash   = sessionStorage.getItem('hash');
     
 if (tempHash != null) {
     location.hash = tempHash;
@@ -123,6 +124,8 @@ $(function() {
         // As soon as we connect, send credentials. Chat is still disabled at this time.
         socket.on('connect', function()
         {
+            $('#header').attr('title', reconnects);
+            
             // Show the chat if not already shown and clear any possible timeouts
             $('#loading:visible').fadeOut(250);
             $('#error:visible').remove();
@@ -133,6 +136,7 @@ $(function() {
 
         socket.on('disconnect', function()
         {
+            reconnects++;            
             chatConnect();
         });
 
@@ -198,7 +202,7 @@ $(function() {
 
                     // Save self ID for later reference
                     clientId = serverRes.id;
-                    roomName = serverRes.room;
+                    var roomName = serverRes.room;
 
                     // Initialize self user with php vars
                     // On init, a list of users is grabbed (and add yourself)
@@ -253,13 +257,17 @@ $(function() {
                     connected = true;
 
                 // If a new user is coming or going, update list accordingly
-                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {
-                    // User is set to away
-                    if (serverRes.mode == 'away' && serverRes.id in users) {
+                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'reconnect': '', 'idle': '', 'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {
+                    // User is reconnected
+                    if (serverRes.mode == 'reconnect' && serverRes.id in users) {
+                        $('#u' + serverRes.id).removeClass('idle');
+
+                    // User is set to away or disconnected
+                    } else if ((serverRes.mode == 'idle' || serverRes.mode == 'away') && serverRes.id in users) {
                         $('#u' + serverRes.id).addClass('idle');
 
                         // Don't display if so many people are on, its too spammy
-                        if (userCount < 10) {
+                        if (userCount < 10 && serverRes.mode == 'away') {
                             serverRes.user    = users[serverRes.id];
                             serverRes.message = ' has gone away...';
                             displayMessage(serverRes);
@@ -277,7 +285,7 @@ $(function() {
                         // Don't display if so many people are on, its too spammy
                         if (userCount < 10) {
                             serverRes.message = ' has joined the chat!';
-                            // displayMessage(serverRes);
+                            displayMessage(serverRes);
                         }
 
                     // Awh, a user left, let's remove from user list
@@ -288,7 +296,7 @@ $(function() {
                         // Don't display if so many people are on, its too spammy
                         if (userCount < 10) {
                             serverRes.message = ' has left the chat...';
-                            // displayMessage(serverRes);
+                            displayMessage(serverRes);
                         }
 
                         // Remove local user
@@ -569,35 +577,37 @@ $(function() {
 
     function displayUser(id)
     {
-        var user;
-        if ($('#users #u' + id).length) {
-            user = $('#users #u' + id).empty();
-        } else {
-            user = $('<div/>').attr('id', 'u' + id);
-        }
+        if (id in users) {
+            var user;
+            if ($('#users #u' + id).length) {
+                user = $('#users #u' + id).empty();
+            } else {
+                user = $('<div/>').attr('id', 'u' + id);
+            }
 
-        user
-            .append($('<img/>')
-                .attr('src', clean(users[id].avatar)))
-            .append($('<a/>')
-                .attr('href', clean(users[id].url))
-                .attr('target', '_blank')
-                .attr('title', clean('Visit ' + users[id].title))
-                .text(clean(users[id].name)));
+            user
+                .append($('<img/>')
+                    .attr('src', clean(users[id].avatar)))
+                .append($('<a/>')
+                    .attr('href', clean(users[id].url))
+                    .attr('target', '_blank')
+                    .attr('title', clean('Visit ' + users[id].title))
+                    .text(clean(users[id].name)));
 
-        if (users[id].name in ignore) {
-            user.addClass('ignore');
-        }
+            if (users[id].name in ignore) {
+                user.addClass('ignore');
+            }
 
-        if (id == clientId) {
-            user.addClass('personal');
-            $('#users').prepend(user);
-        } else {
-            $('#users').append(user);
-        }
+            if (clientId && id == clientId) {
+                user.addClass('personal');
+                $('#users').prepend(user);
+            } else {
+                $('#users').append(user);
+            }
 
-        if ('op' in users[id] && users[id].op) {
-            user.addClass('op');
+            if ('op' in users[id] && users[id].op) {
+                user.addClass('op');
+            }
         }
     }
 
@@ -608,7 +618,7 @@ $(function() {
 
     function clean(message)
     {
-        return $('<div/>').text(message).text();
+        return (message ? $('<div/>').text(message).text() : '');
     }
 
     function strip(message)
