@@ -232,7 +232,7 @@ io.Listener.prototype.chatCleanup = function(listener) {
         if (listener.chatBanned[banName] != -1 && listener.chatBanned[banName] < time) {
             delete listener.chatBanned[banName];
 
-            console.log(banName + ' has been unbanned');
+            // console.log(banName + ' has been unbanned');
         }
     }
 
@@ -378,7 +378,7 @@ io.Listener.prototype.roomDestroy = function(roomName)
     delete listener.chatRooms[roomName];
     listener.chatRoomNotify(roomName);
 
-    console.log(roomName + ' removed');
+    // console.log(roomName + ' removed');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -455,7 +455,7 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
             }
         }
 
-        console.log(userName + ' added to room ' + roomName);
+        // console.log(userName + ' added to room ' + roomName);
     } else {
         // Show user as active again from reconnect (or for first time)
         listener.userEnable(userName);
@@ -508,9 +508,9 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
             listener.chatRoomNotify(roomName);
         }
 
-        console.log(userName + ' removed from room ' + roomName);
+        // console.log(userName + ' removed from room ' + roomName);
     } else {
-        console.log(userName + ' already removed from ' + roomName);
+        // console.log(userName + ' already removed from ' + roomName);
     }
 }
 
@@ -539,9 +539,9 @@ io.Listener.prototype.userDisable = function(userName)
             id:      userName
         }, userName);
 
-        console.log(userName + ' disabled');
+        // console.log(userName + ' disabled');
     } else {
-        console.log(userName + ' already disabled');
+        // console.log(userName + ' already disabled');
     }
 }
 
@@ -569,7 +569,7 @@ io.Listener.prototype.userEnable = function(userName)
         mode:    'reconnect',
         id:      userName});
 
-    console.log(userName + ' enabled');
+    // console.log(userName + ' enabled');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -742,7 +742,7 @@ io.Listener.prototype.userOnDisconnect = function()
 
     listener.userDisable(client.userName);
     
-    console.log(client.userName + ' disconnected');
+    // console.log(client.userName + ' disconnected');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
