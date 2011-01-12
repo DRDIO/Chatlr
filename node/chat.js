@@ -548,7 +548,7 @@ io.Listener.prototype.userDisable = function(userName)
     var time     = new Date().getTime();
 
     if (userName in listener.chatUsers) {
-        var user     = listener.chatUsers[userName];
+        var user = listener.chatUsers[userName];
 
         if (user.connected) {
             // If user is connected, set disconnect and time, inform others of away status
