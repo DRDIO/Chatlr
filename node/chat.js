@@ -236,7 +236,7 @@ io.Listener.prototype.chatCleanup = function(listener) {
         }
     }
 
-    console.log('cleanup run');
+    // console.log('cleanup run');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -337,7 +337,7 @@ io.Listener.prototype.roomBroadcast = function(roomName, object, excludeName)
         }
     }
 
-    console.log('broadcasting to ' + roomName);
+    // console.log('broadcasting to ' + roomName);
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -396,7 +396,7 @@ io.Listener.prototype.roomGetUsers = function(roomName)
         output[userName] = listener.chatUsers[userName];
     }
 
-    console.log('getting room users');
+    // console.log('getting room users');
     
     return output;
 }
@@ -631,7 +631,7 @@ io.Listener.prototype.userInitRoom = function(roomName, client)
         users:  roomUsers
     });
 
-    console.log(client.userName + ' sent room init');
+    // console.log(client.userName + ' sent room init');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
