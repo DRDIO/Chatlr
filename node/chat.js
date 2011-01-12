@@ -172,9 +172,8 @@ io.Listener.prototype.chatMessageTypes = {
  * @see userDisable()
  * @see roomUserAdd()
  */
-io.Listener.prototype.chatCleanup = function() {
-    var listener = this;
-    var time     = new Date().getTime();
+io.Listener.prototype.chatCleanup = function(listener) {
+    var time = new Date().getTime();
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // USER CLEANUP
@@ -182,10 +181,8 @@ io.Listener.prototype.chatCleanup = function() {
     for (var userName in listener.chatUsers) {
         var user      = listener.chatUsers[userName];
         var sessionId = user.sessionId;
-
+        
         if (!user.connected) {
-            console.log(time + ' ' + user.tsDisconnect + ' ' + config.interval);
-            
             // If user has been disconnected longer than allowed, drop completely
             if (time - user.tsDisconnect > config.interval) {
                 listener.userClose(userName);
@@ -219,7 +216,7 @@ io.Listener.prototype.chatCleanup = function() {
             }
         }
         
-        if (!room.userCount) {
+        if (!room.userCount && !room.featured) {
             // Remove room from list
             listener.roomDestroy(roomName);
         } else if (userCount != room.userCount) {
@@ -261,7 +258,7 @@ io.Listener.prototype.chatInit = function()
     }
 
     // Perform memory cleanup on everything
-    setInterval(listener.chatCleanup, config.interval);
+    setInterval(function() { listener.chatCleanup(listener); }, config.interval);
 }
 
 
@@ -362,7 +359,7 @@ io.Listener.prototype.roomCreate = function(roomName, featured)
         featured:  featured,
         hidden:    (roomName.substr(0, 1) == '!')};
 
-    console.log(roomName + ' created.');
+    // console.log(roomName + ' created.');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -376,8 +373,9 @@ io.Listener.prototype.roomCreate = function(roomName, featured)
 io.Listener.prototype.roomDestroy = function(roomName)
 {
     var listener = this;
-    
-    delete roomName;
+
+    // Remove room from list and notify
+    delete listener.chatRooms[roomName];
     listener.chatRoomNotify(roomName);
 
     console.log(roomName + ' removed');
@@ -483,7 +481,7 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
     
     // Check that user is actually in the room
     if (userName in room.users) {
-        delete room.users[userName];
+        delete listener.chatRooms[roomName].users[userName];
         room.userCount--;
 
         if (!room.featured && room.userCount <= 0) {
@@ -595,7 +593,8 @@ io.Listener.prototype.userClose = function(userName)
         // Remove from room if it is attached
         listener.roomUserRemove(roomName, userName);
 
-        delete user;
+        // Remove user from global list
+        delete listener.chatUsers[userName];
 
         if (sessionId in listener.clients) {
             // Disconnect user from session
@@ -765,7 +764,7 @@ io.Listener.prototype.userOnMessage = function(response)
     if ('type' in response && response.type in listener.chatMessageTypes) {
         listener.chatMessageTypes[response.type](listener, client, response);
 
-        console.log(response.type + ' message from ' + client.userName + ' received');
+        // console.log(response.type + ' message from ' + client.userName + ' received');
     } else {
         // Invalid properties sent, disconnect user
         console.log('invalid message sent from ' + client.userName);
