@@ -546,22 +546,25 @@ io.Listener.prototype.userDisable = function(userName)
 {
     var listener = this;
     var time     = new Date().getTime();
-    var user     = listener.chatUsers[userName];
 
-    if (user.connected) {
-        // If user is connected, set disconnect and time, inform others of away status
-        user.connected    = false;
-        user.tsDisconnect = time;
+    if (userName in listener.chatUsers) {
+        var user     = listener.chatUsers[userName];
 
-        listener.roomBroadcast(user.roomName, {
-            type:    'status',
-            mode:    'idle',
-            id:      userName
-        }, userName);
+        if (user.connected) {
+            // If user is connected, set disconnect and time, inform others of away status
+            user.connected    = false;
+            user.tsDisconnect = time;
 
-        // console.log(userName + ' disabled');
-    } else {
-        // console.log(userName + ' already disabled');
+            listener.roomBroadcast(user.roomName, {
+                type:    'status',
+                mode:    'idle',
+                id:      userName
+            }, userName);
+
+            // console.log(userName + ' disabled');
+        } else {
+            // console.log(userName + ' already disabled');
+        }
     }
 }
 
@@ -577,19 +580,22 @@ io.Listener.prototype.userEnable = function(userName)
 {
     var listener = this;
     var time     = new Date().getTime();
-    var user     = listener.chatUsers[userName];
 
-    // Set user as connected
-    user.connected = true;
-    user.tsConnect = time;
+    if (userName in listener.chatUsers) {
+        var user = listener.chatUsers[userName];
 
-    // Let everyone know they are back!
-    listener.roomBroadcast(user.roomName, {
-        type:    'status',
-        mode:    'reconnect',
-        id:      userName});
+        // Set user as connected
+        user.connected = true;
+        user.tsConnect = time;
 
-    // console.log(userName + ' enabled');
+        // Let everyone know they are back!
+        listener.roomBroadcast(user.roomName, {
+            type:    'status',
+            mode:    'reconnect',
+            id:      userName});
+
+        // console.log(userName + ' enabled');
+    }
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
