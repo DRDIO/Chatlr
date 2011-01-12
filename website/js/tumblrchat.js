@@ -476,7 +476,7 @@ $(function() {
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
         // User has clicked a link for rooms, switch rooms
-        $('#rooms a').live('click', function(e) {
+        $('#rooms a, .room').live('click', function(e) {
            e.preventDefault();
            var newRoom = $(this).attr('href').substr(1);
 

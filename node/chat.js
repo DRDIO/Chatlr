@@ -151,13 +151,13 @@ io.Listener.prototype.chatMessageTypes = {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // ROOM CHANGE: User is requesting to change listener.chatRooms
     //
-    'roomchange': function(listener, client, response) {
+    'roomchange': function(listener, client, response) {        
         if ('room' in response && typeof response.room == 'string' && response.room.search(/^!?[a-z0-9-]{2,16}$/i) != -1) {
             // standardize room for a link
-            var room = response.room.toLowerCase();
+            var roomName = response.room.toLowerCase();
 
-            listener.roomUserAdd(room, client.userName);
-            listener.userInitRoom(room, client);
+            listener.roomUserAdd(roomName, client.userName);
+            listener.userInitRoom(roomName, client);
         }
     }
 };
@@ -434,6 +434,9 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
         // USER IS NEW: add them and notify other users
         room.users[userName] = time;
         room.userCount++;
+
+        // Update user reference
+        listener.chatUsers[userName].roomName = roomName;
 
         // Broadcast to the room of the new user
         listener.roomBroadcast(roomName, {
