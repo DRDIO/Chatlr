@@ -103,7 +103,8 @@ $(function() {
         isMobile      = false,
         lastScroll    = 0,
         hashRoom      = roomUrlGet(tempHash) || 'main',
-        connected     = false;
+        connected     = false,
+        approved      = false;
         
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
@@ -140,6 +141,7 @@ $(function() {
 
         socket.on('disconnect', function()
         {
+            approved = false;
             reconnects++;            
             chatConnect();
         });
@@ -192,7 +194,7 @@ $(function() {
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                 else if (serverRes.type == 'approved') {
-                    if (!connected) {
+                    if (!connected || approved) {
                         if ($('#chat').text() != '') {
                             $('#chat')
                                 .append($('<b />')
@@ -220,7 +222,7 @@ $(function() {
                         userCount++;
                     }
 
-                    if (!connected) {
+                    if (!connected || approved) {
                         // Output buffer messages
                         for (var j in serverRes.buffer) {
                             displayMessage(serverRes.buffer[j]);
@@ -232,7 +234,7 @@ $(function() {
                     // Update room hash
                     roomUrlChange(roomName == 'main' ? '' : roomName);
 
-                    if (!connected) {
+                    if (!connected || approved) {
                         // Update status to say they joined
                         topic = serverRes.topic;
                         displayMessage({
@@ -265,6 +267,7 @@ $(function() {
                     $('#dialog').remove();
 
                     connected = true;
+                    approved  = true;
 
                 // If a new user is coming or going, update list accordingly
                 } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'reconnect': '', 'idle': '', 'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {
