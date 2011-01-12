@@ -255,7 +255,7 @@ $(function() {
 
                     // Clear all from being red, then make current room red and move to top
                     $('#rooms div').removeClass('op');
-                    $('#rooms #r' + roomName).addClass('op').prependTo('#rooms');
+                    $('#rooms #r' + roomName).addClass('op').insertAfter('#roomadd');
 
                     // Remove possible dialog box with error warnings
                     // Show the chat if not already shown and clear any possible timeouts
@@ -494,12 +494,48 @@ $(function() {
                // If a connection exists, send a roomchange event
                socket.send({
                    type: 'roomchange',
-                   room: newRoom});
+                   room: newRoom
+               });
            }
+        });
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // Add Room
+        
+        $('#roomadd').submit(function(e) {
+            e.preventDefault();
+
+            // Get room and format it to be a url
+            var room = $('#roomadd input').val();
+            room = roomGetUrlName(room || 'main');
+
+            // Clear window and remove focus
+            $('#roomadd input').val('');
+
+            $('#text').focus();
+
+            console.log(room);
+            
+            if(socket.connected) {
+                // If a connection exists, send a roomchange event
+                socket.send({
+                    type: 'roomchange',
+                    room: room
+                });
+            }
         });
     }
     
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+    function roomGetUrlName(fancyName)
+    {
+        var name  = $.trim(fancyName.toLowerCase());
+        var first = name.substr(0, 1).replace(/[^a-z0-9!]/, '');
+        var rest  = name.substr(1, 15).replace(/[^a-z0-9-]+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
+
+        return first + rest;
+    }
 
     function roomGetFancyName(roomName)
     {

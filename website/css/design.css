@@ -168,9 +168,23 @@ body, input {
     height: 34%;
 }
 
+    #roomadd {
+        padding: 0.5em;
+    }
+
+        #roomadd input {
+            -webkit-border-radius: 0.25em;
+            -moz-border-radius: 0.25em;
+            border: 1px solid #ccc;
+            padding: 0.25em;
+            width: 100%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+        }
+
     #rooms {
         background: #fff;
-        border-radius:  0.5em;
+        border-radius: 0.5em;
         -moz-border-radius: 0.5em;
         height: 100%;
         overflow-x: hidden;
