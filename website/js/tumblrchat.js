@@ -741,7 +741,7 @@ function roomUrlGet(tempHash)
             var hash = window.location.hash;
             var mark = hash.indexOf('#!');
 
-            return (mark == -1 ? defRoom : hash.substr(mark + 2));
+            return (mark == -1 ? '' : hash.substr(mark + 2));
         }
     }
 }
