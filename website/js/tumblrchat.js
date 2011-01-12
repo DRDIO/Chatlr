@@ -83,10 +83,7 @@ var socket,
     timeoutId  = null,
     reconnects = 0,
     tempHash   = sessionStorage.getItem('hash');
-    
-if (tempHash != null) {
-    location.hash = tempHash;
-}
+
 sessionStorage.clear();
 
 $(function() {
@@ -105,9 +102,9 @@ $(function() {
         topic         = '',
         isMobile      = false,
         lastScroll    = 0,
-        hashRoom      = location.hash.substr(1),
+        hashRoom      = roomUrlGet(tempHash) || 'main',
         connected     = false;
-       
+        
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
     if (typeof io == 'undefined') {
@@ -124,14 +121,21 @@ $(function() {
         // As soon as we connect, send credentials. Chat is still disabled at this time.
         socket.on('connect', function()
         {
+            // Clear reconnect timeout and set to 0 for attempts
             $('#header').attr('title', reconnects);
-            
-            // Show the chat if not already shown and clear any possible timeouts
-            $('#loading:visible').fadeOut(250);
-            $('#error:visible').remove();
-            $('#loading-pulse').dotdotend();
             clearTimeout(timeoutId);
             attempts = 0;
+
+            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+            // Attempt to change rooms on the fly
+
+            var currentRoom = roomUrlGet();
+
+            if (currentRoom && currentRoom != 'main') {
+                socket.send({
+                   type: 'roomchange',
+                   room: currentRoom});
+            }
         });
 
         socket.on('disconnect', function()
@@ -226,7 +230,7 @@ $(function() {
                     var fancyRoom = roomGetFancyName(roomName);
 
                     // Update room hash
-                    location.hash = (roomName != 'main' ? roomName : '');
+                    roomUrlChange(roomName == 'main' ? '' : roomName);
 
                     if (!connected) {
                         // Update status to say they joined
@@ -243,15 +247,21 @@ $(function() {
 
                     $('#count').text(userCount);
                     document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
-                    $('#loading').fadeOut(1000);
 
+                    // Sort rooms alphabetically
                     $('#rooms div').sortElements(function(a, b) {
                         return $(a).find('sup').text() < $(b).find('sup').text() ? 1 : -1;
                     });
 
+                    // Clear all from being red, then make current room red and move to top
                     $('#rooms div').removeClass('op');
                     $('#rooms #r' + roomName).addClass('op').prependTo('#rooms');
 
+                    // Remove possible dialog box with error warnings
+                    // Show the chat if not already shown and clear any possible timeouts
+                    $('#loading:visible').fadeOut(250);
+                    $('#error:visible').remove();
+                    $('#loading-pulse').dotdotend();
                     $('#dialog').remove();
 
                     connected = true;
@@ -667,5 +677,39 @@ function notifyFailure(hasSocket)
                 maxHeight: $(window).height() * 0.8,
                 resizable: false})
             .parent().position({my: 'top', at: 'top', of: document, offset: '0 24'});
+    }
+}
+
+function roomUrlChange(path)
+{
+    if (typeof(window.history.pushState) == 'function') {
+        window.history.pushState(null, path, '/' + path);
+    } else {
+        window.location.hash = '#!' + path;
+    }
+}
+
+function roomUrlGet(tempHash)
+{
+    if (typeof(window.history.pushState) == 'function') {
+        var url       = window.location.href;
+        var firstHash = url.indexOf('#');
+
+        firstHash = (firstHash == -1 ? url.length : firstHash);
+        url       = url.substring(0, firstHash);
+
+        var lastSlash = url.lastIndexOf('/');
+
+        return url.substr(lastSlash + 1);
+    } else {
+        if (tempHash) {
+            roomUrlChange(tempHash);
+            return tempHash;
+        } else {
+            var hash = window.location.hash;
+            var mark = hash.indexOf('#!');
+
+            return (mark == -1 ? defRoom : hash.substr(mark + 2));
+        }
     }
 }

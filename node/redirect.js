@@ -9,32 +9,6 @@ module.exports = function(app)
     var oa = new oauth.OAuth(config.requestUrl, config.accessUrl, config.consumerKey, config.consumerSecret, '1.0', config.callbackUrl, 'HMAC-SHA1');
     
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // Index Page (If user exists, start chat)
-    //
-    app.get('/', function(req, res)
-    {
-        try {
-            if (!('user' in req.session)) {
-                oa.getOAuthRequestToken(function(error, token, secret, results)
-                {
-                    req.session.secret = secret;
-                    res.writeHead(303, {'Location': config.authorizeUrl + '?oauth_token=' + token});
-                    res.end();
-                });
-            } else {
-                fs.readFile(__dirname + '/index.html', function(err, data) {
-                    if (!err) {
-                        res.writeHead(200, {'Content-type': 'text/html'});
-                        res.end(data);
-                    }
-                });
-            }
-        } catch(err) {
-            console.log('Index: ' + err);
-        }
-    });
-
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Callback Page (Parse XML from Tumblr Authenticate, store user in session, redirect to index)
     //
     app.get('/callback', function(req, res)
@@ -64,7 +38,7 @@ module.exports = function(app)
                                         'avatar': tumblr['@']['avatar-url'].replace(/_128\./, '_16.')
                                     }
 
-                                    res.writeHead(303, {'Location': '/'});
+                                    res.writeHead(303, {'Location': '/' + req.session.page});
                                     res.end();
                                 }
                             }
@@ -82,6 +56,36 @@ module.exports = function(app)
             res.writeHead(200, {'Content-type': 'text/html'});
             res.end('The callback did not conntain a login key.');
             console.log(parsedUrl || 'No Oauth Key');
+        }
+    });
+
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Index Page (If user exists, start chat)
+    //
+    app.get('/:page?', function(req, res)
+    {
+        try {
+            if (!('user' in req.session)) {
+                // Store the page for when callback occurs
+                req.session.page = req.params.page;
+                
+                oa.getOAuthRequestToken(function(error, token, secret, results)
+                {
+                    req.session.secret = secret;
+                    res.writeHead(303, {'Location': config.authorizeUrl + '?oauth_token=' + token});
+                    res.end();
+                });
+            } else {
+                fs.readFile(__dirname + '/index.html', function(err, data) {
+                    if (!err) {
+                        res.writeHead(200, {'Content-type': 'text/html'});
+                        res.end(data);
+                    }
+                });
+            }
+        } catch(err) {
+            console.log('Index: ' + err);
         }
     });
 }
