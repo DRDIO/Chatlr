@@ -184,6 +184,8 @@ io.Listener.prototype.chatCleanup = function() {
         var sessionId = user.sessionId;
 
         if (!user.connected) {
+            console.log(time + ' ' + user.tsDisconnect + ' ' + config.interval);
+            
             // If user has been disconnected longer than allowed, drop completely
             if (time - user.tsDisconnect > config.interval) {
                 listener.userClose(userName);
@@ -307,7 +309,7 @@ io.Listener.prototype.chatRoomNotify = function(roomName, userName)
             room: roomName});
     }
 
-    console.log('notifying room change for ' + roomName);
+    // console.log('notifying room change for ' + roomName);
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -548,8 +550,8 @@ io.Listener.prototype.userDisable = function(userName)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
- * userDisable
- * Disable a user in a room, setting them to idle for the moment
+ * userEnable
+ * Enable a user in a room, setting them to idle for the moment
  *
  * @see roomBroadcast()
  */
