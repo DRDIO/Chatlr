@@ -167,6 +167,10 @@ io.Listener.prototype.chatMessageTypes = {
 /**
  * chatCleanup
  * Perform garbage cleanup of rogue users
+ *
+ * @see userClose()
+ * @see userDisable()
+ * @see roomUserAdd()
  */
 io.Listener.prototype.chatCleanup = function() {
     var listener = this;
@@ -241,6 +245,9 @@ io.Listener.prototype.chatCleanup = function() {
 /**
  * chatInit
  * Initialize Chatroom: Setup rooms and timers
+ *
+ * @see roomCreate()
+ * @see chatCleanup()
  */
 io.Listener.prototype.chatInit = function()
 {
@@ -261,6 +268,9 @@ io.Listener.prototype.chatInit = function()
 /**
  * chatRoomNotify
  * Notify EVERYONE of room additions / removals / user changes
+ *
+ * @see send()
+ * @see broadcast()
  */
 io.Listener.prototype.chatRoomNotify = function(roomName, userName)
 {
@@ -296,6 +306,8 @@ io.Listener.prototype.chatRoomNotify = function(roomName, userName)
             mode: 'delete',
             room: roomName});
     }
+
+    console.log('notifying room change for ' + roomName);
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -303,21 +315,30 @@ io.Listener.prototype.chatRoomNotify = function(roomName, userName)
 /**
  * roomBroadcast
  * Broadcast a message to a room
+ *
+ * @see send()
+ * @see userDisable()
  */
-io.Listener.prototype.roomBroadcast = function(roomName, object)
+io.Listener.prototype.roomBroadcast = function(roomName, object, excludeName)
 {
     var listener = this;
 
     for (var userName in listener.chatRooms[roomName].users) {
-        var sessionId = listener.chatUsers[userName].sessionId;
-        
-        if (sessionId in listener.clients) {
-            listener.clients[sessionId].send(object);
-        } else {
-            // Disable user because a disconnect happened
-            listener.userDisable(userName);
+        if (userName != excludeName) {
+            // We want to avoid infinite loops from userDisable() sending a broadcast
+            var sessionId = listener.chatUsers[userName].sessionId;
+
+            if (sessionId in listener.clients) {
+                // Send to each client in the room
+                listener.clients[sessionId].send(object);
+            } else {
+                // Disable user because a disconnect happened
+                listener.userDisable(userName);
+            }
         }
     }
+
+    console.log('broadcasting to ' + roomName);
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -347,6 +368,8 @@ io.Listener.prototype.roomCreate = function(roomName, featured)
 /**
  * roomDestroy
  * Delete a room (can even destroy featured rooms)
+ *
+ * @see chatRoomNotify()
  */
 io.Listener.prototype.roomDestroy = function(roomName)
 {
@@ -373,6 +396,8 @@ io.Listener.prototype.roomGetUsers = function(roomName)
         output[userName] = listener.chatUsers[userName];
     }
 
+    console.log('getting room users');
+    
     return output;
 }
 
@@ -384,6 +409,12 @@ io.Listener.prototype.roomGetUsers = function(roomName)
  * If room does not exist, create it and remove user from other possible rooms
  * If room does exist and user does not exist, add user and inform others
  * If room does exist and user does exist, do nothing
+ *
+ * @see roomCreate()
+ * @see roomBroadcast()
+ * @see chatRoomNotify()
+ * @see roomUserRemove()
+ * @see userEnable()
  */
 io.Listener.prototype.roomUserAdd = function(roomName, userName)
 {
@@ -391,12 +422,14 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
 
     // Check that the room is actually in the list
     if (!(roomName in listener.chatRooms)) {
+        // If not, let's create it
         listener.roomCreate(roomName);
     }
 
     var room = listener.chatRooms[roomName];
     var time = new Date().getTime();
-    
+
+    // Check if user is in room
     if (!(userName in room.users)) {
         // USER IS NEW: add them and notify other users
         room.users[userName] = time;
@@ -424,7 +457,7 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
 
         console.log(userName + ' added to room ' + roomName);
     } else {
-        // Show user as active again
+        // Show user as active again from reconnect (or for first time)
         listener.userEnable(userName);
 
         console.log(userName + ' reconnected to ' + roomName);
@@ -436,6 +469,10 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
 /**
  * roomUserRemove
  * Remove a user from a room
+ *
+ * @see roomDestroy()
+ * @see roomBroadcast()
+ * @see chatRoomNotify()
  */
 io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
 {
@@ -452,22 +489,28 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
             listener.roomDestroy(roomName);
         } else {
             if (message) {
+                // Broadcast a kick/ban/idle
                 listener.roomBroadcast(roomName, {
                     type:    'status',
                     message: message,
                     id:      userName
                 });
             } else {
+                // Broadcast a straight up disconnect
                 listener.roomBroadcast(roomName, {
                     type: 'status',
                     mode: 'disconnect',
-                    id:   userName});
+                    id:   userName
+                });
             }
 
+            // Notify room count changes
             listener.chatRoomNotify(roomName);
         }
 
         console.log(userName + ' removed from room ' + roomName);
+    } else {
+        console.log(userName + ' already removed from ' + roomName);
     }
 }
 
@@ -476,6 +519,8 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
 /**
  * userDisable
  * Disable a user in a room, setting them to idle for the moment
+ *
+ * @see roomBroadcast()
  */
 io.Listener.prototype.userDisable = function(userName)
 {
@@ -491,7 +536,8 @@ io.Listener.prototype.userDisable = function(userName)
         listener.roomBroadcast(user.roomName, {
             type:    'status',
             mode:    'idle',
-            id:      userName});
+            id:      userName
+        }, userName);
 
         console.log(userName + ' disabled');
     } else {
@@ -504,6 +550,8 @@ io.Listener.prototype.userDisable = function(userName)
 /**
  * userDisable
  * Disable a user in a room, setting them to idle for the moment
+ *
+ * @see roomBroadcast()
  */
 io.Listener.prototype.userEnable = function(userName)
 {
@@ -511,15 +559,17 @@ io.Listener.prototype.userEnable = function(userName)
     var time     = new Date().getTime();
     var user     = listener.chatUsers[userName];
 
+    // Set user as connected
     user.connected = true;
     user.tsConnect = time;
 
+    // Let everyone know they are back!
     listener.roomBroadcast(user.roomName, {
         type:    'status',
         mode:    'reconnect',
         id:      userName});
 
-    console.log(userName + ' disabled');
+    console.log(userName + ' enabled');
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -527,11 +577,13 @@ io.Listener.prototype.userEnable = function(userName)
 /**
  * userClose
  * Remove user from all lists and rooms, close their connection
+ *
+ * @see roomUserRemove()
+ * @see _onClose()
  */
 io.Listener.prototype.userClose = function(userName)
 {
     var listener  = this;
-    var client    = listener.client;
 
     if (userName in listener.chatUsers) {
         var user      = listener.chatUsers[userName];
@@ -560,10 +612,14 @@ io.Listener.prototype.userClose = function(userName)
 /**
  * userInitRoom
  * Send user all the information about a room
+ *
+ * @see roomGetUsers()
+ * @see send()
  */
 io.Listener.prototype.userInitRoom = function(roomName, client)
 {
-    var listener = client.listener;
+    var listener  = client.listener;
+    var roomUsers = listener.roomGetUsers(roomName);
 
     client.send({
         type:   'approved',
@@ -571,7 +627,8 @@ io.Listener.prototype.userInitRoom = function(roomName, client)
         room:   roomName,
         topic:  listener.chatRooms[roomName].topic,
         buffer: listener.chatRooms[roomName].buffer,
-        users:  listener.roomGetUsers(roomName)});
+        users:  roomUsers
+    });
 
     console.log(client.userName + ' sent room init');
 }
@@ -581,6 +638,15 @@ io.Listener.prototype.userInitRoom = function(roomName, client)
 /**
  * userOnConnect
  * Chat Connection for a Client (name, title, url, avatar)
+ *
+ * @see userOnMessage()
+ * @see userOnDisconnect()
+ * @see send()
+ * @see chatRoomNotify()
+ * @see roomUserAdd()
+ * @see userInitRoom()
+ * @see roomBroadcast()
+ * @see userClose()
  */
 
 io.Listener.prototype.userOnConnect = function(client)
@@ -623,6 +689,7 @@ io.Listener.prototype.userOnConnect = function(client)
             user.tsDisconnect = 0;
         }
 
+        // Setup core paramters as connected
         user.sessionId = client.sessionId;
         user.connected = true;
         user.tsConnect = time;
@@ -634,6 +701,7 @@ io.Listener.prototype.userOnConnect = function(client)
         // ROOM MANAGEMENT FOR USER
         //
         for (var otherRoom in listener.chatRooms) {
+            // Send user all the different room counts
             listener.chatRoomNotify(otherRoom, user.name)
         }
 
@@ -663,6 +731,8 @@ io.Listener.prototype.userOnConnect = function(client)
 /**
  * userOnDisconnect
  * Generally on a disconnect we merely tag user as disabled and let cleanup remove them
+ *
+ * @see userDisable()
  */
 io.Listener.prototype.userOnDisconnect = function()
 {
@@ -679,6 +749,8 @@ io.Listener.prototype.userOnDisconnect = function()
 /**
  * userOnMessage
  * Dynamically handle any messages from the user based on a static response type list
+ *
+ * @see chatMessageTypes
  */
 io.Listener.prototype.userOnMessage = function(response)
 {
