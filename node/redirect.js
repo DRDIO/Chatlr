@@ -38,7 +38,7 @@ module.exports = function(app)
                                         'avatar': tumblr['@']['avatar-url'].replace(/_128\./, '_16.')
                                     }
 
-                                    res.writeHead(303, {'Location': '/' + req.session.page});
+                                    res.writeHead(303, {'Location': '/' + (req.session.page || '')});
                                     res.end();
                                 }
                             }
@@ -68,7 +68,7 @@ module.exports = function(app)
         try {
             if (!('user' in req.session)) {
                 // Store the page for when callback occurs
-                req.session.page = req.params.page;
+                req.session.page = req.params.page || '';
                 
                 oa.getOAuthRequestToken(function(error, token, secret, results)
                 {
