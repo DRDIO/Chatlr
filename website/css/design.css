@@ -258,8 +258,14 @@ body, input {
                 background: #FFE5E5;
             }
 
-            #chat a.op, #rooms div.op a {
+            #chat a.op, #rooms div.op a, #chat div.op {
                 color: #E53F29;
+                background: inherit;
+            }
+
+            #chat div.op {
+                font-weight: bold;
+                padding-top: 0;
             }
 
             #chat span a {

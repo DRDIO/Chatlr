@@ -194,18 +194,6 @@ $(function() {
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
                 else if (serverRes.type == 'approved') {
-                    if (!connected || approved) {
-                        if ($('#chat').text() != '') {
-                            $('#chat')
-                                .append($('<b />')
-                                    .addClass('divider')
-                                    .append($('<b />')
-                                        .addClass('bottom'))
-                                    .append($('<b />')
-                                        .addClass('top')));
-                        }
-                    }
-
                     // Save self ID for later reference
                     clientId = serverRes.id;
                     var roomName = serverRes.room;
@@ -222,27 +210,35 @@ $(function() {
                         userCount++;
                     }
 
-                    if (!connected || approved) {
-                        // Output buffer messages
-                        for (var j in serverRes.buffer) {
-                            displayMessage(serverRes.buffer[j]);
-                        }
-                    }
-
-                    var fancyRoom = roomGetFancyName(roomName);
-
                     // Update room hash
                     roomUrlChange(roomName == 'main' ? '' : roomName);
 
+                    // Do style updates (not on reconnects)
                     if (!connected || approved) {
+                        var fancyRoom = roomGetFancyName(roomName);
+
+                        // Set Room title and dividers
+                        $('#chat')
+                            .append($('<b />')
+                                .addClass('divider')
+                                .append($('<b />')
+                                    .addClass('bottom'))
+                                .append($('<b />')
+                                    .addClass('top')))
+                            .append($('<div />')
+                                .addClass('op')
+                                .text(fancyRoom + ' Room'));
+
                         // Update status to say they joined
                         topic = serverRes.topic;
                         displayMessage({
                             type:    'status',
-                            message: 'Welcome to TumblrChat\'s ' + fancyRoom + ' Room. Type /help for assistance.'});
-                        displayMessage({
-                            type:    'status',
                             message: 'The topic is \'' + topic + '\'...'});
+
+                        // Output buffer messages
+                        for (var j in serverRes.buffer) {
+                            displayMessage(serverRes.buffer[j]);
+                        }
                     }
 
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -493,7 +489,7 @@ $(function() {
            e.preventDefault();
            var newRoom = $(this).attr('href').substr(1);
 
-           if(socket.connected) {
+           if(socket.connected && newRoom != (roomUrlGet() || 'main')) {
                // If a connection exists, send a roomchange event
                socket.send({
                    type: 'roomchange',
@@ -509,21 +505,18 @@ $(function() {
             e.preventDefault();
 
             // Get room and format it to be a url
-            var room = $('#roomadd input').val();
-            room = roomGetUrlName(room || 'main');
+            var newRoom = $('#roomadd input').val();
+            newRoom = roomGetUrlName(newRoom);
 
             // Clear window and remove focus
             $('#roomadd input').val('');
-
             $('#text').focus();
-
-            console.log(room);
             
-            if(socket.connected) {
+            if(socket.connected && newRoom != (roomUrlGet() || 'main')) {
                 // If a connection exists, send a roomchange event
                 socket.send({
                     type: 'roomchange',
-                    room: room
+                    room: newRoom
                 });
             }
         });
@@ -536,7 +529,7 @@ $(function() {
         var name  = $.trim(fancyName.toLowerCase());
         var first = name.substr(0, 1).replace(/[^a-z0-9!]/, '');
         var rest  = name.substr(1, 15).replace(/[^a-z0-9-]+/g, '-').replace(/^-+/, '').replace(/-+$/, '');
-
+        
         return first + rest;
     }
 
