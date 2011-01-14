@@ -68,7 +68,7 @@ io.Listener.prototype.chatMessageTypes = {
                                     message: 'has been kicked to #' + roomName + ' Room',
                                     id: kickUser.name});
                             } else {
-                                listener.roomDropUser(roomName, name, 'has been kicked...');
+                                listener.roomDropUser(roomName, kickName, 'has been kicked...');
                             }
                         } 
 
@@ -480,7 +480,7 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
         // Show user as active again from reconnect (or for first time)
         listener.userEnable(userName);
 
-        console.log(userName + ' reconnected to ' + roomName);
+        // console.log(userName + ' reconnected to ' + roomName);
     }
 }
 
@@ -497,40 +497,48 @@ io.Listener.prototype.roomUserAdd = function(roomName, userName)
 io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
 {
     var listener = this;
-    var room     = listener.chatRooms[roomName];
-    
-    // Check that user is actually in the room
-    if (userName in room.users) {
-        delete listener.chatRooms[roomName].users[userName];
-        room.userCount--;
 
-        if (!room.featured && room.userCount <= 0) {
-            // Get rid of this room
-            listener.roomDestroy(roomName);
-        } else {
-            if (message) {
-                // Broadcast a kick/ban/idle
-                listener.roomBroadcast(roomName, {
-                    type:    'status',
-                    message: message,
-                    id:      userName
-                });
+    // NOTE: It is possible that room was torn down when user was removed
+    if (roomName in listener.chatRooms) {
+        var room = listener.chatRooms[roomName];
+
+        // Check that user is actually in the room
+        if (userName in room.users) {
+            delete listener.chatRooms[roomName].users[userName];
+            room.userCount--;
+
+            if (!room.featured && room.userCount <= 0) {
+                // Get rid of this room
+                listener.roomDestroy(roomName);
             } else {
-                // Broadcast a straight up disconnect
-                listener.roomBroadcast(roomName, {
-                    type: 'status',
-                    mode: 'disconnect',
-                    id:   userName
-                });
+                if (message) {
+                    // Broadcast a kick/ban/idle
+                    listener.roomBroadcast(roomName, {
+                        type:    'status',
+                        message: message,
+                        id:      userName
+                    });
+                } else {
+                    // Broadcast a straight up disconnect
+                    listener.roomBroadcast(roomName, {
+                        type: 'status',
+                        mode: 'disconnect',
+                        id:   userName
+                    });
+                }
+
+                // Notify room count changes
+                listener.chatRoomNotify(roomName);
             }
 
-            // Notify room count changes
-            listener.chatRoomNotify(roomName);
+            // console.log(userName + ' removed from room ' + roomName);
+        } else {
+            // console.log(userName + ' already removed from ' + roomName);
         }
-
-        // console.log(userName + ' removed from room ' + roomName);
-    } else {
-        // console.log(userName + ' already removed from ' + roomName);
+    } else if (userName in listener.chatUsers) {
+        if (listener.chatUsers[userName].roomName == roomName) {
+            listener.chatUsers[userName].roomName = 'main';
+        }
     }
 }
 
@@ -625,12 +633,12 @@ io.Listener.prototype.userClose = function(userName)
         if (sessionId in listener.clients) {
             // Disconnect user from session
             listener.clients[sessionId]._onClose();
-            console.log(userName + ' had session wiped');
+            // console.log(userName + ' had session wiped');
         }
 
-        console.log(userName + ' has global account deleted');
+        // console.log(userName + ' has global account deleted');
     } else {
-        console.log(userName + ' had a userClose check');
+        // console.log(userName + ' had a userClose check');
     }
 }
 
