@@ -59,8 +59,11 @@ io.Listener.prototype.chatMessageTypes = {
                             var kickRoom = (2 in kickSplit ? kickSplit[2] : false);
 
                             if (kickRoom) {
+                                var kickSessid = kickUser.sessionId;
+                                var kickClient = listener.clients[kickSessid];
+
                                 listener.roomUserAdd(kickRoom, kickName);
-                                listener.userInitRoom(kickRoom, client);
+                                listener.userInitRoom(kickRoom, kickClient);
 
                                 // Let everyone know that someone has been moved
                                 listener.roomBroadcast(roomName, {
@@ -68,7 +71,7 @@ io.Listener.prototype.chatMessageTypes = {
                                     message: 'has been kicked to #' + roomName + ' Room',
                                     id: kickUser.name});
                             } else {
-                                listener.roomDropUser(roomName, kickName, 'has been kicked...');
+                                listener.roomUserRemove(roomName, kickName, 'has been kicked...');
                             }
                         } 
 
@@ -89,10 +92,10 @@ io.Listener.prototype.chatMessageTypes = {
                             // Duration in milliseconds
                             var duration    = (2 in banSplit ? (time + parseInt(banSplit[2]) * 60000) : -1);
                             var durationMsg = (duration != -1 ? ' for ' + banSplit[2] + ' minutes' : '');
-                            listener.chatBanned[banUser]    = duration;
+                            listener.chatBanned[banUser] = duration;
 
                             // Tell everyone they have been banned, with possible time
-                            listener.roomDropUser(roomName, banUser, 'has been banned' + durationMsg + '...');
+                            listener.roomUserRemove(roomName, banUser, 'has been banned' + durationMsg + '...');
                         }
                         return;
                     }
