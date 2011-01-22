@@ -13,8 +13,6 @@ io.Listener.prototype.prefixWithMiddleware = function (fn) {
             writeHead: null
         };
 
-        client.request.url = client.request.url || '';
-        
         // Throw the request down the Connect middleware stack
         // so we can use Connect middleware for free.
         self.server.handle(client.request, dummyRes, function () {
