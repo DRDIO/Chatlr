@@ -192,9 +192,13 @@ io.Listener.prototype.chatCleanup = function(listener) {
                     listener.userClose(userName);
                 }
             } else if (!(sessionId in listener.clients)) {
-                // RARE, User says they are connected but no session exists
-                // Set to disconnected and give them a grace
-                listener.userDisable(userName);
+                if (time - user.tsMessage > config.kick) {
+                    listener.userClose(userName);
+                } else {
+                    // RARE, User says they are connected but no session exists
+                    // Set to disconnected and give them a grace
+                    listener.userDisable(userName);
+                }
             } else if (!(user.roomName in listener.chatRooms) || !(userName in listener.chatRooms[user.roomName].users)) {
                 // RARE user says in room X which doen'st exist or not in room
                 listener.roomUserAdd('main', userName);
@@ -723,8 +727,8 @@ io.Listener.prototype.userOnConnect = function(client)
             user.op           = (user.name in config.chatOps);
             user.roomName     = roomName;
             user.lastMessage  = '';
-            user.tsMessage    = 0;
-            user.tsDisconnect = 0;
+            user.tsMessage    = time;
+            user.tsDisconnect = time;
         }
 
         // Setup core paramters as connected
