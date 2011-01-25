@@ -13,6 +13,12 @@ io.Listener.prototype.prefixWithMiddleware = function (fn) {
             writeHead: null
         };
 
+        if (!client.request) {
+            client.request = {
+                url: null,
+                method: null
+            }
+        }
         // Throw the request down the Connect middleware stack
         // so we can use Connect middleware for free.
         self.server.handle(client.request, dummyRes, function () {
@@ -27,28 +33,34 @@ io.Listener.prototype.prefixWithMiddleware = function (fn) {
 module.exports = function(serverLambda) {
     var listener;
     return function (req, res, next) {
-        if (!listener) {
-            listener = io.listen(serverLambda(), {transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling']});
+        try {
+            if (!listener) {
+                listener = io.listen(serverLambda());
 
-            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-            // Setup featured listener.chatRooms that last forever
-            //
-            listener.chatInit();
-            
-            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-            // Form on connection callback
-            //
-            listener.on('connection', listener.prefixWithMiddleware(function(client, req, res) {
-                if (req && 'session' in req && 'user' in req.session) {
-                    client.user     = req.session.user;
-                    client.userName = req.session.user.name;
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                // Setup featured listener.chatRooms that last forever
+                //
+                listener.chatInit();
 
-                    listener.userOnConnect(client);
-                } else {
-                    console.log(client.sessionId + ' is stuck with a socket and no session');
-                }
-            }));
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                // Form on connection callback
+                //
+                listener.on('connection', listener.prefixWithMiddleware(function(client, req, res) {
+                    try {
+                        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                        // Setup message and disconnect events
+                        client.on('message', listener.userOnMessage);
+                        client.on('disconnect', listener.userOnDisconnect);
+                    } catch (err) {
+                        console.log(err.message);
+                        console.log(err.stack);
+                    }
+                }));
+            }
+            next();
+        } catch (err) {
+            console.log(err.message);
+            console.log(err.stack);
         }
-        next();
     };
 };

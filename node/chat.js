@@ -1,4 +1,4 @@
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Chat Extension variables
 //
 var config = require('../config/config'),
@@ -13,7 +13,93 @@ io.Listener.prototype.chatRooms        = {};
 
 io.Listener.prototype.chatMessageTypes = {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // MESSAGE: user is sending a message to everyone
+    // INITIALIZE: user is initializing with session id and room
+    //
+    'init': function(listener, client, response) {
+        // We now wait for user to send session ID, then hack into connection
+        if (!response.sid) {
+            console.log('No session ID with init');
+            return listener.userSendRestart(client, 'We cannot detect your session ID (E1).');
+            
+        }
+
+        var session = client.request.sessionStore.sessions[response.sid] || null;
+
+        if (!session || !session.user) {
+            console.log('No session for this user');
+            return listener.userSendRestart(client, 'We cannot detect your session (E2).');
+        }
+
+        // Attach the user name to the client
+        // TODO: Otherway around, attach clientID to user table to avoid editing client object
+        console.log(response.sid);
+        client.userName = session.user.name;
+
+        // Back to our normal programming
+        var user     = session.user;
+        var roomName = response.roomName || 'main';
+        var time     = new Date().getTime();
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // BANNED USERS
+        //
+        if (user.name in listener.chatBanned) {
+            client.send({
+                type:    'notice',
+                message: 'You have been banned (N1).'});
+
+            console.log(user.name + ' is banned and attempting to connect');
+            return;
+        }
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // GLOBAL MANAGEMENT FOR USER
+        //
+        if (user.name in listener.chatUsers) {
+            // If user is already in list, pull from list
+            user = listener.chatUsers[user.name];
+        } else {
+            // Otherwise initialize additional vars
+            user.op           = (user.name in config.chatOps);
+            user.roomName     = roomName;
+            user.lastMessage  = '';
+            user.tsMessage    = time;
+            user.tsDisconnect = time;
+        }
+
+        // Setup core paramters as connected
+        user.sessionId = client.sessionId;
+        user.connected = true;
+        user.tsConnect = time;
+
+        // (re)Attach user to the chat users list
+        listener.chatUsers[user.name] = user;
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // ROOM MANAGEMENT FOR USER
+        //
+        for (var otherRoom in listener.chatRooms) {
+            // Send user all the different room counts
+            listener.chatRoomNotify(otherRoom, user.name)
+        }
+
+        // Place into proper room
+        listener.roomUserAdd(roomName, user.name);
+
+        // Initialize room and send info on users to client user
+        listener.userInitRoom(roomName, client);
+
+        // Broadcast to everyone that listener user has connected
+        // This will also add the user to their user list
+        listener.roomBroadcast(roomName, {
+            type: 'status',
+            mode: 'connect',
+            id:   user.name,
+            user: user});
+    },
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // MESSAGE: User is sending a message to everyone
     //
     'message': function(listener, client, response) {
         if ('message' in response && typeof response.message == 'string') {
@@ -678,99 +764,6 @@ io.Listener.prototype.userInitRoom = function(roomName, client)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
- * userOnConnect
- * Chat Connection for a Client (name, title, url, avatar)
- *
- * @see userOnMessage()
- * @see userOnDisconnect()
- * @see send()
- * @see chatRoomNotify()
- * @see roomUserAdd()
- * @see userInitRoom()
- * @see roomBroadcast()
- * @see userClose()
- */
-
-io.Listener.prototype.userOnConnect = function(client)
-{
-    try {
-        var listener = this;
-        var user     = client.user;
-        var roomName = 'main';
-        var time     = new Date().getTime();
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // Setup message and disconnect events
-        client.on('message', listener.userOnMessage);
-        client.on('disconnect', listener.userOnDisconnect);
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // BANNED USERS
-        //
-        if (user.name in listener.chatBanned) {            
-            client.send({
-                type:    'notice',
-                message: 'You have been banned.'});
-            
-            console.log(user.name + ' is banned and attempting to connect');            
-            return;
-        }
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // GLOBAL MANAGEMENT FOR USER
-        //
-        if (user.name in listener.chatUsers) {
-            // If user is already in list, pull from list
-            user = listener.chatUsers[user.name];
-        } else {
-            // Otherwise initialize additional vars
-            user.op           = (user.name in config.chatOps);
-            user.roomName     = roomName;
-            user.lastMessage  = '';
-            user.tsMessage    = time;
-            user.tsDisconnect = time;
-        }
-
-        // Setup core paramters as connected
-        user.sessionId = client.sessionId;
-        user.connected = true;
-        user.tsConnect = time;
-
-        // (re)Attach user to the chat users list
-        listener.chatUsers[user.name] = user;
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // ROOM MANAGEMENT FOR USER
-        //
-        for (var otherRoom in listener.chatRooms) {
-            // Send user all the different room counts
-            listener.chatRoomNotify(otherRoom, user.name)
-        }
-
-        // Place into proper room
-        listener.roomUserAdd(roomName, user.name);
-
-        // Initialize room and send info on users to client user
-        listener.userInitRoom(roomName, client);
-
-        // Broadcast to everyone that listener user has connected
-        // This will also add the user to their user list
-        listener.roomBroadcast(roomName, {
-            type: 'status',
-            mode: 'connect',
-            id:   user.name,
-            user: user});
-
-    } catch(err) {
-        listener.userClose(client.userName);
-        console.log(err.message);
-        console.log(err.stack);
-    }
-}
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-/**
  * userOnDisconnect
  * Generally on a disconnect we merely tag user as disabled and let cleanup remove them
  *
@@ -778,12 +771,16 @@ io.Listener.prototype.userOnConnect = function(client)
  */
 io.Listener.prototype.userOnDisconnect = function()
 {
-    var client   = this;
-    var listener = client.listener;
+    try {
+        var client   = this;
+        var listener = client.listener;
 
-    listener.userDisable(client.userName);
-    
-    // console.log(client.userName + ' disconnected');
+        listener.userDisable(client.userName);
+        // console.log(client.userName + ' disconnected');
+    } catch (err) {
+        console.log(err.message);
+        console.log(err.stack);
+    }
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -796,18 +793,36 @@ io.Listener.prototype.userOnDisconnect = function()
  */
 io.Listener.prototype.userOnMessage = function(response)
 {
-    var client   = this;
-    var listener = client.listener;
+    try {
+        var client   = this;
+        var listener = client.listener;
 
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // Server can receive either credentials or a message to share
-    //
-    if ('type' in response && response.type in listener.chatMessageTypes) {
-        listener.chatMessageTypes[response.type](listener, client, response);
-
-        // console.log(response.type + ' message from ' + client.userName + ' received');
-    } else {
-        // Invalid properties sent, disconnect user
-        console.log('invalid message sent from ' + client.userName);
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // Server can receive either credentials or a message to share
+        //
+        if ('type' in response && response.type in listener.chatMessageTypes) {
+            if (response.type == 'init' || client.userName) {
+                listener.chatMessageTypes[response.type](listener, client, response);
+                // console.log(response.type + ' message from ' + client.userName + ' received');
+            } else {
+                console.log('invalid message order, no username set to client');
+            }
+        } else {
+            // Invalid properties sent, disconnect user
+            console.log('invalid message sent from ' + client.userName);
+        }
+    } catch (err) {
+        console.log(err.message);
+        console.log(err.stack);
     }
+}
+
+io.Listener.prototype.userSendRestart = function(client, message)
+{
+    client.send({
+        type: 'restart',
+        message: message
+    });
+
+    return false;
 }

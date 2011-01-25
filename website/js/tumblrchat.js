@@ -1,96 +1,93 @@
-$.fn.dotdotdot = function() {
-    this.each(function() {
-        $(this).fadeTo(500, 0.5).fadeTo(500, 1.0, function() {
-            $(this).dotdotdot();
-        });
-    });
-};
+(function($) {
+    var methods = {
+        init: function(options) {
+            // Nothing to do yet
+        },
 
-$.fn.dotdotend = function() {
-    this.each(function() {
-        $(this).stop(true).fadeTo(5000, 0.1);
-    });
-};
+        getsid: function(cookies) {
+            var key   = 'connect.sid=';
+            var start = cookies.indexOf(key) + key.length;
+            if (start !== -1) {
+                var end = cookies.indexOf(';', start);
+                end = end !== -1 ? end : cookies.length;
 
-/**
- * jQuery.fn.sortElements
- * --------------
- * @param Function comparator:
- *   Exactly the same behaviour as [1,2,3].sort(comparator)
- *
- * @param Function getSortable
- *   A function that should return the element that is
- *   to be sorted. The comparator will run on the
- *   current collection, but you may want the actual
- *   resulting sort to occur on a parent or another
- *   associated element.
- *
- *   E.g. $('td').sortElements(comparator, function(){
- *      return this.parentNode;
- *   })
- *
- *   The <td>'s parent (<tr>) will be sorted instead
- *   of the <td> itself.
- */
-jQuery.fn.sortElements = (function(){
+                return escape(cookies.substring(start, end));
+            }
 
-    var sort = [].sort;
+            return null;
+        },
+        
+        strobe: function() {
+            return this.each(function() {
+                $(this).fadeTo(500, 0.5).fadeTo(500, 1.0, function() {
+                    $(this).tumblrchat('strobe');
+                });
+            });
+        },
 
-    return function(comparator, getSortable) {
+        stopstrobe: function() {
+            return this.each(function() {
+                $(this).stop(true).fadeTo(5000, 0.1);
+            });
+        },
 
-        getSortable = getSortable || function(){return this;};
+        sortusers: function() {
+            var sort = [].sort;
 
-        var placements = this.map(function(){
+            return function(comparator, getSortable) {
+                getSortable = getSortable || function() {
+                    return this;
+                };
 
-            var sortElement = getSortable.call(this),
-                parentNode = sortElement.parentNode,
+                var placements = this.map(function() {
+                    var sortElement = getSortable.call(this),
+                        parentNode  = sortElement.parentNode,
+                        nextSibling = parentNode.insertBefore(
+                            document.createTextNode(''),
+                            sortElement.nextSibling
+                        );
 
-                // Since the element itself will change position, we have
-                // to have some way of storing its original position in
-                // the DOM. The easiest way is to have a 'flag' node:
-                nextSibling = parentNode.insertBefore(
-                    document.createTextNode(''),
-                    sortElement.nextSibling
-                );
+                    return function() {
+                        if (parentNode === this) {
+                            $.error('Cannot sort descendents of self');
+                        }
 
-            return function() {
+                        parentNode.insertBefore(this, nextSibling);
+                        parentNode.removeChild(nextSibling);
 
-                if (parentNode === this) {
-                    throw new Error(
-                        "You can't sort elements if any one is a descendant of another."
-                    );
-                }
+                    };
 
-                // Insert before flag:
-                parentNode.insertBefore(this, nextSibling);
-                // Remove flag:
-                parentNode.removeChild(nextSibling);
+                });
 
+                return sort.call(this, comparator).each(function(i) {
+                    placements[i].call(getSortable.call(this));
+                });
             };
-
-        });
-
-        return sort.call(this, comparator).each(function(i){
-            placements[i].call(getSortable.call(this));
-        });
-
+        }
     };
 
-})();
+    $.fn.tumblrchat = function(method) {
+        // Method calling logic
+        if (methods[method]) {
+            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        } else if (typeof method === 'object' || !method) {
+            return methods.init.apply(this, arguments);
+        } else {
+            $.error('Method ' + method + ' does not exist on jQuery.tumblrchat');
+        }
+    }
+})(jQuery);
 
 var socket,
     attempts   = 0,
     timeoutId  = null,
-    reconnects = 0,
-    tempHash   = sessionStorage.getItem('hash');
+    reconnects = 0;
 
-sessionStorage.clear();
-
-$(function() {
+$(function() {    
     window.scrollTo(0, 1);
 
     document.title = 'TumblrChat (Connecting...)'
-    $('#loading-pulse').dotdotdot();
+    $('#loading-pulse').tumblrchat('strobe');
 
     // Initialize variables
     var clientId,
@@ -102,7 +99,6 @@ $(function() {
         topic         = '',
         isMobile      = false,
         lastScroll    = 0,
-        hashRoom      = roomUrlGet(tempHash) || 'main',
         connected     = false,
         approved      = false;
         
@@ -111,7 +107,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling']});
+        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-multipart']});
 
         // Try to connect (using multiple tries if necessary)
         chatConnect();
@@ -122,21 +118,19 @@ $(function() {
         // As soon as we connect, send credentials. Chat is still disabled at this time.
         socket.on('connect', function()
         {
+            var sid = $(document).tumblrchat('getsid', document.cookie);
+            if(typeof console !== 'undefined') console.log(sid);
+            
+            socket.send({
+                type: 'init',
+                roomName: roomUrlGet(),
+                sid: sid
+            });
+
             // Clear reconnect timeout and set to 0 for attempts
-            $('#header').attr('title', reconnects);
+            if(typeof console !== 'undefined') console.log(reconnects);
             clearTimeout(timeoutId);
             attempts = 0;
-
-            // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-            // Attempt to change rooms on the fly
-
-            var currentRoom = roomUrlGet();
-
-            if (currentRoom && currentRoom != 'main') {
-                socket.send({
-                   type: 'roomchange',
-                   room: currentRoom});
-            }
         });
 
         socket.on('disconnect', function()
@@ -145,13 +139,23 @@ $(function() {
             reconnects++;            
             chatConnect();
         });
-
+        
         socket.on('message', function(serverRes)
         {
             // Only accept messages with type property
-            if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': '', 'room': ''}) {
+            if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': '', 'room': '', 'restart': '', 'notice': ''}) {
+                // PROMPT RESTART
+                if (serverRes.type == 'restart') {
+                    // Add detailed messages on errors
+                    if (confirm(serverRes.message + '\nWould you like to restart TumblrChat?')) {
+                        document.cookie = 'connect.sid=';
+                        location.href = '/';
+                    }
+                // ALERT NOTICE
+                } else if (serverRes.type == 'notice') {
+                    alert(serverRes.message);
                 // ROOMS
-                if (serverRes.type == 'room' && 'mode' in serverRes && serverRes.mode in {'delete': '', 'change': ''}) {
+                } else if (serverRes.type == 'room' && 'mode' in serverRes && serverRes.mode in {'delete': '', 'change': ''}) {
                     var fancyRoom = roomGetFancyName(serverRes.room);
 
                     if (serverRes.mode == 'delete') {
@@ -247,7 +251,7 @@ $(function() {
                     document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
 
                     // Sort rooms alphabetically
-                    $('#rooms div').sortElements(function(a, b) {
+                    $('#rooms div').tumblrchat('sortusers', function(a, b) {
                         return $(a).find('sup').text() < $(b).find('sup').text() ? 1 : -1;
                     });
 
@@ -259,7 +263,7 @@ $(function() {
                     // Show the chat if not already shown and clear any possible timeouts
                     $('#loading:visible').fadeOut(250);
                     $('#error:visible').remove();
-                    $('#loading-pulse').dotdotend();
+                    $('#loading-pulse').tumblrchat('stopstrobe');
                     $('#dialog').remove();
 
                     connected = true;
@@ -294,7 +298,7 @@ $(function() {
                         // Don't display if so many people are on, its too spammy
                         if (userCount < 10) {
                             serverRes.message = ' has joined the chat!';
-                            displayMessage(serverRes);
+                            // displayMessage(serverRes);
                         }
 
                     // Awh, a user left, let's remove from user list
@@ -305,7 +309,7 @@ $(function() {
                         // Don't display if so many people are on, its too spammy
                         if (userCount < 10) {
                             serverRes.message = ' has left the chat...';
-                            displayMessage(serverRes);
+                            // displayMessage(serverRes);
                         }
 
                         // Remove local user
@@ -693,7 +697,7 @@ function notifyFailure(hasSocket)
 {
     if (!hasSocket || (!socket.connecting && !socket.connected)) {
         // Stop logo pulsing and make sure the background is faded in
-        $('#loading-pulse').dotdotend();
+        $('#loading-pulse').tumblrchat('stopstrobe');
         $('#loading').fadeIn(250);
 
         document.title = 'TumblrChat (Error!)'
@@ -719,29 +723,30 @@ function roomUrlChange(path)
     } else {
         window.location.hash = '#!' + path;
     }
+
+    return path;
 }
 
-function roomUrlGet(tempHash)
+function roomUrlGet()
 {
+    var url       = window.location.href;
+    var firstHash = url.indexOf('#');
+
+    firstHash = (firstHash == -1 ? url.length : firstHash);
+    url       = url.substring(0, firstHash);
+
+    var lastSlash = url.lastIndexOf('/');
+    var room      = url.substr(lastSlash + 1);
+
+    var hash     = window.location.hash;
+    var mark     = hash.indexOf('#!');
+    var hashRoom = (mark == -1 ? '' : hash.substr(mark + 2));
+
     if (typeof(window.history.pushState) == 'function') {
-        var url       = window.location.href;
-        var firstHash = url.indexOf('#');
-
-        firstHash = (firstHash == -1 ? url.length : firstHash);
-        url       = url.substring(0, firstHash);
-
-        var lastSlash = url.lastIndexOf('/');
-
-        return url.substr(lastSlash + 1);
+        return hashRoom ? roomUrlChange(hashRoom) : room;
+    } else if (room) {
+        window.location = '/#!' + room;
     } else {
-        if (tempHash) {
-            roomUrlChange(tempHash);
-            return tempHash;
-        } else {
-            var hash = window.location.hash;
-            var mark = hash.indexOf('#!');
-
-            return (mark == -1 ? '' : hash.substr(mark + 2));
-        }
+        return hashRoom;
     }
 }
