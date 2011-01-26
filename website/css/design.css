@@ -265,7 +265,7 @@ body, input {
 
             #chat div.op {
                 font-weight: bold;
-                padding-top: 0;
+                background: #FFF2F2;
             }
 
             #chat span a {
@@ -282,12 +282,12 @@ body, input {
             border-radius: 0 0 0.5em 0.5em;
             -moz-border-radius: 0 0 0.5em 0.5em;
             display: block;
+            margin-bottom: 0.5em;
             height: 0.5em;
         }
 
         #chat .top {
-            background: #ffffff;
-            margin-top: 0.5em;
+            background: #ffffff;            
             border-radius: 0.5em 0.5em 0 0;
             -moz-border-radius: 0.5em 0.5em 0 0;
             display: block;

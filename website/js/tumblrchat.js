@@ -3,19 +3,6 @@
         init: function(options) {
             // Nothing to do yet
         },
-
-        getsid: function(cookies) {
-            var key   = 'connect.sid=';
-            var start = cookies.indexOf(key) + key.length;
-            if (start !== -1) {
-                var end = cookies.indexOf(';', start);
-                end = end !== -1 ? end : cookies.length;
-
-                return escape(cookies.substring(start, end));
-            }
-
-            return null;
-        },
         
         strobe: function() {
             return this.each(function() {
@@ -101,6 +88,237 @@ $(function() {
         lastScroll    = 0,
         connected     = false,
         approved      = false;
+
+    var onMessages = {
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // RESTART: Prompt a confirm box and help user restart session with a blank session ID
+        //
+        restart: function(response) {
+            // Add detailed messages on errors
+            var message = response.message || 'There was an unknown error (E0)';
+            if (confirm(message + '\nWould you like to restart TumblrChat?')) {
+                document.cookie = 'connect.sid=';
+                location.href = '/';
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // ROOMCHANGE: add, or change a room listed on the side
+        //
+        roomchange: function(response) {
+            if ('roomName' in response && 'roomCount' in response) {                
+                var roomObj = $('#rooms #r' + response.roomName);
+
+                if (roomObj.length) {
+                    // Update a room count
+                    roomObj.children('sup').text(response.roomCount);
+                } else {
+                    // Create a new room
+                    var roomLabel = roomGetFancyName(response.roomName);
+
+                    roomObj = $('<div/>')
+                        .attr('id', 'r' + response.roomName)
+                        .append($('<sup/>').text(response.roomCount))
+                        .append($('<a/>')
+                            .attr('href', '#' + response.roomName)
+                            .text(roomLabel));
+
+                    $('#rooms').append(roomObj);
+                }
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // ROOMDELETE: Delete a room listed on the side
+        //
+        roomdelete: function(response) {
+            if ('roomName' in response) {
+                $('#rooms #r' + response.roomName).remove();
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // SETTOPIC: Update topic for user
+        //
+        settopic: function(response) {
+            if (response.topic) {
+                topic = response.topic;
+                displayMessage({
+                    type: 'status',
+                    message: 'New topic: ' + response.topic
+                });
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // APPROVED: User has been approved, so create their account
+        //
+        approved: function(response) {
+            if ('id' in response && 'roomName' in response && 'topic' in response && 'buffer' in response && 'users' in response && 'rooms' in response) {
+                // On init, a list of users is grabbed (and add yourself)
+                clientId     = response.id;
+                users        = response.users;
+                topic        = response.topic;
+                userCount    = 0;
+
+                // Clear out sidebar and repopulate with users, updating userCount
+                clearUsers();                                
+                for (var i in users) {
+                    displayUser(i);
+                    userCount++;
+                }
+
+                // Clear out sidebar rooms and populate with room list
+                $('#rooms>div').remove();
+                for (var j in response.rooms) {
+                    onMessages.roomchange({
+                        roomName: j,
+                        roomCount: response.rooms[j]
+                    });
+                }
+
+                // Update room hash
+                roomUrlChange(response.roomName == 'main' ? '' : response.roomName);
+
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+                // Do style updates (not on reconnects)
+                //
+                if (!connected || approved) {
+                    var fancyRoom = roomGetFancyName(response.roomName);
+
+                    if (!$('#chat').is(':empty')) {
+                        $('#chat')
+                            .append($('<b />')
+                                .addClass('divider')
+                                .append($('<b />')
+                                    .addClass('bottom'))
+                                .append($('<b />')
+                                    .addClass('top')));
+                    } else {
+                        $('#chat')
+                                .append($('<b />')
+                                    .addClass('top'));
+                    }
+
+                    $('#chat')
+                        .append($('<div />')
+                            .addClass('op')
+                            .text(fancyRoom + ' Room'));
+
+                    // Update status to say they joined                    
+                    displayMessage({
+                        type:    'status',
+                        message: 'The topic is \'' + topic + '\''
+                    });
+
+                    // Output buffer messages
+                    for (var j in response.buffer) {
+                        displayMessage(response.buffer[j]);
+                    }
+                }
+
+                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+                $('#count').text(userCount);
+                document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
+
+                // Sort rooms alphabetically
+                $('#rooms div').tumblrchat('sortusers', function(a, b) {
+                    return $(a).find('sup').text() < $(b).find('sup').text() ? 1 : -1;
+                });
+
+                // Clear all from being red, then make current room red and move to top
+                $('#rooms div').removeClass('op');
+                $('#rooms #r' + response.roomName).addClass('op').insertAfter('#roomadd');
+
+                // Remove possible dialog box with error warnings
+                // Show the chat if not already shown and clear any possible timeouts
+                $('#loading:visible').fadeOut(250);
+                $('#error:visible').remove();
+                $('#loading-pulse').tumblrchat('stopstrobe');
+                $('#dialog').remove();
+
+                connected = true;
+                approved  = true;
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // CONNECTED: Set user into sidebar and update count
+        //
+        connected: function(response) {
+            if (response.user) {
+                // Display user on side and add
+                users[response.user.name] = response.user;
+                displayUser(response.user.name);
+
+                if (!response.user.name in users) {
+                    // Update user counts on sidebar and in header
+                    $('#count').text(++userCount);
+                    document.title = '(' + userCount + ') TumblrChat';
+                }
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // DISCONNECTED: Remove user from sidebar and update count
+        //
+        disconnected: function(response) {
+            if (response.id && response.id in users) {
+                // Remove user from side and delete
+                removeUser(response.id);
+                delete users[response.id];
+
+                // Update user counts on sidebar and in header
+                $('#count').text(--userCount);
+                document.title = '(' + userCount + ') TumblrChat';
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // RECONNECTED: Set a user in sidebar as returned
+        //
+        reconnected: function(response) {
+            if (response.id) {
+                $('#u' + response.id).removeClass('idle');
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // AWAY: Set a user in sidebar as idle
+        //
+        away: function(response) {
+            if (response.id) {
+                $('#u' + response.id).addClass('idle');
+            }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // MESSAGE: User has sent a generic message
+        //
+        message: function(response) {
+            if (response.id && response.id in users) {
+                // Most messages are sent this way, buffered messages pass entire user
+                response.users = users[response.id];
+            }
+
+            if (response.users) {
+                // User sent a message, so not idle, and update response to pass to message
+                $('#u' + response.id).removeClass('idle');
+                response.user = users[response.id];
+            }
+
+            // Display message
+            displayMessage(response);
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // STATUS: A grayed out message sent to everyone, does not require an ID
+        //
+        status: function(response) {
+            onMessages.message(response);
+        }
+    }
         
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Connect to socket server
@@ -113,26 +331,27 @@ $(function() {
         chatConnect();
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-        // CONNECT > SEND CREDENTIALS
-        // As soon as we connect, send credentials. Chat is still disabled at this time.
+        // CONNECT: As soon as we connect, send credentials. Chat is still disabled at this time.
+        //
         socket.on('connect', function()
         {
-            var sid = $(document).tumblrchat('getsid', document.cookie);
-            if(typeof console !== 'undefined') console.log(sid);
+            var sid = getSid();
             
             socket.send({
-                type: 'init',
+                type:     'init',
                 roomName: roomUrlGet(),
-                sid: sid
+                sid:      sid
             });
 
             // Clear reconnect timeout and set to 0 for attempts
-            if(typeof console !== 'undefined') console.log(reconnects);
+            if (typeof console !== 'undefined') console.log(reconnects);
             clearTimeout(timeoutId);
             attempts = 0;
         });
 
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // DISCONNECT: Attempt to reconnect immediately
+        //
         socket.on('disconnect', function()
         {
             approved = false;
@@ -140,213 +359,28 @@ $(function() {
             chatConnect();
         });
         
-        socket.on('message', function(serverRes)
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // MESSAGE: Process a response from the server based on onMessages methods
+        //
+        socket.on('message', function(response)
         {
-            // Only accept messages with type property
-            if ('type' in serverRes && serverRes.type in {'approved': '', 'message': '', 'status': '', 'topic': '', 'room': '', 'restart': '', 'notice': ''}) {
-                // PROMPT RESTART
-                if (serverRes.type == 'restart') {
-                    // Add detailed messages on errors
-                    if (confirm(serverRes.message + '\nWould you like to restart TumblrChat?')) {
-                        document.cookie = 'connect.sid=';
-                        location.href = '/';
-                    }
-                // ALERT NOTICE
-                } else if (serverRes.type == 'notice') {
-                    alert(serverRes.message);
-                // ROOMS
-                } else if (serverRes.type == 'room' && 'mode' in serverRes && serverRes.mode in {'delete': '', 'change': ''}) {
-                    var fancyRoom = roomGetFancyName(serverRes.room);
-
-                    if (serverRes.mode == 'delete') {
-                        // Delete room from list
-                        $('#rooms #r' + serverRes.room).remove();
-                    } else {
-                        // Update or add room to list
-                        var roomObj   = $('#rooms #r' + serverRes.room);
-
-                        if (roomObj.length) {
-                            roomObj.find('sup').text(serverRes.count);
-                            roomObj.find('a').text(fancyRoom);
-                        } else {                            
-                            roomObj = $('<div/>')
-                                .attr('id', 'r' + serverRes.room)
-                                .append($('<sup/>').text(serverRes.count))
-                                .append($('<a/>')
-                                    .attr('href', '#' + serverRes.room)
-                                    .text(fancyRoom));
-                                
-                            if (serverRes.featured) {
-                                $('#rooms').append(roomObj);
-                            } else {
-                                $('#rooms').append(roomObj);
-                            }
-                        }
-                    }
-                }
-
-                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-                // First message sent from server, initalize chat
-                else if (serverRes.type == 'topic') {
-                    topic = serverRes.topic;
-                    displayMessage({
-                        type: 'status',
-                        message: 'The topic is now \'' + topic + '\'...'});
-                }
-
-                // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-                else if (serverRes.type == 'approved') {
-                    // Save self ID for later reference
-                    clientId = serverRes.id;
-                    var roomName = serverRes.room;
-
-                    // Initialize self user with php vars
-                    // On init, a list of users is grabbed (and add yourself)
-                    users = serverRes.users;
-
-                    // Add users to the chat list
-                    clearUsers(i);
-                    userCount = 0;
-                    for (var i in users) {
-                        displayUser(i);
-                        userCount++;
-                    }
-
-                    // Update room hash
-                    roomUrlChange(roomName == 'main' ? '' : roomName);
-
-                    // Do style updates (not on reconnects)
-                    if (!connected || approved) {
-                        var fancyRoom = roomGetFancyName(roomName);
-
-                        // Set Room title and dividers
-                        $('#chat')
-                            .append($('<b />')
-                                .addClass('divider')
-                                .append($('<b />')
-                                    .addClass('bottom'))
-                                .append($('<b />')
-                                    .addClass('top')))
-                            .append($('<div />')
-                                .addClass('op')
-                                .text(fancyRoom + ' Room'));
-
-                        // Update status to say they joined
-                        topic = serverRes.topic;
-                        displayMessage({
-                            type:    'status',
-                            message: 'The topic is \'' + topic + '\'...'});
-
-                        // Output buffer messages
-                        for (var j in serverRes.buffer) {
-                            displayMessage(serverRes.buffer[j]);
-                        }
-                    }
-
-                    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-                    $('#count').text(userCount);
-                    document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
-
-                    // Sort rooms alphabetically
-                    $('#rooms div').tumblrchat('sortusers', function(a, b) {
-                        return $(a).find('sup').text() < $(b).find('sup').text() ? 1 : -1;
-                    });
-
-                    // Clear all from being red, then make current room red and move to top
-                    $('#rooms div').removeClass('op');
-                    $('#rooms #r' + roomName).addClass('op').insertAfter('#roomadd');
-
-                    // Remove possible dialog box with error warnings
-                    // Show the chat if not already shown and clear any possible timeouts
-                    $('#loading:visible').fadeOut(250);
-                    $('#error:visible').remove();
-                    $('#loading-pulse').tumblrchat('stopstrobe');
-                    $('#dialog').remove();
-
-                    connected = true;
-                    approved  = true;
-
-                // If a new user is coming or going, update list accordingly
-                } else if (serverRes.type == 'status' && 'mode' in serverRes && serverRes.mode in {'reconnect': '', 'idle': '', 'away': '', 'connect': '', 'disconnect': ''} && 'id' in serverRes) {
-                    // User is reconnected
-                    if (serverRes.mode == 'reconnect' && serverRes.id in users) {
-                        $('#u' + serverRes.id).removeClass('idle');
-
-                    // User is set to away or disconnected
-                    } else if ((serverRes.mode == 'idle' || serverRes.mode == 'away') && serverRes.id in users) {
-                        $('#u' + serverRes.id).addClass('idle');
-
-                        // Don't display if so many people are on, its too spammy
-                        if (userCount < 10 && serverRes.mode == 'away') {
-                            serverRes.user    = users[serverRes.id];
-                            serverRes.message = ' has gone away...';
-                            displayMessage(serverRes);
-                        }
-
-                    // new user joined, let's add to user list!
-                    } else if (serverRes.mode == 'connect' && 'user' in serverRes && !(serverRes.id in users)) {
-                        users[serverRes.id] = serverRes.user;
-                        $('#count').text(++userCount);
-                        document.title = '(' + userCount + ') TumblrChat';
-
-                        // Display user on side
-                        displayUser(serverRes.id);
-
-                        // Don't display if so many people are on, its too spammy
-                        if (userCount < 10) {
-                            serverRes.message = ' has joined the chat!';
-                            // displayMessage(serverRes);
-                        }
-
-                    // Awh, a user left, let's remove from user list
-                    } else if (serverRes.mode == 'disconnect' && serverRes.id in users) {
-                        // Pull users from local list and display disconnect
-                        serverRes.user = users[serverRes.id];
-
-                        // Don't display if so many people are on, its too spammy
-                        if (userCount < 10) {
-                            serverRes.message = ' has left the chat...';
-                            // displayMessage(serverRes);
-                        }
-
-                        // Remove local user
-                        $('#count').text(--userCount);
-                        document.title = '(' + userCount + ') TumblrChat';
-
-                        // Remove user from side and delete
-                        removeUser(serverRes.id);
-                        delete users[serverRes.id];
-                    }
-
-                // Otherwise, process whatever message or generic status comes in
-                } else if (serverRes.type == 'message' || serverRes.type == 'status') {
-                    // Either there is no ID to attach or ID is in user list and not in ignore list
-                    if (!('id' in serverRes) || (serverRes.id in users && !(users[serverRes.id].name in ignore))) {
-                        // Pull users from local array and display message or status
-                        if (serverRes.id in users) {
-                            $('#u' + serverRes.id).removeClass('idle');                            
-                            serverRes.user = users[serverRes.id];
-                        }
-
-                        displayMessage(serverRes);
-                    }
-                }
+            if ('type' in response && response.type in onMessages) {
+                if (typeof console !== 'undefined') console.log(response.type);
+                onMessages[response.type](response);
             }
-        }); // end onMessage()
+        });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-        // EVENT: On resize, move to bottom of the screen
+        // RESIZE EVENT: On resize, move to bottom of the screen
+        //
         $(window).resize(function(e) {
             lastScroll = $('#chat').scrollTop();
             $('#chat').scrollTop($('#chat')[0].scrollHeight);
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
+        // CLICK EVENT: When buttons are clicked, show a popup
+        //
         $('.topbuttons').click(function(e) {
             e.preventDefault();
 
@@ -371,8 +405,8 @@ $(function() {
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-        // EVENT: When the text box is submitted, prevent submission and send message
+        // SUBMIT EVENT: When the text box is submitted, prevent submission and send message
+        //
         $('#form').submit(function(e) {
             e.preventDefault();
             var message   = $('#text').val();
@@ -458,8 +492,8 @@ $(function() {
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-        // User has clicked an external link, show prompt dialog
+        // LIVE EVENT: User has clicked an external link, show prompt dialog
+        //
         $('.external').live('click', function(e) {
             e.preventDefault();
             
@@ -487,8 +521,8 @@ $(function() {
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-        // User has clicked a link for rooms, switch rooms
+        // LIVE EVENT: User has clicked a link for rooms, switch rooms
+        //
         $('#rooms a, .room').live('click', function(e) {
            e.preventDefault();
            var newRoom = $(this).attr('href').substr(1);
@@ -503,8 +537,8 @@ $(function() {
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // Add Room
-        
+        // SUBMIT EVENT: Add a room using sidebar
+        //
         $('#roomadd').submit(function(e) {
             e.preventDefault();
 
@@ -749,4 +783,19 @@ function roomUrlGet()
     } else {
         return hashRoom;
     }
+}
+
+function getSid() {
+    var cookies = document.cookie;
+    var key     = 'connect.sid=';
+    var start   = cookies.indexOf(key) + key.length;
+
+    if (start !== -1) {
+        var end = cookies.indexOf(';', start);
+        end = end !== -1 ? end : cookies.length;
+
+        return escape(cookies.substring(start, end));
+    }
+
+    return null;
 }

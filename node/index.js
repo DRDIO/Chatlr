@@ -17,6 +17,17 @@ try {
     // On CALLBACK: Authenticate with Tumblr, parse XML, store user in a session
     //
     var server = connect.createServer(
+        function(req, res, next) {
+            var hostParts = req.headers.host.split('.');
+            if (hostParts.length > 2) {
+                // OAuth only correctly returns if using the same domain as callback (no www)
+                var host = 'http://' + hostParts.slice(-2).join('.') + req.originalUrl;                
+                res.writeHead(303, {'Location': host});
+                res.end();
+            } else {
+                next();
+            }
+        },
         socket(function() { return server; }),
         connect.cookieDecoder(),
         connect.session({
