@@ -31,8 +31,6 @@ module.exports = function(app)
                                 var tumblr = (0 in result['tumblelog'] ? result['tumblelog'][0] : result['tumblelog']);
 
                                 if ('@' in tumblr && 'name' in tumblr['@']) {
-                                    console.log('writing session for user ' + tumblr['@']['name'] + ' ' + req.sessionId);
-
                                     req.session.user = {
                                         'name':   tumblr['@']['name'],
                                         'title':  tumblr['@']['title'],

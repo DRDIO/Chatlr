@@ -688,6 +688,8 @@ io.Listener.prototype.userClose = function(userName, message)
  * userInitRoom
  * Send user all the information about a room
  *
+ * @see roomUserAdd()
+ * @see chatGetRooms()
  * @see roomGetUsers()
  * @see send()
  */
@@ -770,7 +772,7 @@ io.Listener.prototype.userOnMessage = function(response)
         // Server can receive either credentials or a message to share
         //
         if ('type' in response && response.type in listener.chatMessageTypes) {
-            if (response.type == 'init' || client.userName) {
+            if (response.type == 'init' || (client.userName && client.userName in listener.chatUsers)) {
                 listener.chatMessageTypes[response.type](listener, client, response);
                 // console.log(response.type + ' message from ' + client.userName + ' received');
             } else {
