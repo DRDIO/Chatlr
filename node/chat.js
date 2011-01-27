@@ -776,11 +776,11 @@ io.Listener.prototype.userOnMessage = function(response)
                 listener.chatMessageTypes[response.type](listener, client, response);
                 // console.log(response.type + ' message from ' + client.userName + ' received');
             } else {
-                console.log('invalid message order, no username set to client');
+                // console.log('invalid message order, no username set to client');
             }
         } else {
             // Invalid properties sent, disconnect user
-            console.log('invalid message sent from ' + client.userName);
+            // console.log('invalid message sent from ' + client.userName);
         }
     } catch (err) {
         console.log(err.message);
