@@ -59,6 +59,7 @@ io.Listener.prototype.chatMessageTypes = {
         user.sessionId = client.sessionId;
         user.connected = true;
         user.tsConnect = time;
+        user.idle      = false;
 
         // (re)Attach user to the chat users list
         listener.chatUsers[user.name] = user;
@@ -75,6 +76,9 @@ io.Listener.prototype.chatMessageTypes = {
             // Get the current room of the user
             var user     = listener.chatUsers[client.userName];
             var roomName = user.roomName;
+
+            // Not idle if sending messages of any kind
+            user.idle = false;
 
             if (roomName) {
                 var time    = new Date().getTime();
@@ -163,6 +167,7 @@ io.Listener.prototype.chatMessageTypes = {
                         time - user.tsMessage > 2000))) {
 
                     if (message.search(/^\/away/) == 0) {
+                        user.idle = true;
                         listener.roomBroadcast(roomName, {
                             type: 'away',
                             id:   user.name
@@ -242,22 +247,25 @@ io.Listener.prototype.chatCleanup = function(listener) {
             var user      = listener.chatUsers[userName];
             var sessionId = user.sessionId;
 
-            if (!user.connected) {
+            if (!user.connected || !(sessionId in listener.clients)) {
                 // If user has been disconnected longer than allowed, drop completely
                 if (time - user.tsDisconnect > config.interval) {
                     listener.userClose(userName, 'You were disconnected for too long (C1).');
-                }
-            } else if (!(sessionId in listener.clients)) {
-                if (time - user.tsMessage > config.kick) {
-                    listener.userClose(userName, 'You were idle for too long (C2).');
                 } else {
-                    // RARE, User says they are connected but no session exists
-                    // Set to disconnected and give them a grace
                     listener.userDisable(userName);
                 }
             } else if (!(user.roomName in listener.chatRooms) || !(userName in listener.chatRooms[user.roomName].users)) {
                 // RARE user says in room X which doen'st exist or not in room
                 listener.roomUserAdd('main', userName);
+            } else {
+                if (time - user.tsMessage > config.idle) {
+                    // Set user to idle
+                    user.idle = true;
+                    listener.roomBroadcast(roomName, {
+                        type: 'away',
+                        id:   user.name
+                    });
+                }
             }
         }
 
@@ -471,9 +479,19 @@ io.Listener.prototype.roomGetUsers = function(roomName)
     var output   = {};
 
     for (var userName in listener.chatRooms[roomName].users) {
-        output[userName] = listener.chatUsers[userName];
+        var user = listener.chatUsers[userName];
+        output[userName] = {
+            name: user.name,
+            title: user.name,
+            url: user.name,
+            avatar: user.name,
+            op: user.name,
+            idle: user.idle
+        };
     }
 
+    
+    
     // console.log('getting room users');
     
     return output;
@@ -618,9 +636,10 @@ io.Listener.prototype.userDisable = function(userName)
 
         if (user.connected) {
             // If user is connected, set disconnect and time, inform others of away status
-            user.connected    = false;
+            user.connected    = false;            
             user.tsDisconnect = time;
-
+            user.idle         = true;
+            
             listener.roomBroadcast(user.roomName, {
                 type: 'away',
                 id:   userName
