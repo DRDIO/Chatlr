@@ -224,7 +224,6 @@ $(function() {
 
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-                $('#count').text(userCount);
                 document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
 
                 // Sort rooms alphabetically
@@ -253,15 +252,15 @@ $(function() {
         //
         connected: function(response) {
             if (response.user) {
-                // Display user on side and add
-                users[response.user.name] = response.user;
-                displayUser(response.user.name);
-
                 if (!response.user.name in users) {
                     // Update user counts on sidebar and in header
-                    $('#count').text(++userCount);
+                    userCount++;
                     document.title = '(' + userCount + ') TumblrChat';
                 }
+                
+                // Display user on side and add
+                users[response.user.name] = response.user;
+                displayUser(response.user.name);                
             }
         },
 
@@ -278,7 +277,7 @@ $(function() {
                 delete users[response.id];
 
                 // Update user counts on sidebar and in header
-                $('#count').text(--userCount);
+                userCount--;
                 document.title = '(' + userCount + ') TumblrChat';                
             }
         },
