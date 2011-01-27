@@ -11,6 +11,7 @@ body {
 
 body, input {
     font: 12px Arial, sans-serif;
+    text-shadow: 0 1px 1px rgba(128, 128, 128, 0.15);
 }
 
 #top {
@@ -323,40 +324,66 @@ body, input {
 }
 
 .ui-dialog {
-    background: rgba(0, 0, 0, 0.10);
     padding: 1em;
-    border: none;
+    background: #f5f5fff;
+    border: 2px solid white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 1px 10px rgba(29, 35, 41, 0.6);
+    -moz-box-shadow: 0px 1px 10px rgba(29, 35, 41, 0.6);
+    box-shadow: 0px 1px 10px rgba(29, 35, 41, 0.6);
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
 .ui-dialog-titlebar, .ui-dialog .ui-dialog-content {
-    background: rgba(255, 255, 255, 0.97);
-    color: #333;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.10);
+    background: none;
+    color: #333;    
     border: none;
 }
 
 .ui-dialog .ui-dialog-titlebar {
-    border-radius: 0.25em 0.25em 0 0;
-    -moz-border-radius: 0.25em 0.25em 0 0;
-    padding: 1em;
+    padding: 0;
+    font-size: 2em;
+    font-weight: normal;
+    line-height: 1em;
+    padding-bottom: 0.5em;
 }
 
-.ui-dialog .ui-dialog-content {
-    border-radius: 0 0 0.25em 0.25em;
-    -moz-border-radius: 0 0 0.25em 0.25em;
+.ui-dialog .ui-dialog-content {    
     line-height: 1.5em;
-    padding: 0 1em 1em;
+    padding: 0;
 }
 
 .ui-dialog .ui-dialog-titlebar-close {
-    right: 1em;
+    top: 0;
+    right: 0;
+    margin: 0;
+    background: #ddd;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+    padding: 0.25em;
+}
+
+.ui-dialog-content a {
+    color: #2C4762;
+    text-decoration: none;
+    border-bottom: 1px dotted #ccc;
+}
+
+.ui-dialog .ui-dialog-titlebar-close.ui-state-hover {
+    border: none;
+    padding: 0.25em;
 }
 
 .ui-dialog .ui-dialog-buttonpane {
     background-image: none;
     border: none;
     margin: 0;
-    padding: 0 1em 1em;
+    padding: 0;
     text-align: left;
 }
 
@@ -421,4 +448,10 @@ body, input {
         width: 100%;
         clear: both;        
     }
+}
+
+.left {
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-right: 0.5em;
 }

@@ -59,6 +59,16 @@ module.exports = function(app)
         }
     });
 
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Clear out user and refresh entire session
+    //
+    app.get('/clear', function(req, res) {
+        if (req.session.user) {
+            delete req.session.user;
+            res.writeHead(303, {'Location': '/'});
+            res.end();
+        }
+    });
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Index Page (If user exists, start chat)

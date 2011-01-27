@@ -110,21 +110,19 @@ io.Listener.prototype.chatMessageTypes = {
                         var kickName  = (1 in kickSplit ? kickSplit[1] : false);
 
                         if (kickName in listener.chatUsers) {
-                            var kickUser = listener.chatUsers[kickName];
-                            var kickRoom = (2 in kickSplit ? kickSplit[2] : false);
+                            var kickUser   = listener.chatUsers[kickName];
+                            var kickRoom   = (2 in kickSplit ? kickSplit[2] : false);
+                            var kickSessid = kickUser.sessionId;
+                            var kickClient = listener.clients[kickSessid];
 
                             if (kickRoom) {
-                                var kickSessid = kickUser.sessionId;
-                                var kickClient = listener.clients[kickSessid];
 
                                 listener.userInitRoom(kickRoom, kickClient);
 
                                 // Let everyone know that someone has been moved
-                                listener.roomBroadcast(roomName, {
-                                    type:    'status',
-                                    message: 'has been kicked to #' + kickRoom,
-                                    id:      kickName});
+                                listener.roomUserRemove(roomName, kickName, 'has been kicked to #' + kickRoom);
                             } else {
+                                listener.userSendRestart(kickClient, 'You have been kicked from the chat (N2).');
                                 listener.roomUserRemove(roomName, kickName, 'has been kicked...');
                             }
                         } 
@@ -144,11 +142,14 @@ io.Listener.prototype.chatMessageTypes = {
                             delete listener.chatBanned[banUser];
                         } else {
                             // Duration in milliseconds
+                            var banSessid   = banUser.sessionId;
+                            var banClient   = listener.clients[banSessid];
                             var duration    = (2 in banSplit ? (time + parseInt(banSplit[2]) * 60000) : -1);
                             var durationMsg = (duration != -1 ? ' for ' + banSplit[2] + ' minutes' : '');
                             listener.chatBanned[banUser] = duration;
 
                             // Tell everyone they have been banned, with possible time
+                            listener.userSendRestart(banClient, 'You have been banned ' + durationMsg + ' (N3).');
                             listener.roomUserRemove(roomName, banUser, 'has been banned' + durationMsg + '...');
                         }
                         return;
@@ -572,7 +573,7 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
                 if (message) {
                     // Broadcast a kick/ban/idle
                     listener.roomBroadcast(roomName, {
-                        type:    'status',
+                        type:    'kicked',
                         id:      userName,
                         message: message
                     });

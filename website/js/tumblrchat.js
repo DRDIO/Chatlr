@@ -65,19 +65,22 @@
     }
 })(jQuery);
 
-var socket,
-    attempts   = 0,
-    timeoutId  = null,
-    reconnects = 0;
-
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// LOAD EVENT
+//
 $(function() {    
     window.scrollTo(0, 1);
 
+    // Setup initial title
     document.title = 'TumblrChat (Connecting...)'
     $('#loading-pulse').tumblrchat('strobe');
 
     // Initialize variables
-    var clientId,
+    var socket,
+        clientId,
+        attempts      = 0,
+        timeoutId     = null,
+        reconnects    = 0,
         users         = {},
         ignore        = {},
         userCount     = 0,
@@ -95,10 +98,12 @@ $(function() {
         //
         restart: function(response) {
             // Add detailed messages on errors
+            notifyFailure(false);
+            
             var message = response.message || 'There was an unknown error (E0)';
             if (confirm(message + '\nWould you like to restart TumblrChat?')) {
                 document.cookie = 'connect.sid=';
-                location.href = '/';
+                location.href = '/clear';
             }
         },
 
@@ -143,9 +148,9 @@ $(function() {
         settopic: function(response) {
             if (response.topic) {
                 topic = response.topic;
-                displayMessage({
-                    type: 'status',
-                    message: 'New topic: ' + response.topic
+                onMessages.message({
+                    type:    'status',
+                    message: 'The new topic is \'' + response.topic + '\''
                 });
             }
         },
@@ -206,14 +211,14 @@ $(function() {
                             .text(fancyRoom + ' Room'));
 
                     // Update status to say they joined                    
-                    displayMessage({
+                    onMessages.message({
                         type:    'status',
                         message: 'The topic is \'' + topic + '\''
                     });
 
                     // Output buffer messages
                     for (var j in response.buffer) {
-                        displayMessage(response.buffer[j]);
+                        onMessages.message(response.buffer[j]);
                     }
                 }
 
@@ -260,18 +265,24 @@ $(function() {
             }
         },
 
+        kicked: function(response) {            
+            onMessages.disconnected(response);            
+        },
+
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // DISCONNECTED: Remove user from sidebar and update count
         //
         disconnected: function(response) {
             if (response.id && response.id in users) {
                 // Remove user from side and delete
-                removeUser(response.id);
+                $('#users #u' + id).remove();
                 delete users[response.id];
 
                 // Update user counts on sidebar and in header
                 $('#count').text(--userCount);
                 document.title = '(' + userCount + ') TumblrChat';
+
+                onMessages.message(response);
             }
         },
 
@@ -297,19 +308,80 @@ $(function() {
         // MESSAGE: User has sent a generic message
         //
         message: function(response) {
-            if (response.id && response.id in users) {
-                // Most messages are sent this way, buffered messages pass entire user
-                response.users = users[response.id];
-            }
+            if (response.message) {
+                if (response.id && response.id in users) {
+                    // Most messages are sent this way, buffered messages pass entire user
+                    response.users = users[response.id];
+                }
 
-            if (response.users) {
-                // User sent a message, so not idle, and update response to pass to message
-                $('#u' + response.id).removeClass('idle');
-                response.user = users[response.id];
-            }
+                if (response.users) {
+                    // User sent a message, so not idle, and update response to pass to message
+                    $('#u' + response.id).removeClass('idle');
+                    response.user = users[response.id];
+                }
 
-            // Display message
-            displayMessage(response);
+                // Display message
+                if (typeof response == 'object') {
+                    // Everything is pulled from the user list
+
+                    var row     = $('<div/>'),
+                        message = $('<span/>');
+
+                    // Some status messages are from the server (no user)
+                    if ('user' in response) {
+                        var title = $('<div/>')
+                                .text('Visit ' + clean(response.user.title)),
+                            link = $('<a/>')
+                                .attr('href', clean(response.user.url))
+                                .attr('target', '_blank')
+                                .attr('title', clean(title.html()))
+                                .text(clean(response.user.name));
+
+                        row.append($('<img/>').attr('src', clean(response.user.avatar)));
+
+                        if ('op' in response.user && response.user.op) {
+                            link.addClass('op');
+                        }
+                    }
+
+                    // Clean message then update usernames to tumblr links
+                    response.message = strip(response.message);
+                    response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?(#\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
+                    response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
+                    response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$1" class="room" title="Go to $2 Room">$1</a>');
+
+                    // MESSAGE: The default message from a user
+                    if (response.type == 'message') {
+                        message.html(': ' + response.message);
+                        if (clientId in users) {
+                            if ('user' in response && response.user.name == users[clientId].name) {
+                                row.addClass('personal');
+                            } else {
+                                // Try to save having to do a rege exp all the time
+                                var selfMatch = new RegExp('@' + users[clientId].name, 'gi');
+                                if (response.message.search(selfMatch) != -1) {
+                                    row.addClass('personal');
+                                }
+                            }
+                        }
+
+                    // STATUS: Status messages just show a faded message
+                    } else if (response.type == 'status') {
+                        row.addClass('status');
+                        message.html(' ' + response.message);
+                    }
+
+                    // insert message
+                    $('#chat').append(row.append(link).append(message));
+                }
+
+                // Scroll to the end of the page unless mouse is down
+                var thisScroll = $('#chat').scrollTop();
+                if (thisScroll >= lastScroll) {
+                    lastScroll = thisScroll;
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                }
+            }
         },
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -325,7 +397,7 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'htmlfile', 'xhr-multipart']});
+        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart']});
 
         // Try to connect (using multiple tries if necessary)
         chatConnect();
@@ -394,10 +466,8 @@ $(function() {
                 .attr('id', 'dialog')
                 .html(message)
                 .dialog({
-                    width: $(window).width() * 0.8,
-                    maxWidth: 320,
-                    minHeight: 0,
-                    height: $(window).height() * 0.8,
+                    width: Math.min(640, $(window).width() * 0.8),
+                    height: Math.min(400, $(window).height() * 0.8),
                     resizable: false,
                     close: function() {
                         $(this).remove()}})                
@@ -442,9 +512,11 @@ $(function() {
                 $('#text').val('');
                 
             } else if (message.search(/^\/topic$/i) == 0) {
-                displayMessage({
+                onMessages.message({
                     type:    'status',
-                    message: 'The topic is \'' + topic + '\'...'});
+                    message: 'The topic is \'' + topic + '\'...'
+                });
+                
                 $('#text').val('');
 
             } else if (message.search(/^\/help$/i) == 0) {
@@ -473,7 +545,7 @@ $(function() {
 
             } else if (clientId in users && 'op' in users[clientId] && !users[clientId].op && (message == lastMessage || timestamp - lastTimestamp < 2000 || message.length > 350)) {
                 // Quickly display message to self in pink
-                displayMessage({
+                onMessages.message({
                     type:    'status',
                     user:    users[clientId],
                     message: 'Ignored as spam due to repetition, length, or frequency.'});
@@ -501,7 +573,7 @@ $(function() {
             
             $('<div/>')
                 .attr('title', 'Visit External Link?')
-                .html('<em>' + url + '</em> You are about to open an external link that might be offensive or contain viruses. Do you still want to visit it?')
+                .html('The following link may be offensive or harmful? Do you want to visit?<br /><span class="ui-icon ui-icon-link left"></span><a>' + url + '</a>')
                 .dialog({
                     buttons: {
                         'No': function() {
@@ -512,10 +584,8 @@ $(function() {
                             $(this).dialog('close');
                         }
                     },
-                    width: $(window).width() * 0.8,
-                    maxWidth: 320,
-                    minHeight: 0,
-                    maxHeight: $(window).height() * 0.8,
+                    width: Math.min(640, $(window).width() * 0.8),
+                    maxHeight: Math.min(180, $(window).height() * 0.8),
                     resizable: false})
                 .parent().position({my: 'center', at: 'center', of: document});
         });
@@ -585,71 +655,6 @@ $(function() {
         return parts.join(' ');
     }
 
-    // FUNCTION: Display various message types to the screen
-    function displayMessage(response)
-    {
-        if (typeof response == 'object') {
-            // Everything is pulled from the user list
-
-            var row     = $('<div/>'),
-                message = $('<span/>');
-
-            // Some status messages are from the server (no user)
-            if ('user' in response) {
-                var title = $('<div/>')
-                        .text('Visit ' + clean(response.user.title)),
-                    link = $('<a/>')
-                        .attr('href', clean(response.user.url))
-                        .attr('target', '_blank')
-                        .attr('title', clean(title.html()))
-                        .text(clean(response.user.name));
-
-                row.append($('<img/>').attr('src', clean(response.user.avatar)));
-
-                if ('op' in response.user && response.user.op) {
-                    link.addClass('op');
-                }
-            }
-
-            // Clean message then update usernames to tumblr links
-            response.message = strip(response.message);
-            response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?(#\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
-            response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
-            response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$1" class="room" title="Go to $2 Room">$1</a>');
-            
-            // MESSAGE: The default message from a user
-            if (response.type == 'message') {
-                message.html(': ' + response.message);
-                if (clientId in users) {
-                    if ('user' in response && response.user.name == users[clientId].name) {
-                        row.addClass('personal');
-                    } else {
-                        // Try to save having to do a rege exp all the time
-                        var selfMatch = new RegExp('@' + users[clientId].name, 'gi');
-                        if (response.message.search(selfMatch) != -1) {
-                            row.addClass('personal');
-                        }
-                    }
-                }
-
-            // STATUS: Status messages just show a faded message
-            } else if (response.type == 'status') {
-                row.addClass('status');
-                message.html(' ' + response.message);
-            }
-
-            // insert message
-            $('#chat').append(row.append(link).append(message));
-        }
-        
-        // Scroll to the end of the page unless mouse is down
-        var thisScroll = $('#chat').scrollTop();
-        if (thisScroll >= lastScroll) {
-            lastScroll = thisScroll;
-            $('#chat').scrollTop($('#chat')[0].scrollHeight);
-        }
-    }
-
     function clearUsers()
     {
         $('#users').html('');
@@ -691,11 +696,6 @@ $(function() {
         }
     }
 
-    function removeUser(id)
-    {
-        $('#users #u' + id).remove();
-    }
-
     function clean(message)
     {
         return (message ? $('<div/>').text(message).text() : '');
@@ -705,97 +705,99 @@ $(function() {
     {
         return $('<div/>').text(message).html();
     }
-});
+    
+    function chatConnect()
+    {
+        if (typeof socket != 'undefined') {
+            // Try connecting 3 times (reset to 0 on successful connect)
+            if (attempts < 3) {
+                if (!socket.connecting && !socket.connected) {
+                    attempts++;
+                    socket.connect();
+                }
 
-function chatConnect()
-{
-    if (typeof socket != 'undefined') {
-        // Try connecting 3 times (reset to 0 on successful connect)
-        if (attempts < 3) {
-            if (!socket.connecting && !socket.connected) {
-                attempts++;
-                socket.connect();
+                // Check back after timeout for another attempt
+                timeoutId = setTimeout(chatConnect, socket.options.connectTimeout);
+            } else {
+                onMessages.restart({
+                    message: 'We were unable to connect you after ' + attempts + ' attempts (T1).'
+                });
             }
-
-            // Check back after timeout for another attempt
-            timeoutId = setTimeout('chatConnect()', socket.options.connectTimeout);
         } else {
-            notifyFailure();
+            onMessages.restart({
+                message: 'No socket connection exists (T2).'
+            });
         }
-    } else {
-        notifyFailure();
-    }
-}
-
-function notifyFailure(hasSocket)
-{
-    if (!hasSocket || (!socket.connecting && !socket.connected)) {
-        // Stop logo pulsing and make sure the background is faded in
-        $('#loading-pulse').tumblrchat('stopstrobe');
-        $('#loading').fadeIn(250);
-
-        document.title = 'TumblrChat (Error!)'
-
-        $('<div/>')
-            .attr('id', 'error')
-            .attr('title', 'Unable to Connect')
-            .html($('#page-error').html() + '<br/><br/>' + $('#page-about').html())
-            .dialog({
-                width: $(window).width() * 0.8,
-                maxWidth: 320,
-                minHeight: 0,
-                maxHeight: $(window).height() * 0.8,
-                resizable: false})
-            .parent().position({my: 'top', at: 'top', of: document, offset: '0 24'});
-    }
-}
-
-function roomUrlChange(path)
-{
-    if (typeof(window.history.pushState) == 'function') {
-        window.history.pushState(null, path, '/' + path);
-    } else {
-        window.location.hash = '#!' + path;
     }
 
-    return path;
-}
+    function notifyFailure(hasSocket)
+    {
+        if (!hasSocket || (!socket.connecting && !socket.connected)) {
+            // Stop logo pulsing and make sure the background is faded in
+            $('#loading-pulse').tumblrchat('stopstrobe');
+            $('#loading').show();
 
-function roomUrlGet()
-{
-    var url       = window.location.href;
-    var firstHash = url.indexOf('#');
-
-    firstHash = (firstHash == -1 ? url.length : firstHash);
-    url       = url.substring(0, firstHash);
-
-    var lastSlash = url.lastIndexOf('/');
-    var room      = url.substr(lastSlash + 1);
-
-    var hash     = window.location.hash;
-    var mark     = hash.indexOf('#!');
-    var hashRoom = (mark == -1 ? '' : hash.substr(mark + 2));
-
-    if (typeof(window.history.pushState) == 'function') {
-        return hashRoom ? roomUrlChange(hashRoom) : room;
-    } else if (room) {
-        window.location = '/#!' + room;
-    } else {
-        return hashRoom;
-    }
-}
-
-function getSid() {
-    var cookies = document.cookie;
-    var key     = 'connect.sid=';
-    var start   = cookies.indexOf(key) + key.length;
-
-    if (start !== -1) {
-        var end = cookies.indexOf(';', start);
-        end = end !== -1 ? end : cookies.length;
-
-        return escape(cookies.substring(start, end));
+            $('<div/>')
+                .attr('title', 'Oh Nos, TumblrChat Died!')
+                .attr('id', 'dialog')
+                .html($('#page-about').html())
+                .dialog({
+                    width: Math.min(640, $(window).width() * 0.8),
+                    height: Math.min(400, $(window).height() * 0.8),
+                    resizable: false,
+                    close: function() {
+                        $(this).remove()}})
+                .parent().position({my: 'center', at: 'center', of: document});
+        }
     }
 
-    return null;
-}
+    function roomUrlChange(path)
+    {
+        if (typeof(window.history.pushState) == 'function') {
+            window.history.pushState(null, path, '/' + path);
+        } else {
+            window.location.hash = '#!' + path;
+        }
+
+        return path;
+    }
+
+    function roomUrlGet()
+    {
+        var url       = window.location.href;
+        var firstHash = url.indexOf('#');
+
+        firstHash = (firstHash == -1 ? url.length : firstHash);
+        url       = url.substring(0, firstHash);
+
+        var lastSlash = url.lastIndexOf('/');
+        var room      = url.substr(lastSlash + 1);
+
+        var hash     = window.location.hash;
+        var mark     = hash.indexOf('#!');
+        var hashRoom = (mark == -1 ? '' : hash.substr(mark + 2));
+
+        if (typeof(window.history.pushState) == 'function') {
+            return hashRoom ? roomUrlChange(hashRoom) : room;
+        } else if (room) {
+            window.location = '/#!' + room;
+        } else {
+            return hashRoom;
+        }
+    }
+
+    function getSid() {
+        var cookies = document.cookie;
+        var key     = 'connect.sid=';
+        var start   = cookies.indexOf(key) + key.length;
+
+        if (start !== -1) {
+            var end = cookies.indexOf(';', start);
+            end = end !== -1 ? end : cookies.length;
+
+            return escape(cookies.substring(start, end));
+        }
+
+        return null;
+    }
+});
