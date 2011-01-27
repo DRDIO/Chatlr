@@ -98,11 +98,11 @@ $(function() {
         //
         restart: function(response) {
             // Add detailed messages on errors
+            eraseCookie('connect.sid');
             notifyFailure(false);
             
             var message = response.message || 'There was an unknown error (E0)';
-            if (confirm(message + '\nWould you like to restart TumblrChat?')) {
-                document.cookie = 'connect.sid=';
+            if (confirm(message + '\nWould you like to restart TumblrChat?')) {                
                 location.href = '/clear';
             }
         },
@@ -265,25 +265,29 @@ $(function() {
             }
         },
 
-        kicked: function(response) {            
-            onMessages.disconnected(response);            
-        },
-
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // DISCONNECTED: Remove user from sidebar and update count
         //
         disconnected: function(response) {
             if (response.id && response.id in users) {
+                response.type = 'status';
+                onMessages.message(response);
+                
                 // Remove user from side and delete
-                $('#users #u' + id).remove();
+                $('#users #u' + response.id).remove();
                 delete users[response.id];
 
                 // Update user counts on sidebar and in header
                 $('#count').text(--userCount);
-                document.title = '(' + userCount + ') TumblrChat';
-
-                onMessages.message(response);
+                document.title = '(' + userCount + ') TumblrChat';                
             }
+        },
+
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // KICKED: Remove user from sidebar and update count
+        //
+        kicked: function(response) {
+            onMessages.disconnected(response);
         },
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -407,7 +411,7 @@ $(function() {
         //
         socket.on('connect', function()
         {
-            var sid = getSid();
+            var sid = readCookie('connect.sid');
             
             socket.send({
                 type:     'init',
@@ -437,7 +441,7 @@ $(function() {
         socket.on('message', function(response)
         {
             if ('type' in response && response.type in onMessages) {
-                if (typeof console !== 'undefined') console.log(response.type);
+                // if (typeof console !== 'undefined') console.log(response.type);
                 onMessages[response.type](response);
             }
         });
@@ -690,8 +694,12 @@ $(function() {
                 $('#users').append(user);
             }
 
-            if ('op' in users[id] && users[id].op) {
+            if (users[id].op) {
                 user.addClass('op');
+            }
+
+            if (users[id].idle) {
+                user.addClass('idle');
             }
         }
     }
@@ -717,6 +725,7 @@ $(function() {
                 }
 
                 // Check back after timeout for another attempt
+                clearTimeout(timeoutId);
                 timeoutId = setTimeout(chatConnect, socket.options.connectTimeout);
             } else {
                 onMessages.restart({
@@ -786,18 +795,28 @@ $(function() {
         }
     }
 
-    function getSid() {
-        var cookies = document.cookie;
-        var key     = 'connect.sid=';
-        var start   = cookies.indexOf(key) + key.length;
-
-        if (start !== -1) {
-            var end = cookies.indexOf(';', start);
-            end = end !== -1 ? end : cookies.length;
-
-            return escape(cookies.substring(start, end));
+    function createCookie(name,value,days) {
+        if (days) {
+                var date = new Date();
+                date.setTime(date.getTime()+(days*24*60*60*1000));
+                var expires = "; expires="+date.toGMTString();
         }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    }
 
-        return null;
+    function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+    }
+
+    function eraseCookie(name) {
+            createCookie(name,"",-1);
     }
 });

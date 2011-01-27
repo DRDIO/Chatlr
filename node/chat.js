@@ -21,6 +21,9 @@ io.Listener.prototype.chatMessageTypes = {
             return listener.userSendRestart(client, 'We cannot detect your session ID (E1).');            
         }
 
+        // Session ID can have spaces, so convert back
+        response.sid = unescape(response.sid);
+        
         var session = client.request.sessionStore.sessions[response.sid] || null;
 
         if (!session || !session.user) {
@@ -126,8 +129,8 @@ io.Listener.prototype.chatMessageTypes = {
                                 // Let everyone know that someone has been moved
                                 listener.roomUserRemove(roomName, kickName, 'has been kicked to #' + kickRoom);
                             } else {
-                                listener.userSendRestart(kickClient, 'You have been kicked from the chat (N2).');
                                 listener.roomUserRemove(roomName, kickName, 'has been kicked...');
+                                listener.userClose(kickName, 'You have been kicked from the chat (N2).');
                             }
                         } 
 
@@ -140,21 +143,19 @@ io.Listener.prototype.chatMessageTypes = {
                         // Get the name and duration of ban in minutes
                         // If duration is blank, set the ban to infinity
                         var banSplit = message.split(' ');
-                        var banUser  = (1 in banSplit ? banSplit[1] : false);
+                        var banName  = (1 in banSplit ? banSplit[1] : false);
 
-                        if (banUser in listener.chatBanned) {
-                            delete listener.chatBanned[banUser];
+                        if (banName in listener.chatBanned) {
+                            delete listener.chatBanned[banName];
                         } else {
                             // Duration in milliseconds
-                            var banSessid   = banUser.sessionId;
-                            var banClient   = listener.clients[banSessid];
                             var duration    = (2 in banSplit ? (time + parseInt(banSplit[2]) * 60000) : -1);
                             var durationMsg = (duration != -1 ? ' for ' + banSplit[2] + ' minutes' : '');
-                            listener.chatBanned[banUser] = duration;
+                            listener.chatBanned[banName] = duration;
 
                             // Tell everyone they have been banned, with possible time
-                            listener.userSendRestart(banClient, 'You have been banned ' + durationMsg + ' (N3).');
-                            listener.roomUserRemove(roomName, banUser, 'has been banned' + durationMsg + '...');
+                            listener.roomUserRemove(roomName, banName, 'has been banned' + durationMsg + '...');
+                            listener.userClose(banName, 'You have been banned ' + durationMsg + ' (N3).');                            
                         }
                         return;
                     }
@@ -347,7 +348,7 @@ io.Listener.prototype.chatInit = function()
         }
 
         // Perform memory cleanup on everything
-        setInterval(function() { listener.chatCleanup(listener); }, config.interval);
+        setInterval(function() {listener.chatCleanup(listener);}, config.interval);
     } catch(err) {
         console.log(err.message);
         console.log(err.stack);
@@ -482,10 +483,10 @@ io.Listener.prototype.roomGetUsers = function(roomName)
         var user = listener.chatUsers[userName];
         output[userName] = {
             name: user.name,
-            title: user.name,
-            url: user.name,
-            avatar: user.name,
-            op: user.name,
+            title: user.title,
+            url: user.url,
+            avatar: user.avatar,
+            op: user.op,
             idle: user.idle
         };
     }
@@ -808,10 +809,12 @@ io.Listener.prototype.userOnMessage = function(response)
 
 io.Listener.prototype.userSendRestart = function(client, message)
 {
-    client.send({
-        type:    'restart',
-        message: message
-    });
+    if (client) {
+        client.send({
+            type:    'restart',
+            message: message
+        });
+    }
 
     return false;
 }
