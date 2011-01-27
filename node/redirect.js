@@ -63,7 +63,6 @@ module.exports = function(app)
     // Clear out user and refresh entire session
     //
     app.get('/clear', function(req, res) {
-        console.log('clearing session for user');
         delete req.session;
         
         res.writeHead(303, {'Location': '/'});
