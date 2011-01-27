@@ -265,8 +265,8 @@ io.Listener.prototype.chatCleanup = function(listener) {
                     });
                 }
 
-                // Kick users who squat in chat
-                if (user.idle && time - user.tsMessage > config.intKick) {
+                // Kick users who squat in chat (not OP of course)
+                if (user.idle && !user.op && time - user.tsMessage > config.intKick) {
                     listener.userClose(userName, 'You were idle for too long (C2).');
                 }
             }
