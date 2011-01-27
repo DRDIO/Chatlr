@@ -419,7 +419,7 @@ $(function() {
             });
 
             // Clear reconnect timeout and set to 0 for attempts
-            if (typeof console !== 'undefined') console.log(reconnects);
+            // if (typeof console !== 'undefined') console.log(reconnects);
             clearTimeout(timeoutId);
             attempts = 0;
         });
@@ -440,7 +440,7 @@ $(function() {
         socket.on('message', function(response)
         {
             if ('type' in response && response.type in onMessages) {
-                if (typeof console !== 'undefined') console.log(response.type);
+                // if (typeof console !== 'undefined') console.log(response.type);
                 onMessages[response.type](response);
             }
         });
