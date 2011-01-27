@@ -415,9 +415,6 @@ io.Listener.prototype.roomBroadcast = function(roomName, object, excludeName)
                 if (sessionId in listener.clients) {
                     // Send to each client in the room
                     listener.clients[sessionId].send(object);
-                } else {
-                    // Disable user because a disconnect happened
-                    listener.userDisable(userName);
                 }
             } else {
                 // User name isn't in global list, shouldn't be in room either
@@ -624,34 +621,6 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 /**
- * userDisable
- * Disable a user in a room, setting them to idle for the moment
- *
- * @see roomBroadcast()
- */
-io.Listener.prototype.userDisable = function(userName)
-{
-    var listener = this;
-    var time     = new Date().getTime();
-
-    if (userName in listener.chatUsers) {
-        var user = listener.chatUsers[userName];
-
-        // If user is connected, set disconnect and time, inform others of away status
-        user.connected    = false;
-        user.tsDisconnect = time;
-        user.idle         = true;
-
-        listener.roomBroadcast(user.roomName, {
-            type: 'away',
-            id:   userName
-        });
-    }
-}
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-/**
  * userEnable
  * Enable a user in a room, setting them to idle for the moment
  *
@@ -760,8 +729,30 @@ io.Listener.prototype.userOnDisconnect = function()
     try {
         var client   = this;
         var listener = client.listener;
+        var time     = new Date().getTime();
 
-        listener.userDisable(client.userName);
+        // If user is setup once before
+        if ('userName' in client) {
+            var userName = client.userName;
+
+            // And they are in the list of chat users
+            if (userName in listener.chatUsers) {
+                var user = listener.chatUsers[userName];
+
+                // If user is connected, set disconnect and time, inform others of away status
+                user.connected    = false;
+                user.tsDisconnect = time;
+
+                if (!user.idle) {
+                    user.idle = true;
+                    listener.roomBroadcast(user.roomName, {
+                        type: 'away',
+                        id:   userName
+                    });
+                }
+            }
+        }
+
         // console.log(client.userName + ' disconnected');
     } catch (err) {
         console.log(err.message);
