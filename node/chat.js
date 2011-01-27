@@ -742,14 +742,6 @@ io.Listener.prototype.userOnDisconnect = function()
                 // If user is connected, set disconnect and time, inform others of away status
                 user.connected    = false;
                 user.tsDisconnect = time;
-
-                if (!user.idle) {
-                    user.idle = true;
-                    listener.roomBroadcast(user.roomName, {
-                        type: 'away',
-                        id:   userName
-                    }, userName);
-                }
             }
         }
 
