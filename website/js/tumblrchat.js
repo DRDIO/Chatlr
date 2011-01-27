@@ -252,11 +252,9 @@ $(function() {
         //
         connected: function(response) {
             if (response.user) {
-                if (!response.user.name in users) {
-                    // Update user counts on sidebar and in header
-                    userCount++;
-                    document.title = '(' + userCount + ') TumblrChat';
-                }
+                // Update user counts on sidebar and in header
+                userCount++;
+                document.title = '(' + userCount + ') TumblrChat';
                 
                 // Display user on side and add
                 users[response.user.name] = response.user;
