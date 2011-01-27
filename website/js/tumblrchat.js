@@ -441,7 +441,7 @@ $(function() {
         socket.on('message', function(response)
         {
             if ('type' in response && response.type in onMessages) {
-                // if (typeof console !== 'undefined') console.log(response.type);
+                if (typeof console !== 'undefined') console.log(response.type);
                 onMessages[response.type](response);
             }
         });

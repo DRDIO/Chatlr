@@ -4,8 +4,8 @@
 exports.ipaddr   = '';
 exports.port     = 8080;
 exports.interval = 10000;
-exports.idle     = 300000;
-exports.kick     = 1800000;
+exports.intIdle  = 300000;
+exports.intKick  = 1800000;
 
 exports.requestUrl      = 'http://www.tumblr.com/oauth/request_token';
 exports.accessUrl       = 'http://www.tumblr.com/oauth/access_token';

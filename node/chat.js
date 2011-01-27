@@ -55,6 +55,7 @@ io.Listener.prototype.chatMessageTypes = {
             user.lastMessage  = '';
             user.tsMessage    = time;
             user.tsDisconnect = time;
+            user.idle         = false;
         }
 
         // Setup core paramters as connected
@@ -62,7 +63,6 @@ io.Listener.prototype.chatMessageTypes = {
         user.sessionId = client.sessionId;
         user.connected = true;
         user.tsConnect = time;
-        user.idle      = false;
 
         // (re)Attach user to the chat users list
         listener.chatUsers[user.name] = user;
@@ -246,26 +246,28 @@ io.Listener.prototype.chatCleanup = function(listener) {
         //
         for (var userName in listener.chatUsers) {
             var user      = listener.chatUsers[userName];
-            var sessionId = user.sessionId;
 
-            if (!user.connected || !(sessionId in listener.clients)) {
+            if (!user.connected) {
                 // If user has been disconnected longer than allowed, drop completely
                 if (time - user.tsDisconnect > config.interval) {
                     listener.userClose(userName, 'You were disconnected for too long (C1).');
-                } else {
-                    listener.userDisable(userName);
                 }
             } else if (!(user.roomName in listener.chatRooms) || !(userName in listener.chatRooms[user.roomName].users)) {
                 // RARE user says in room X which doen'st exist or not in room
                 listener.roomUserAdd('main', userName);
             } else {
-                if (time - user.tsMessage > config.idle) {
-                    // Set user to idle
+                // Detect idle users and set them to away
+                if (!user.idle && time - user.tsMessage > config.intIdle) {
                     user.idle = true;
-                    listener.roomBroadcast(roomName, {
+                    listener.roomBroadcast(user.roomName, {
                         type: 'away',
-                        id:   user.name
+                        id:   userName
                     });
+                }
+
+                // Kick users who squat in chat
+                if (user.idle && time - user.tsMessage > config.intKick) {
+                    listener.userClose(userName, 'You were idle for too long (C2).');
                 }
             }
         }
@@ -635,21 +637,15 @@ io.Listener.prototype.userDisable = function(userName)
     if (userName in listener.chatUsers) {
         var user = listener.chatUsers[userName];
 
-        if (user.connected) {
-            // If user is connected, set disconnect and time, inform others of away status
-            user.connected    = false;            
-            user.tsDisconnect = time;
-            user.idle         = true;
-            
-            listener.roomBroadcast(user.roomName, {
-                type: 'away',
-                id:   userName
-            });
+        // If user is connected, set disconnect and time, inform others of away status
+        user.connected    = false;
+        user.tsDisconnect = time;
+        user.idle         = true;
 
-            // console.log(userName + ' disabled');
-        } else {
-            // console.log(userName + ' already disabled');
-        }
+        listener.roomBroadcast(user.roomName, {
+            type: 'away',
+            id:   userName
+        });
     }
 }
 
