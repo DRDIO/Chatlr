@@ -594,13 +594,13 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
                         type:    'kicked',
                         id:      userName,
                         message: message
-                    });
+                    }, userName);
                 } else {
                     // Broadcast a straight up disconnect
                     listener.roomBroadcast(roomName, {
                         type: 'disconnected',
                         id:   userName
-                    });
+                    }, userName);
                 }
 
                 // Notify room count changes
@@ -748,7 +748,7 @@ io.Listener.prototype.userOnDisconnect = function()
                     listener.roomBroadcast(user.roomName, {
                         type: 'away',
                         id:   userName
-                    });
+                    }, userName);
                 }
             }
         }
