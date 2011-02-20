@@ -21,6 +21,9 @@ io.Listener.prototype.chatMessageTypes = {
             return listener.userSendRestart(client, 'We cannot detect your session ID (E1).');            
         }
 
+        // Session ID can have spaces, so convert back
+        response.sid = unescape(response.sid);
+        
         var session = client.request.sessionStore.sessions[response.sid] || null;
 
         if (!session || !session.user) {
@@ -52,6 +55,7 @@ io.Listener.prototype.chatMessageTypes = {
             user.lastMessage  = '';
             user.tsMessage    = time;
             user.tsDisconnect = time;
+            user.idle         = false;
         }
 
         // Setup core paramters as connected
@@ -59,7 +63,6 @@ io.Listener.prototype.chatMessageTypes = {
         user.sessionId = client.sessionId;
         user.connected = true;
         user.tsConnect = time;
-        user.idle      = false;
 
         // (re)Attach user to the chat users list
         listener.chatUsers[user.name] = user;
@@ -126,8 +129,8 @@ io.Listener.prototype.chatMessageTypes = {
                                 // Let everyone know that someone has been moved
                                 listener.roomUserRemove(roomName, kickName, 'has been kicked to #' + kickRoom);
                             } else {
-                                listener.userSendRestart(kickClient, 'You have been kicked from the chat (N2).');
                                 listener.roomUserRemove(roomName, kickName, 'has been kicked...');
+                                listener.userClose(kickName, 'You have been kicked from the chat (N2).');
                             }
                         } 
 
@@ -140,21 +143,19 @@ io.Listener.prototype.chatMessageTypes = {
                         // Get the name and duration of ban in minutes
                         // If duration is blank, set the ban to infinity
                         var banSplit = message.split(' ');
-                        var banUser  = (1 in banSplit ? banSplit[1] : false);
+                        var banName  = (1 in banSplit ? banSplit[1] : false);
 
-                        if (banUser in listener.chatBanned) {
-                            delete listener.chatBanned[banUser];
+                        if (banName in listener.chatBanned) {
+                            delete listener.chatBanned[banName];
                         } else {
                             // Duration in milliseconds
-                            var banSessid   = banUser.sessionId;
-                            var banClient   = listener.clients[banSessid];
                             var duration    = (2 in banSplit ? (time + parseInt(banSplit[2]) * 60000) : -1);
                             var durationMsg = (duration != -1 ? ' for ' + banSplit[2] + ' minutes' : '');
-                            listener.chatBanned[banUser] = duration;
+                            listener.chatBanned[banName] = duration;
 
                             // Tell everyone they have been banned, with possible time
-                            listener.userSendRestart(banClient, 'You have been banned ' + durationMsg + ' (N3).');
-                            listener.roomUserRemove(roomName, banUser, 'has been banned' + durationMsg + '...');
+                            listener.roomUserRemove(roomName, banName, 'has been banned' + durationMsg + '...');
+                            listener.userClose(banName, 'You have been banned ' + durationMsg + ' (N3).');                            
                         }
                         return;
                     }
@@ -245,26 +246,28 @@ io.Listener.prototype.chatCleanup = function(listener) {
         //
         for (var userName in listener.chatUsers) {
             var user      = listener.chatUsers[userName];
-            var sessionId = user.sessionId;
 
-            if (!user.connected || !(sessionId in listener.clients)) {
+            if (!user.connected) {
                 // If user has been disconnected longer than allowed, drop completely
                 if (time - user.tsDisconnect > config.interval) {
                     listener.userClose(userName, 'You were disconnected for too long (C1).');
-                } else {
-                    listener.userDisable(userName);
                 }
             } else if (!(user.roomName in listener.chatRooms) || !(userName in listener.chatRooms[user.roomName].users)) {
                 // RARE user says in room X which doen'st exist or not in room
                 listener.roomUserAdd('main', userName);
             } else {
-                if (time - user.tsMessage > config.idle) {
-                    // Set user to idle
+                // Detect idle users and set them to away
+                if (!user.idle && time - user.tsMessage > config.intIdle) {
                     user.idle = true;
-                    listener.roomBroadcast(roomName, {
+                    listener.roomBroadcast(user.roomName, {
                         type: 'away',
-                        id:   user.name
+                        id:   userName
                     });
+                }
+
+                // Kick users who squat in chat (not OP of course)
+                if (user.idle && !user.op && time - user.tsMessage > config.intKick) {
+                    listener.userClose(userName, 'You were idle for too long (C2).');
                 }
             }
         }
@@ -347,7 +350,7 @@ io.Listener.prototype.chatInit = function()
         }
 
         // Perform memory cleanup on everything
-        setInterval(function() { listener.chatCleanup(listener); }, config.interval);
+        setInterval(function() {listener.chatCleanup(listener);}, config.interval);
     } catch(err) {
         console.log(err.message);
         console.log(err.stack);
@@ -412,9 +415,6 @@ io.Listener.prototype.roomBroadcast = function(roomName, object, excludeName)
                 if (sessionId in listener.clients) {
                     // Send to each client in the room
                     listener.clients[sessionId].send(object);
-                } else {
-                    // Disable user because a disconnect happened
-                    listener.userDisable(userName);
                 }
             } else {
                 // User name isn't in global list, shouldn't be in room either
@@ -482,10 +482,10 @@ io.Listener.prototype.roomGetUsers = function(roomName)
         var user = listener.chatUsers[userName];
         output[userName] = {
             name: user.name,
-            title: user.name,
-            url: user.name,
-            avatar: user.name,
-            op: user.name,
+            title: user.title,
+            url: user.url,
+            avatar: user.avatar,
+            op: user.op,
             idle: user.idle
         };
     }
@@ -594,13 +594,13 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
                         type:    'kicked',
                         id:      userName,
                         message: message
-                    });
+                    }, userName);
                 } else {
                     // Broadcast a straight up disconnect
                     listener.roomBroadcast(roomName, {
                         type: 'disconnected',
                         id:   userName
-                    });
+                    }, userName);
                 }
 
                 // Notify room count changes
@@ -614,40 +614,6 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
     } else if (userName in listener.chatUsers) {
         if (listener.chatUsers[userName].roomName == roomName) {
             listener.chatUsers[userName].roomName = 'main';
-        }
-    }
-}
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-/**
- * userDisable
- * Disable a user in a room, setting them to idle for the moment
- *
- * @see roomBroadcast()
- */
-io.Listener.prototype.userDisable = function(userName)
-{
-    var listener = this;
-    var time     = new Date().getTime();
-
-    if (userName in listener.chatUsers) {
-        var user = listener.chatUsers[userName];
-
-        if (user.connected) {
-            // If user is connected, set disconnect and time, inform others of away status
-            user.connected    = false;            
-            user.tsDisconnect = time;
-            user.idle         = true;
-            
-            listener.roomBroadcast(user.roomName, {
-                type: 'away',
-                id:   userName
-            });
-
-            // console.log(userName + ' disabled');
-        } else {
-            // console.log(userName + ' already disabled');
         }
     }
 }
@@ -722,6 +688,8 @@ io.Listener.prototype.userClose = function(userName, message)
  * userInitRoom
  * Send user all the information about a room
  *
+ * @see roomUserAdd()
+ * @see chatGetRooms()
  * @see roomGetUsers()
  * @see send()
  */
@@ -763,8 +731,22 @@ io.Listener.prototype.userOnDisconnect = function()
     try {
         var client   = this;
         var listener = client.listener;
+        var time     = new Date().getTime();
 
-        listener.userDisable(client.userName);
+        // If user is setup once before
+        if ('userName' in client) {
+            var userName = client.userName;
+
+            // And they are in the list of chat users
+            if (userName in listener.chatUsers) {
+                var user = listener.chatUsers[userName];
+
+                // If user is connected, set disconnect and time, inform others of away status
+                user.connected    = false;
+                user.tsDisconnect = time;
+            }
+        }
+
         // console.log(client.userName + ' disconnected');
     } catch (err) {
         console.log(err.message);
@@ -790,15 +772,15 @@ io.Listener.prototype.userOnMessage = function(response)
         // Server can receive either credentials or a message to share
         //
         if ('type' in response && response.type in listener.chatMessageTypes) {
-            if (response.type == 'init' || client.userName) {
+            if (response.type == 'init' || (client.userName && client.userName in listener.chatUsers)) {
                 listener.chatMessageTypes[response.type](listener, client, response);
                 // console.log(response.type + ' message from ' + client.userName + ' received');
             } else {
-                console.log('invalid message order, no username set to client');
+                // console.log('invalid message order, no username set to client');
             }
         } else {
             // Invalid properties sent, disconnect user
-            console.log('invalid message sent from ' + client.userName);
+            // console.log('invalid message sent from ' + client.userName);
         }
     } catch (err) {
         console.log(err.message);
@@ -808,10 +790,12 @@ io.Listener.prototype.userOnMessage = function(response)
 
 io.Listener.prototype.userSendRestart = function(client, message)
 {
-    client.send({
-        type:    'restart',
-        message: message
-    });
+    if (client) {
+        client.send({
+            type:    'restart',
+            message: message
+        });
+    }
 
     return false;
 }

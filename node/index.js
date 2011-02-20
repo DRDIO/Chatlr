@@ -1,3 +1,8 @@
+process.on('uncaughtException', function (err) {
+    console.log(err.message);
+    console.log(err.stack);
+});
+
 try {
     // // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Get Required Components
