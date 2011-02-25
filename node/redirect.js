@@ -94,7 +94,11 @@ module.exports = function(app)
                 });
             }
         } catch(err) {
-            console.log('Index: ' + err);
+            console.log(err.message);
+            console.log(err.stack);
+
+            res.writeHead(200, {'Content-type': 'text/html'});
+            res.end('Unable to redirect TumblrChat (R1).');
         }
     });
 }

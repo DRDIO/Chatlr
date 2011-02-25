@@ -255,6 +255,7 @@ exports.OAuth.prototype._performSecureRequest= function( oauth_token, oauth_toke
   }
   
   var request = oauthProvider.request(method,  path , headers);
+  
   if( callback ) {
     var data=""; 
     var self= this;
@@ -272,7 +273,8 @@ exports.OAuth.prototype._performSecureRequest= function( oauth_token, oauth_toke
       });
     });
   
-    request.socket.addListener("error",callback);
+    request.addListener('error', callback);
+    
     if( method == "POST" && post_body != null && post_body != "" ) {
       request.write(post_body);
     }

@@ -1,4 +1,5 @@
 process.on('uncaughtException', function (err) {
+    console.log('lol');
     console.log(err.message);
     console.log(err.stack);
 });
