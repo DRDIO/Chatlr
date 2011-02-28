@@ -23,6 +23,14 @@ io.Listener.prototype.chatMessageTypes = {
 
         // Session ID can have spaces, so convert back
         response.sid = unescape(response.sid);
+
+        if (!('request' in client)) {
+            return listener.userSendRestart(client, 'We cannot detect your request (E4).');
+        }
+
+        if (!('sessionStore' in client.request)) {
+            return listener.userSendRestart(client, 'We cannot detect your session store (E5).');
+        }
         
         var session = client.request.sessionStore.sessions[response.sid] || null;
 
@@ -790,12 +798,12 @@ io.Listener.prototype.userOnMessage = function(response)
 
 io.Listener.prototype.userSendRestart = function(client, message)
 {
-    if (client) {
-        client.send({
-            type:    'restart',
-            message: message
-        });
-    }
+    client.send({
+        type:    'restart',
+        message: message
+    });
 
+    console.log(client.sessionId + ' ' + message);
+    
     return false;
 }

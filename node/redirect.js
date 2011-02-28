@@ -46,16 +46,15 @@ module.exports = function(app)
 
                         parser.parseString(data);
                     } else {
+                        var message = (error.data || 'Invalid response from Tumblr') + ' (C2).';
                         res.writeHead(200, {'Content-type': 'text/html'});
-                        res.end('Invalid response from Tumblr.');
-                        console.log(error || 'Parse Response Error');
+                        res.end(message);
                     }
                 });
             });
         } else {
             res.writeHead(200, {'Content-type': 'text/html'});
-            res.end('The callback did not conntain a login key.');
-            console.log(parsedUrl || 'No Oauth Key');
+            res.end('The callback did not conntain a login key (C1).');
         }
     });
 
@@ -89,7 +88,7 @@ module.exports = function(app)
                 fs.readFile(__dirname + '/index.html', function(err, data) {
                     if (!err) {
                         res.writeHead(200, {'Content-type': 'text/html'});
-                        res.end(data);
+                        res.end(data || '');
                     }
                 });
             }
