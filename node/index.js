@@ -9,7 +9,6 @@ try {
     //
     var config   = require('../config/config'),
         connect  = require('./connect/lib/connect'),
-        memory   = require('./connect/lib/connect/middleware/session/memory')
         socket   = require('./socketconnect'),
         redirect = require('./redirect');
 
@@ -33,19 +32,16 @@ try {
             }
         },
         socket(function() { return server; }),
-        connect.cookieDecoder(),
+        connect.cookieParser(),
         connect.session({
             secret: config.sessionSecret,
-            store: new memory({
-                reapInterval: 60000 * 10,
+            cookie: {
                 maxAge: 60000 * 60 * 12,
-                cookie: {
-                    path: '/',
-                    httpOnly: false
-                }
-            })
+                path: '/',
+                httpOnly: false
+            }
         }),
-        connect.staticProvider(__dirname + '/../website'),
+        connect.static(__dirname + '/../website'),
         connect.router(redirect)
     );
 
