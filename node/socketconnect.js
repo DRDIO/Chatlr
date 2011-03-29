@@ -30,13 +30,14 @@ io.Listener.prototype.prefixWithMiddleware = function (fn) {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Create exports function to call
 //
-module.exports = function(serverLambda) {
+module.exports = function(serverLambda, store) {
     var listener;
     return function (req, res, next) {
         try {
             if (!listener) {
                 listener = io.listen(serverLambda());
-
+                listener.setStore(store);
+                
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                 // Setup featured listener.chatRooms that last forever
                 //

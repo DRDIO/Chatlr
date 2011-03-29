@@ -10,6 +10,15 @@ var config = require('../config/config'),
 io.Listener.prototype.chatUsers        = {};
 io.Listener.prototype.chatBanned       = {};
 io.Listener.prototype.chatRooms        = {};
+io.Listener.prototype.store            = null;
+
+io.Listener.prototype.setStore = function(store) {
+    this.store = store;
+}
+
+io.Listener.prototype.getStore = function() {
+    return this.store;
+}
 
 io.Listener.prototype.chatMessageTypes = {
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -19,8 +28,8 @@ io.Listener.prototype.chatMessageTypes = {
         // We now wait for user to send session ID, then hack into connection
         if (!response.sid) {
             return listener.userSendRestart(client, 'We cannot detect your session ID (E1).');            
-        }
-
+        }        
+        
         // Session ID can have spaces, so convert back
         response.sid = unescape(response.sid);
 
@@ -28,11 +37,13 @@ io.Listener.prototype.chatMessageTypes = {
             return listener.userSendRestart(client, 'We cannot detect your request (E4).');
         }
 
-        if (!('sessionStore' in client.request)) {
+        var sessionStore = listener.getStore();
+        
+        if (!sessionStore) {
             return listener.userSendRestart(client, 'We cannot detect your session store (E5).');
         }
-        
-        var session = client.request.sessionStore.sessions[response.sid] || null;
+
+        var session = sessionStore.sessions[response.sid] || null;
         session = JSON.parse(session);
 
         if (!session || !session.user) {

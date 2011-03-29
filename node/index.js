@@ -9,6 +9,7 @@ try {
     //
     var config   = require('../config/config'),
         connect  = require('./connect/lib/connect'),
+        memory   = require('./connect/lib/middleware/session/memory')
         socket   = require('./socketconnect'),
         redirect = require('./redirect');
 
@@ -20,6 +21,7 @@ try {
     //
     // On CALLBACK: Authenticate with Tumblr, parse XML, store user in a session
     //
+    var store  = new memory();
     var server = connect.createServer(
         function(req, res, next) {
             if (req.headers.host != config.domain) {
@@ -34,13 +36,14 @@ try {
         connect.cookieParser(),
         connect.session({
             secret: config.sessionSecret,
+            store: store,
             cookie: {
                 maxAge: 60000 * 60 * 12,
                 path: '/',
                 httpOnly: false
             }
         }),
-        socket(function() { return server; }),
+        socket(function() { return server; }, store),
         connect.static(__dirname + '/../website'),
         connect.router(redirect)
     );
