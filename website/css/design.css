@@ -96,6 +96,10 @@ body, input {
     margin-top: -0.167em;
 }
 
+#usersbox, #roomsbox, #chatbox, #form {
+    position; absolute;
+}
+
 #usersbox {
     overflow: hidden;
     height: 66%;
