@@ -398,7 +398,8 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'flashsocket', 'xhr-multipart']});
+        socket = new io.Socket(null, {rememberTransport: false, transports: ['xhr-polling']});
+        // socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'flashsocket', 'xhr-multipart']});
 
         // Try to connect (using multiple tries if necessary)
         chatConnect();

@@ -33,6 +33,7 @@ io.Listener.prototype.chatMessageTypes = {
         }
         
         var session = client.request.sessionStore.sessions[response.sid] || null;
+        session = JSON.parse(session);
 
         if (!session || !session.user) {
             return listener.userSendRestart(client, 'We cannot detect your session (E2).');
