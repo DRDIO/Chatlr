@@ -30,8 +30,7 @@ try {
             } else {
                 next();
             }
-        },
-        socket(function() { return server; }),
+        },        
         connect.cookieParser(),
         connect.session({
             secret: config.sessionSecret,
@@ -41,6 +40,7 @@ try {
                 httpOnly: false
             }
         }),
+        socket(function() { return server; }),
         connect.static(__dirname + '/../website'),
         connect.router(redirect)
     );
