@@ -816,4 +816,12 @@ $(function() {
     function eraseCookie(name) {
             createCookie(name,"",-1);
     }
+
+    $(window).resize(function() {
+        $('#text').outerWidth($(window).width() - 12);
+        $('#chatbox').outerHeight($(window).height() - 78);
+        $('#usersbox').outerHeight((($(window).height() - 66)  * 2 / 3) - 12);
+        $('#roomsbox').outerHeight((($(window).height() - 66) / 3));
+    }).resize();
+    
 });

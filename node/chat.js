@@ -78,6 +78,8 @@ io.Listener.prototype.chatMessageTypes = {
             user.idle         = false;
         }
 
+        console.log('init ' + user.name);
+        
         // Setup core paramters as connected
         user.roomName  = user.roomName || response.roomName || 'main';
         user.sessionId = client.sessionId;
@@ -654,6 +656,7 @@ io.Listener.prototype.userEnable = function(userName)
     if (userName in listener.chatUsers) {
         var user = listener.chatUsers[userName];
 
+        console.log('enabling ' + userName);
         // Set user as connected
         user.connected = true;
         user.tsConnect = time;
@@ -761,9 +764,13 @@ io.Listener.prototype.userOnDisconnect = function()
             if (userName in listener.chatUsers) {
                 var user = listener.chatUsers[userName];
 
-                // If user is connected, set disconnect and time, inform others of away status
-                user.connected    = false;
-                user.tsDisconnect = time;
+                if (client.sessionId == user.sessionId) {
+                    // If user is connected, set disconnect and time, inform others of away status
+                    user.connected    = false;
+                    user.tsDisconnect = time;
+                } else {
+                    console.log('invalid session to client pair (polling)');
+                }
             }
         }
 

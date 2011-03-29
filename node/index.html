@@ -29,16 +29,16 @@
             <!--<div id="count"></div>
             <div id="notice"></div>-->
 
-            <a id="button-creator" class="toplink login" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
+            <a id="button-creator" class="toplink" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
                 <img src="http://28.media.tumblr.com/avatar_6ef19d797abb_16.png" alt="Ask KevinNuut.com" />
                 KevinNuut.com!
             </a>
 
-            <a class="toplink login" href="http://www.tumblr.com/follow/chatlr" title="Follow Chatlr's Blog!" target="_blank">
+            <a class="toplink" href="http://www.tumblr.com/follow/chatlr" title="Follow Chatlr's Blog!" target="_blank">
                 Follow
             </a>
 
-            <a class="toplink login" href="http://www.tumblr.com/directory/recommend/startups/chatlr" title="Recommend Chatlr as a Startup!" target="_blank">
+            <a class="toplink" href="http://www.tumblr.com/directory/recommend/startups/chatlr" title="Recommend Chatlr as a Startup!" target="_blank">
                 Recommend
             </a>
 
@@ -51,26 +51,34 @@
             </a>-->
         </div>
 
-        <div id="usersbox">
-            <div id="users"></div>
-        </div>
+        <div id="section-top">
+            <div id="section-top-left">
+                <div id="usersbox">
+                    <div id="users"></div>
+                </div>
+                                
 
-        <div id="roomsbox">            
-            <div id="rooms">                
-                <form id="roomadd" action="">
-                    <input type="text" placeholder="Create a Room" title="Prefix with ! to create a Private Room" />
-                </form>
+                <div id="roomsbox">
+                    <div id="rooms">
+                        <form id="roomadd" action="">
+                            <input type="text" placeholder="Create a Room" title="Prefix with ! to create a Private Room" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="section-top-right">
+                <div id="chatbox">
+                    <div id="chat"></div>
+                </div>
             </div>
         </div>
-
-        <div id="chatbox">
-            <div id="chat"></div>
+        <div id="section-bottom">
+            <form id="form" action="" method="post">
+                <input id="text" type="text" autocomplete="off" placeholder="Type something and hit enter!" />
+            </form>
         </div>
-
-        <form id="form" action="" method="post">
-            <input id="text" type="text" autocomplete="off" placeholder="Type something and hit enter!" />
-        </form>
-
+        
         <div id="page-about" class="page">
             <p style="margin-top: 0;">
                 <strong>Commands</strong><br />

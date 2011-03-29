@@ -10,8 +10,8 @@ body {
 }
 
 body, input {
-    font: 12px Arial, sans-serif;
-    text-shadow: 0 1px 1px rgba(128, 128, 128, 0.15);
+    font: 12px Helvetica, Arial, sans-serif;
+    text-shadow: 0 1px 0 rgba(128, 128, 128, 0.15);
 }
 
 #top {
@@ -61,17 +61,19 @@ body, input {
 .topbuttons, .toplink {
     float: right;
     display: block;
-    padding: 0.333em 0.5em 0.167em 0.5em;
-    margin: 0.5em 0.5em 0.5em 0;
-    background: rgba(255, 255, 255, 0.25);
+    padding: 0.333em 1em;
+    height: 1.167em;
+    margin: 0.5em 0.5em 0.5em 0;    
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    min-width: 1em;
-    height: 1.5em;
     border-radius: 0.25em;
     -moz-border-radius: 0.25em;
     text-align: center;
+    border: 1px solid rgba(0,0,0,0.10);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.25)), to(rgba(255,255,255,0.15)));
+    -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 
     .topbuttons:hover, .toplink:hover {
@@ -83,7 +85,7 @@ body, input {
     height: 1.333em;
 }
 
-#login img, .login img {
+#login img, .login img, .topbuttons img, .toplink img {
     border-radius: 0.25em;
     -moz-border-radius: 0.25em;
     width: 16px;
@@ -96,23 +98,18 @@ body, input {
 
 #usersbox {
     overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    padding: 3em 0 0 0.5em;
-    width: 20%;
     height: 66%;
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
 }
 
     #users {
         background: #fff;
         border-radius: 0.5em;
         -moz-border-radius: 0.5em;
-        height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
+        height: 100%;
     }
 
         #users div, #rooms div {
@@ -159,14 +156,8 @@ body, input {
 
 #roomsbox {
     overflow: hidden;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    padding: 0.5em 0 3em 0.5em;
-    width: 20%;
     height: 34%;
+    margin-right: 0.5em;
 }
 
     #roomadd {
@@ -179,8 +170,6 @@ body, input {
             border: 1px solid #ccc;
             padding: 0.25em;
             width: 100%;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
         }
 
     #rooms {
@@ -203,15 +192,25 @@ body, input {
             overflow: hidden;
         }
 
+#section-top {
+    padding: 3em 0.5em 3em;
+    height: 100%;
+}
+
+#section-top-left {
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+
+#section-top-right {
+    width: 80%;
+    float: right;
+    height: 100%;
+}
+
 #chatbox {
     overflow: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    padding: 3em 0.5em;
-    width: 80%;
     height: 100%;
 }
 
@@ -299,18 +298,15 @@ body, input {
 
 #form {
     display: block;
-    position: absolute;
-    left: 0;
-    bottom: 0;
     width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     padding: 0.5em;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+    height: 2.5em;
 }
 
 #text {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     outline: none;
     border-radius: 0.5em;
     -moz-border-radius: 0.5em;
@@ -320,7 +316,7 @@ body, input {
     margin: 0;
     background: #fff;
     border: none;
-    height: 2em;
+    height: 1.5em;
 }
 
 .ui-dialog {
@@ -336,6 +332,7 @@ body, input {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    letter-spacing: 0.05em;
 }
 
 .ui-dialog-titlebar, .ui-dialog .ui-dialog-content {
@@ -430,6 +427,7 @@ body, input {
 
 #button-creator {
     background: #e53f29;
+    background: -webkit-gradient(linear, left top, left bottom, from(#e53f29), to(#db3c27));    
 }
 
 /* PHONES AND TABLETS */
