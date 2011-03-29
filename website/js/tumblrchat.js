@@ -311,14 +311,13 @@ $(function() {
         message: function(response) {
             if (response.message) {
                 if (response.id && response.id in users) {
-                    // Most messages are sent this way, buffered messages pass entire user
-                    response.users = users[response.id];
-                }
+                    if (users[response.id].name in ignore) {
+                        return;
+                    }
 
-                if (response.users) {
                     // User sent a message, so not idle, and update response to pass to message
-                    $('#u' + response.id).removeClass('idle');
                     response.user = users[response.id];
+                    $('#u' + response.id).removeClass('idle');
                 }
 
                 // Display message
