@@ -35,7 +35,7 @@ try {
         socket(function() { return server; }),
         connect.cookieDecoder(),
         connect.session({
-            secret: 'fa(fjasDPFHsapdjho2#$5123',
+            secret: config.sessionSecret,
             store: new memory({
                 reapInterval: 60000 * 10,
                 maxAge: 60000 * 60 * 12,
