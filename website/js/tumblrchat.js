@@ -754,6 +754,7 @@ $(function() {
                 .attr('title', 'Oh Nos, Chatlr Died!')
                 .attr('id', 'dialog')
                 .html($('#page-about').html())
+                .css({top: 0, left: 0})
                 .dialog({
                     width: Math.min(640, $(window).width() * 0.8),
                     height: Math.min(400, $(window).height() * 0.8),
