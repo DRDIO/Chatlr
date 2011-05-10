@@ -53,6 +53,9 @@
         }
     };
 
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Dynamic calling of methods out of tumblrchat objects
+    
     $.fn.tumblrchat = function(method) {
         // Method calling logic
         if (methods[method]) {
@@ -60,7 +63,7 @@
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.tumblrchat');
+            $.error('Method ' + method + ' does not exist on jQuery.');
         }
     }
 })(jQuery);
@@ -72,7 +75,7 @@ $(function() {
     window.scrollTo(0, 1);
 
     // Setup initial title
-    document.title = 'TumblrChat (Connecting...)'
+    document.title = 'Chatlr (Connecting...)'
     $('#loading-pulse').tumblrchat('strobe');
 
     // Initialize variables
@@ -102,7 +105,7 @@ $(function() {
             notifyFailure(false);
             
             var message = response.message || 'There was an unknown error (E0)';
-            if (confirm(message + '\nWould you like to restart TumblrChat?')) {                
+            if (confirm(message + '\nWould you like to restart Chatlr?')) {
                 location.href = '/clear';
             }
         },
@@ -224,7 +227,7 @@ $(function() {
 
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-                document.title = '(' + userCount + ') TumblrChat | ' + fancyRoom
+                document.title = '(' + userCount + ') Chatlr | ' + fancyRoom
 
                 // Sort rooms alphabetically
                 $('#rooms div').tumblrchat('sortusers', function(a, b) {
@@ -254,7 +257,7 @@ $(function() {
             if (response.user) {
                 // Update user counts on sidebar and in header
                 userCount++;
-                document.title = '(' + userCount + ') TumblrChat';
+                document.title = '(' + userCount + ') Chatlr';
                 
                 // Display user on side and add
                 users[response.user.name] = response.user;
@@ -276,7 +279,7 @@ $(function() {
 
                 // Update user counts on sidebar and in header
                 userCount--;
-                document.title = '(' + userCount + ') TumblrChat';                
+                document.title = '(' + userCount + ') Chatlr';
             }
         },
 
@@ -701,6 +704,10 @@ $(function() {
         }
     }
 
+    function toggleUserOptions(e) {
+
+    }
+
     function clean(message)
     {
         return (message ? $('<div/>').text(message).text() : '');
@@ -744,7 +751,7 @@ $(function() {
             $('#loading').show();
 
             $('<div/>')
-                .attr('title', 'Oh Nos, TumblrChat Died!')
+                .attr('title', 'Oh Nos, Chatlr Died!')
                 .attr('id', 'dialog')
                 .html($('#page-about').html())
                 .dialog({
