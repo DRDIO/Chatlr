@@ -1,0 +1,902 @@
+29 Mar 11:37:46 - socket.io ready - accepting connections
+29 Mar 13:04:29 - Initializing client with transport "xhr-polling"
+29 Mar 13:04:29 - Client 3199767041951418 connected
+init kevinnuut
+29 Mar 13:05:41 - Initializing client with transport "xhr-polling"
+29 Mar 13:05:41 - Client 2047636096831411 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:05:49 - Client 3199767041951418 disconnected
+29 Mar 13:06:08 - Initializing client with transport "xhr-polling"
+29 Mar 13:06:08 - Client 8675661582965404 connected
+2047636096831411 You were disconnected for too long (C1).
+init kevinnuut
+29 Mar 13:06:16 - Client 2047636096831411 disconnected
+29 Mar 13:06:18 - Initializing client with transport "xhr-polling"
+29 Mar 13:06:18 - Client 7086381551343948 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:06:26 - Client 8675661582965404 disconnected
+29 Mar 13:06:33 - Initializing client with transport "xhr-polling"
+29 Mar 13:06:33 - Client 9583941993769258 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:06:40 - Initializing client with transport "xhr-polling"
+29 Mar 13:06:40 - Client 09311778889968991 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:06:41 - Client 7086381551343948 disconnected
+29 Mar 13:06:48 - Client 9583941993769258 disconnected
+29 Mar 13:06:50 - Initializing client with transport "xhr-polling"
+29 Mar 13:06:50 - Client 6920995120890439 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:06:58 - Client 09311778889968991 disconnected
+6920995120890439 You were disconnected for too long (C1).
+29 Mar 13:07:14 - Initializing client with transport "xhr-polling"
+29 Mar 13:07:14 - Client 3018342237919569 connected
+init kevinnuut
+29 Mar 13:07:16 - Client 6920995120890439 disconnected
+3018342237919569 You were disconnected for too long (C1).
+29 Mar 13:07:36 - Client 3018342237919569 disconnected
+29 Mar 13:07:36 - Initializing client with transport "xhr-polling"
+29 Mar 13:07:36 - Client 9643489448353648 connected
+init kevinnuut
+29 Mar 13:07:38 - Initializing client with transport "xhr-polling"
+29 Mar 13:07:38 - Client 875604541040957 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:07:45 - Client 9643489448353648 disconnected
+875604541040957 You were disconnected for too long (C1).
+29 Mar 13:08:07 - Client 875604541040957 disconnected
+29 Mar 13:09:37 - Initializing client with transport "xhr-polling"
+29 Mar 13:09:37 - Client 8163635723758489 connected
+init kevinnuut
+29 Mar 13:10:22 - Initializing client with transport "xhr-polling"
+29 Mar 13:10:22 - Client 51898028771393 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:10:30 - Client 8163635723758489 disconnected
+29 Mar 13:10:35 - Initializing client with transport "xhr-polling"
+29 Mar 13:10:35 - Client 13951188349165022 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:10:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:10:42 - Client 8789284264203161 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:10:42 - Client 51898028771393 disconnected
+29 Mar 13:10:50 - Client 13951188349165022 disconnected
+8789284264203161 You were disconnected for too long (C1).
+29 Mar 13:11:12 - Initializing client with transport "xhr-polling"
+29 Mar 13:11:12 - Client 02652964135631919 connected
+init kevinnuut
+29 Mar 13:11:18 - Client 8789284264203161 disconnected
+29 Mar 13:11:20 - Initializing client with transport "xhr-polling"
+29 Mar 13:11:20 - Client 8088062112219632 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:11:28 - Client 02652964135631919 disconnected
+8088062112219632 You were disconnected for too long (C1).
+29 Mar 13:11:46 - Client 8088062112219632 disconnected
+29 Mar 13:11:58 - Couldnt find client with session id "8088062112219632"
+29 Mar 13:12:00 - Initializing client with transport "xhr-polling"
+29 Mar 13:12:00 - Client 8580481505487114 connected
+init kevinnuut
+29 Mar 13:12:10 - Initializing client with transport "xhr-polling"
+29 Mar 13:12:10 - Client 395182597450912 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:12:18 - Initializing client with transport "xhr-polling"
+29 Mar 13:12:18 - Client 602099621668458 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:12:18 - Client 8580481505487114 disconnected
+29 Mar 13:12:26 - Client 395182597450912 disconnected
+29 Mar 13:12:35 - Initializing client with transport "jsonp-polling"
+29 Mar 13:12:35 - Client 1305620325729251 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:12:38 - Client 602099621668458 disconnected
+29 Mar 13:12:48 - Initializing client with transport "jsonp-polling"
+29 Mar 13:12:48 - Client 7978485974017531 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:12:56 - Client 1305620325729251 disconnected
+29 Mar 13:13:24 - Initializing client with transport "xhr-polling"
+29 Mar 13:13:24 - Client 2839557093102485 connected
+init kevinnuut
+29 Mar 13:13:32 - Client 7978485974017531 disconnected
+29 Mar 13:13:40 - Initializing client with transport "jsonp-polling"
+29 Mar 13:13:40 - Client 8274007232394069 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:13:43 - Client 2839557093102485 disconnected
+29 Mar 13:13:54 - Initializing client with transport "jsonp-polling"
+29 Mar 13:13:54 - Client 036395026138052344 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:14:02 - Initializing client with transport "xhr-polling"
+29 Mar 13:14:02 - Client 850422557676211 connected
+29 Mar 13:14:02 - Client 8274007232394069 disconnected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:14:10 - Client 036395026138052344 disconnected
+29 Mar 13:14:27 - Initializing client with transport "xhr-polling"
+29 Mar 13:14:27 - Client 12692698719911277 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:14:34 - Client 850422557676211 disconnected
+12692698719911277 You were disconnected for too long (C1).
+29 Mar 13:14:54 - Initializing client with transport "xhr-polling"
+29 Mar 13:14:54 - Client 9730777789372951 connected
+init kevinnuut
+29 Mar 13:14:56 - Client 12692698719911277 disconnected
+9730777789372951 You were disconnected for too long (C1).
+29 Mar 13:15:16 - Client 9730777789372951 disconnected
+29 Mar 13:15:55 - Initializing client with transport "xhr-polling"
+29 Mar 13:15:55 - Client 7482502348721027 connected
+init kevinnuut
+29 Mar 13:15:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:15:56 - Client 04984402027912438 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:16:04 - Client 7482502348721027 disconnected
+29 Mar 13:16:11 - Initializing client with transport "xhr-polling"
+29 Mar 13:16:11 - Client 7797949395608157 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:16:19 - Client 04984402027912438 disconnected
+29 Mar 13:16:28 - Initializing client with transport "xhr-polling"
+29 Mar 13:16:28 - Client 9055490193422884 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:16:33 - Initializing client with transport "xhr-polling"
+29 Mar 13:16:33 - Client 6474193267058581 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:16:36 - Client 7797949395608157 disconnected
+29 Mar 13:16:41 - Client 9055490193422884 disconnected
+29 Mar 13:16:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:16:42 - Client 8019173343200237 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:16:50 - Client 6474193267058581 disconnected
+29 Mar 13:16:59 - Initializing client with transport "xhr-polling"
+29 Mar 13:16:59 - Client 19080702611245215 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:17:07 - Client 8019173343200237 disconnected
+19080702611245215 You were disconnected for too long (C1).
+29 Mar 13:17:23 - Initializing client with transport "xhr-polling"
+29 Mar 13:17:23 - Client 8147291142959148 connected
+init kevinnuut
+29 Mar 13:17:27 - Client 19080702611245215 disconnected
+29 Mar 13:17:36 - Initializing client with transport "xhr-polling"
+29 Mar 13:17:36 - Client 03638068679720163 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:17:44 - Client 8147291142959148 disconnected
+03638068679720163 You were disconnected for too long (C1).
+29 Mar 13:18:06 - Client 03638068679720163 disconnected
+29 Mar 13:18:34 - Couldnt find client with session id "03638068679720163"
+29 Mar 13:18:34 - Couldnt find client with session id "03638068679720163"
+29 Mar 13:20:25 - Initializing client with transport "xhr-polling"
+29 Mar 13:20:25 - Client 24107715883292258 connected
+init kevinnuut
+29 Mar 13:20:26 - Initializing client with transport "xhr-polling"
+29 Mar 13:20:26 - Client 6800680574961007 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:20:34 - Client 24107715883292258 disconnected
+6800680574961007 You were disconnected for too long (C1).
+29 Mar 13:20:56 - Client 6800680574961007 disconnected
+29 Mar 13:21:08 - Initializing client with transport "xhr-polling"
+29 Mar 13:21:08 - Client 22195837670005858 connected
+init kevinnuut
+29 Mar 13:21:09 - Initializing client with transport "xhr-polling"
+29 Mar 13:21:09 - Client 9210128921549767 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:21:17 - Client 22195837670005858 disconnected
+29 Mar 13:21:27 - Initializing client with transport "xhr-polling"
+29 Mar 13:21:27 - Client 7682498819194734 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:21:35 - Client 9210128921549767 disconnected
+7682498819194734 You were disconnected for too long (C1).
+29 Mar 13:21:56 - Client 7682498819194734 disconnected
+29 Mar 13:22:02 - Initializing client with transport "xhr-polling"
+29 Mar 13:22:02 - Client 39671430620364845 connected
+init kevinnuut
+29 Mar 13:22:03 - Initializing client with transport "xhr-polling"
+29 Mar 13:22:03 - Client 3032041918486357 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:22:11 - Client 39671430620364845 disconnected
+29 Mar 13:22:15 - Initializing client with transport "xhr-polling"
+29 Mar 13:22:15 - Client 9339625909924507 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:22:23 - Client 3032041918486357 disconnected
+9339625909924507 You were disconnected for too long (C1).
+29 Mar 13:22:46 - Client 9339625909924507 disconnected
+29 Mar 13:22:50 - Initializing client with transport "xhr-polling"
+29 Mar 13:22:50 - Client 9584469858091325 connected
+init kevinnuut
+29 Mar 13:22:51 - Initializing client with transport "xhr-polling"
+29 Mar 13:22:51 - Client 5045541920699179 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:22:59 - Client 9584469858091325 disconnected
+5045541920699179 You were disconnected for too long (C1).
+29 Mar 13:23:25 - Initializing client with transport "xhr-polling"
+29 Mar 13:23:25 - Client 6749203675426543 connected
+init kevinnuut
+29 Mar 13:23:30 - Client 5045541920699179 disconnected
+29 Mar 13:23:38 - Initializing client with transport "xhr-polling"
+29 Mar 13:23:38 - Client 33701429422944784 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:23:45 - Client 6749203675426543 disconnected
+33701429422944784 You were disconnected for too long (C1).
+29 Mar 13:24:02 - Initializing client with transport "xhr-polling"
+29 Mar 13:24:02 - Client 35472397366538644 connected
+init kevinnuut
+29 Mar 13:24:06 - Client 33701429422944784 disconnected
+35472397366538644 You were disconnected for too long (C1).
+29 Mar 13:24:26 - Initializing client with transport "xhr-polling"
+29 Mar 13:24:26 - Client 9404116191435605 connected
+init kevinnuut
+29 Mar 13:24:26 - Client 35472397366538644 disconnected
+29 Mar 13:24:27 - Initializing client with transport "xhr-polling"
+29 Mar 13:24:27 - Client 11995724774897099 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:24:35 - Client 9404116191435605 disconnected
+11995724774897099 You were disconnected for too long (C1).
+29 Mar 13:24:48 - Initializing client with transport "xhr-polling"
+29 Mar 13:24:48 - Client 9376691514626145 connected
+init kevinnuut
+29 Mar 13:24:56 - Client 11995724774897099 disconnected
+9376691514626145 You were disconnected for too long (C1).
+29 Mar 13:25:13 - Initializing client with transport "xhr-polling"
+29 Mar 13:25:13 - Client 026509134797379375 connected
+init kevinnuut
+29 Mar 13:25:16 - Initializing client with transport "xhr-polling"
+29 Mar 13:25:16 - Client 11814102716743946 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:25:19 - Client 9376691514626145 disconnected
+29 Mar 13:25:24 - Client 026509134797379375 disconnected
+11814102716743946 You were disconnected for too long (C1).
+29 Mar 13:25:44 - Initializing client with transport "xhr-polling"
+29 Mar 13:25:44 - Client 670041840756312 connected
+init kevinnuut
+29 Mar 13:25:47 - Initializing client with transport "xhr-polling"
+29 Mar 13:25:47 - Client 32142342324368656 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:25:50 - Client 11814102716743946 disconnected
+29 Mar 13:25:54 - Client 670041840756312 disconnected
+32142342324368656 You were disconnected for too long (C1).
+29 Mar 13:26:44 - Initializing client with transport "xhr-polling"
+29 Mar 13:26:44 - Client 5963812577538192 connected
+init kevinnuut
+29 Mar 13:26:50 - Client 32142342324368656 disconnected
+5963812577538192 You were disconnected for too long (C1).
+29 Mar 13:27:44 - Initializing client with transport "xhr-polling"
+29 Mar 13:27:44 - Client 4589863093569875 connected
+init kevinnuut
+29 Mar 13:27:50 - Client 5963812577538192 disconnected
+29 Mar 13:28:01 - Initializing client with transport "xhr-polling"
+29 Mar 13:28:01 - Client 6136888577602804 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:28:09 - Client 4589863093569875 disconnected
+6136888577602804 You were disconnected for too long (C1).
+29 Mar 13:28:36 - Client 6136888577602804 disconnected
+29 Mar 13:29:08 - Initializing client with transport "xhr-polling"
+29 Mar 13:29:08 - Client 04748689313419163 connected
+init kevinnuut
+29 Mar 13:29:12 - Initializing client with transport "xhr-polling"
+29 Mar 13:29:12 - Client 9910326320677996 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:29:20 - Client 04748689313419163 disconnected
+9910326320677996 You were disconnected for too long (C1).
+29 Mar 13:29:43 - Initializing client with transport "xhr-polling"
+29 Mar 13:29:43 - Client 556291215820238 connected
+init kevinnuut
+29 Mar 13:29:46 - Client 9910326320677996 disconnected
+556291215820238 You were disconnected for too long (C1).
+29 Mar 13:30:06 - Client 556291215820238 disconnected
+29 Mar 13:30:27 - Initializing client with transport "xhr-polling"
+29 Mar 13:30:27 - Client 3939161370508373 connected
+init kevinnuut
+29 Mar 13:30:29 - Initializing client with transport "xhr-polling"
+29 Mar 13:30:29 - Client 7149853226728737 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:30:37 - Client 3939161370508373 disconnected
+29 Mar 13:30:38 - Initializing client with transport "xhr-polling"
+29 Mar 13:30:38 - Client 35771233146078885 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:30:45 - Client 7149853226728737 disconnected
+29 Mar 13:30:58 - Initializing client with transport "xhr-polling"
+29 Mar 13:30:58 - Client 6505601869430393 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:31:05 - Client 35771233146078885 disconnected
+29 Mar 13:31:08 - Initializing client with transport "xhr-polling"
+29 Mar 13:31:08 - Client 6979233578313142 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:31:15 - Client 6505601869430393 disconnected
+29 Mar 13:31:16 - Initializing client with transport "xhr-polling"
+29 Mar 13:31:16 - Client 8362726464401931 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:31:24 - Client 6979233578313142 disconnected
+8362726464401931 You were disconnected for too long (C1).
+29 Mar 13:31:45 - Initializing client with transport "xhr-polling"
+29 Mar 13:31:45 - Client 3891808409243822 connected
+init kevinnuut
+29 Mar 13:31:46 - Client 8362726464401931 disconnected
+3891808409243822 You were disconnected for too long (C1).
+29 Mar 13:32:06 - Client 3891808409243822 disconnected
+29 Mar 13:32:07 - Initializing client with transport "xhr-polling"
+29 Mar 13:32:07 - Client 9355924921110272 connected
+init kevinnuut
+29 Mar 13:32:08 - Initializing client with transport "xhr-polling"
+29 Mar 13:32:08 - Client 8751288773491979 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:32:16 - Client 9355924921110272 disconnected
+8751288773491979 You were disconnected for too long (C1).
+29 Mar 13:32:36 - Client 8751288773491979 disconnected
+29 Mar 13:32:40 - Initializing client with transport "xhr-polling"
+29 Mar 13:32:40 - Client 21496587642468512 connected
+init kevinnuut
+29 Mar 13:32:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:32:42 - Client 3129643462598324 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:32:50 - Client 21496587642468512 disconnected
+3129643462598324 You were disconnected for too long (C1).
+29 Mar 13:33:53 - Initializing client with transport "xhr-polling"
+29 Mar 13:33:53 - Client 36747685517184436 connected
+init kevinnuut
+29 Mar 13:33:58 - Client 3129643462598324 disconnected
+29 Mar 13:34:00 - Initializing client with transport "xhr-polling"
+29 Mar 13:34:00 - Client 8626926681026816 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:34:04 - Initializing client with transport "xhr-polling"
+29 Mar 13:34:04 - Client 8518264582380652 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:34:07 - Initializing client with transport "xhr-polling"
+29 Mar 13:34:07 - Client 49044021614827216 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:34:08 - Client 36747685517184436 disconnected
+29 Mar 13:34:12 - Client 8626926681026816 disconnected
+29 Mar 13:34:14 - Client 8518264582380652 disconnected
+29 Mar 13:34:23 - Initializing client with transport "xhr-polling"
+29 Mar 13:34:23 - Client 28846670035272837 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:34:30 - Initializing client with transport "xhr-polling"
+29 Mar 13:34:30 - Client 06414226372726262 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:34:31 - Client 49044021614827216 disconnected
+29 Mar 13:34:38 - Client 28846670035272837 disconnected
+29 Mar 13:34:40 - Initializing client with transport "xhr-polling"
+29 Mar 13:34:40 - Client 08416238776408136 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:34:48 - Client 06414226372726262 disconnected
+08416238776408136 You were disconnected for too long (C1).
+29 Mar 13:35:06 - Client 08416238776408136 disconnected
+29 Mar 13:35:39 - Initializing client with transport "xhr-polling"
+29 Mar 13:35:39 - Client 8198852520436049 connected
+init kevinnuut
+29 Mar 13:35:41 - Initializing client with transport "xhr-polling"
+29 Mar 13:35:41 - Client 11550610372796655 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:35:49 - Client 8198852520436049 disconnected
+11550610372796655 You were disconnected for too long (C1).
+29 Mar 13:36:09 - Initializing client with transport "xhr-polling"
+29 Mar 13:36:09 - Client 8055133942980319 connected
+init kevinnuut
+29 Mar 13:36:10 - Initializing client with transport "xhr-polling"
+29 Mar 13:36:10 - Client 21159244142472744 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:36:12 - Client 11550610372796655 disconnected
+29 Mar 13:36:18 - Client 8055133942980319 disconnected
+21159244142472744 You were disconnected for too long (C1).
+29 Mar 13:36:44 - Initializing client with transport "xhr-polling"
+29 Mar 13:36:44 - Client 21013650228269398 connected
+init kevinnuut
+29 Mar 13:36:50 - Client 21159244142472744 disconnected
+29 Mar 13:36:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:36:56 - Client 32960496423766017 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:37:04 - Client 21013650228269398 disconnected
+29 Mar 13:37:05 - Initializing client with transport "xhr-polling"
+29 Mar 13:37:05 - Client 7254717964679003 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:37:13 - Client 32960496423766017 disconnected
+7254717964679003 You were disconnected for too long (C1).
+29 Mar 13:37:30 - Initializing client with transport "xhr-polling"
+29 Mar 13:37:30 - Client 8967340225353837 connected
+init kevinnuut
+29 Mar 13:37:31 - Initializing client with transport "xhr-polling"
+29 Mar 13:37:31 - Client 2636249891947955 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:37:36 - Client 7254717964679003 disconnected
+29 Mar 13:37:39 - Client 8967340225353837 disconnected
+29 Mar 13:37:54 - Initializing client with transport "xhr-polling"
+29 Mar 13:37:54 - Client 9349900048691779 connected
+2636249891947955 You were disconnected for too long (C1).
+init kevinnuut
+29 Mar 13:38:02 - Client 2636249891947955 disconnected
+9349900048691779 You were disconnected for too long (C1).
+29 Mar 13:39:10 - Initializing client with transport "xhr-polling"
+29 Mar 13:39:10 - Client 8734819577075541 connected
+init kevinnuut
+29 Mar 13:39:15 - Initializing client with transport "xhr-polling"
+29 Mar 13:39:15 - Client 97965480806306 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:39:15 - Client 9349900048691779 disconnected
+29 Mar 13:39:23 - Client 8734819577075541 disconnected
+29 Mar 13:39:25 - Initializing client with transport "xhr-polling"
+29 Mar 13:39:25 - Client 9804330901242793 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:39:33 - Client 97965480806306 disconnected
+9804330901242793 You were disconnected for too long (C1).
+29 Mar 13:39:52 - Client 9804330901242793 disconnected
+29 Mar 13:39:55 - Initializing client with transport "xhr-polling"
+29 Mar 13:39:55 - Client 06837831367738545 connected
+init kevinnuut
+29 Mar 13:39:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:39:56 - Client 2881629294715822 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:40:04 - Client 06837831367738545 disconnected
+29 Mar 13:40:11 - Initializing client with transport "xhr-polling"
+29 Mar 13:40:11 - Client 10812349175103009 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:40:19 - Client 2881629294715822 disconnected
+10812349175103009 You were disconnected for too long (C1).
+29 Mar 13:40:35 - Initializing client with transport "jsonp-polling"
+29 Mar 13:40:35 - Client 8264566846191883 connected
+init kevinnuut
+29 Mar 13:40:38 - Client 10812349175103009 disconnected
+29 Mar 13:40:41 - Initializing client with transport "jsonp-polling"
+29 Mar 13:40:41 - Client 9628752674907446 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:40:49 - Client 8264566846191883 disconnected
+29 Mar 13:40:53 - Initializing client with transport "xhr-polling"
+29 Mar 13:40:53 - Client 5522028745617718 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:40:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:40:56 - Client 5124264287296683 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:41:22 - Client 5522028745617718 disconnected
+5124264287296683 You were disconnected for too long (C1).
+29 Mar 13:41:42 - Client 5124264287296683 disconnected
+29 Mar 13:42:26 - Couldnt find client with session id "5124264287296683"
+29 Mar 13:42:26 - Couldnt find client with session id "5124264287296683"
+29 Mar 13:42:26 - Couldnt find client with session id "5124264287296683"
+29 Mar 13:42:26 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:26 - Client 9906640180852264 connected
+9906640180852264 We cannot detect your session ID (E1).
+29 Mar 13:42:30 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:30 - Client 24682886060327291 connected
+init kevinnuut
+29 Mar 13:42:32 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:32 - Client 43460126081481576 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:42:35 - Couldnt find client with session id "8264566846191883"
+29 Mar 13:42:35 - Couldnt find client with session id "8264566846191883"
+29 Mar 13:42:35 - Couldnt find client with session id "8264566846191883"
+29 Mar 13:42:38 - Client 9906640180852264 disconnected
+29 Mar 13:42:49 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:49 - Client 8973369332961738 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:42:49 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:49 - Client 40162806608714163 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:42:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:56 - Client 2394807650707662 connected
+29 Mar 13:42:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:42:56 - Client 2460708434227854 connected
+init kevinnuut
+enabling kevinnuut
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:42:58 - Client 24682886060327291 disconnected
+29 Mar 13:43:01 - Client 43460126081481576 disconnected
+2394807650707662 You were disconnected for too long (C1).
+29 Mar 13:43:17 - Client 8973369332961738 disconnected
+29 Mar 13:43:19 - Client 40162806608714163 disconnected
+29 Mar 13:43:22 - Initializing client with transport "xhr-polling"
+29 Mar 13:43:22 - Client 1332177403382957 connected
+init kevinnuut
+29 Mar 13:43:30 - Initializing client with transport "xhr-polling"
+29 Mar 13:43:30 - Client 17236869293265045 connected
+29 Mar 13:43:32 - Client 2394807650707662 disconnected
+29 Mar 13:43:32 - Client 2460708434227854 disconnected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:43:39 - Initializing client with transport "xhr-polling"
+29 Mar 13:43:39 - Client 17330716457217932 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:43:45 - Initializing client with transport "xhr-polling"
+29 Mar 13:43:45 - Client 6056136814877391 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:43:50 - Initializing client with transport "xhr-polling"
+29 Mar 13:43:50 - Client 7488921470940113 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:43:52 - Client 1332177403382957 disconnected
+29 Mar 13:44:00 - Client 17236869293265045 disconnected
+29 Mar 13:44:03 - Initializing client with transport "xhr-polling"
+29 Mar 13:44:03 - Client 9121660515666008 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:44:08 - Client 17330716457217932 disconnected
+29 Mar 13:44:13 - Client 6056136814877391 disconnected
+29 Mar 13:44:19 - Client 7488921470940113 disconnected
+9121660515666008 You were disconnected for too long (C1).
+29 Mar 13:44:43 - Initializing client with transport "xhr-polling"
+29 Mar 13:44:43 - Client 9227369059808552 connected
+init kevinnuut
+29 Mar 13:44:52 - Client 9121660515666008 disconnected
+9227369059808552 You were disconnected for too long (C1).
+29 Mar 13:45:12 - Client 9227369059808552 disconnected
+29 Mar 13:45:18 - Couldnt find client with session id "9227369059808552"
+29 Mar 13:45:18 - Couldnt find client with session id "9227369059808552"
+29 Mar 13:45:18 - Couldnt find client with session id "9227369059808552"
+29 Mar 13:45:18 - Couldnt find client with session id "9227369059808552"
+29 Mar 13:45:18 - Couldnt find client with session id "9227369059808552"
+29 Mar 13:45:18 - Couldnt find client with session id "9227369059808552"
+29 Mar 13:45:18 - Initializing client with transport "xhr-polling"
+29 Mar 13:45:18 - Client 8245434910058975 connected
+8245434910058975 We cannot detect your session ID (E1).
+29 Mar 13:45:29 - Initializing client with transport "xhr-polling"
+29 Mar 13:45:29 - Client 15200436883606017 connected
+15200436883606017 We cannot detect your session (E2).
+29 Mar 13:45:35 - Initializing client with transport "xhr-polling"
+29 Mar 13:45:35 - Client 35805502417497337 connected
+init kevinnuut
+29 Mar 13:45:40 - Initializing client with transport "xhr-polling"
+29 Mar 13:45:40 - Client 19026598054915667 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:45:43 - Client 8245434910058975 disconnected
+29 Mar 13:45:43 - Client 15200436883606017 disconnected
+29 Mar 13:45:46 - Initializing client with transport "xhr-polling"
+29 Mar 13:45:46 - Client 9919834267348051 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:45:56 - Initializing client with transport "xhr-polling"
+29 Mar 13:45:56 - Client 38957694661803544 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:03 - Client 35805502417497337 disconnected
+29 Mar 13:46:04 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:04 - Client 6521458702627569 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:06 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:06 - Client 3825274689588696 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:08 - Client 19026598054915667 disconnected
+29 Mar 13:46:14 - Client 9919834267348051 disconnected
+29 Mar 13:46:15 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:15 - Client 8452473052311689 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:24 - Client 38957694661803544 disconnected
+29 Mar 13:46:32 - Client 6521458702627569 disconnected
+29 Mar 13:46:34 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:34 - Client 09155257605016232 connected
+29 Mar 13:46:34 - Client 3825274689588696 disconnected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:42 - Client 525748219108209 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:43 - Client 8452473052311689 disconnected
+29 Mar 13:46:47 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:47 - Client 1920056757517159 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:46:54 - Initializing client with transport "xhr-polling"
+29 Mar 13:46:54 - Client 39421132300049067 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:47:02 - Client 09155257605016232 disconnected
+29 Mar 13:47:03 - Initializing client with transport "xhr-polling"
+29 Mar 13:47:03 - Client 6879564693663269 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:47:10 - Client 525748219108209 disconnected
+29 Mar 13:47:16 - Client 1920056757517159 disconnected
+29 Mar 13:47:23 - Client 39421132300049067 disconnected
+6879564693663269 You were disconnected for too long (C1).
+29 Mar 13:47:42 - Client 6879564693663269 disconnected
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Couldnt find client with session id "6879564693663269"
+29 Mar 13:47:44 - Initializing client with transport "xhr-polling"
+29 Mar 13:47:44 - Client 7688297647982836 connected
+7688297647982836 We cannot detect your session ID (E1).
+29 Mar 13:47:47 - Initializing client with transport "xhr-polling"
+29 Mar 13:47:47 - Client 26903935498557985 connected
+init kevinnuut
+29 Mar 13:47:49 - Initializing client with transport "xhr-polling"
+29 Mar 13:47:49 - Client 8479096766095608 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:47:55 - Client 7688297647982836 disconnected
+29 Mar 13:48:02 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:02 - Client 18129798118025064 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:11 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:11 - Client 5762286381796002 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:13 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:13 - Client 2926222498062998 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:15 - Client 26903935498557985 disconnected
+29 Mar 13:48:17 - Client 8479096766095608 disconnected
+29 Mar 13:48:20 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:20 - Client 11242052679881454 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:30 - Client 18129798118025064 disconnected
+29 Mar 13:48:37 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:37 - Client 9057799896690995 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:39 - Client 5762286381796002 disconnected
+29 Mar 13:48:41 - Client 2926222498062998 disconnected
+29 Mar 13:48:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:42 - Client 7324876273050904 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:47 - Initializing client with transport "xhr-polling"
+29 Mar 13:48:47 - Client 6716465193312615 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:48:48 - Client 11242052679881454 disconnected
+6716465193312615 You were disconnected for too long (C1).
+29 Mar 13:49:05 - Client 9057799896690995 disconnected
+29 Mar 13:49:11 - Client 7324876273050904 disconnected
+29 Mar 13:49:12 - Client 6716465193312615 disconnected
+29 Mar 13:49:39 - Initializing client with transport "xhr-polling"
+29 Mar 13:49:39 - Client 4985427809879184 connected
+init kevinnuut
+29 Mar 13:49:40 - Initializing client with transport "xhr-polling"
+29 Mar 13:49:40 - Client 7250813422724605 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:49:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:49:42 - Client 28827681904658675 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:49:42 - Initializing client with transport "xhr-polling"
+29 Mar 13:49:42 - Client 42726773931644857 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:49:47 - Client 9628752674907446 disconnected
+29 Mar 13:49:49 - Couldnt find client with session id "6716465193312615"
+29 Mar 13:49:49 - Couldnt find client with session id "6716465193312615"
+29 Mar 13:49:49 - Couldnt find client with session id "6716465193312615"
+29 Mar 13:49:49 - Couldnt find client with session id "6716465193312615"
+29 Mar 13:49:49 - Couldnt find client with session id "6716465193312615"
+29 Mar 13:49:49 - Initializing client with transport "xhr-polling"
+29 Mar 13:49:49 - Client 587563464185223 connected
+587563464185223 We cannot detect your session ID (E1).
+29 Mar 13:49:50 - Client 7250813422724605 disconnected
+29 Mar 13:49:50 - Client 4985427809879184 disconnected
+29 Mar 13:49:53 - Initializing client with transport "xhr-polling"
+29 Mar 13:49:53 - Client 4606055810581893 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:50:17 - Initializing client with transport "xhr-polling"
+29 Mar 13:50:17 - Client 11106964712962508 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:50:18 - Client 587563464185223 disconnected
+29 Mar 13:50:24 - Initializing client with transport "xhr-polling"
+29 Mar 13:50:24 - Client 3595528225414455 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:50:42 - Client 4606055810581893 disconnected
+29 Mar 13:50:45 - Client 11106964712962508 disconnected
+29 Mar 13:50:52 - Client 3595528225414455 disconnected
+29 Mar 13:50:53 - Initializing client with transport "xhr-polling"
+29 Mar 13:50:53 - Client 002159173833206296 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:51:00 - Initializing client with transport "xhr-polling"
+29 Mar 13:51:00 - Client 7412378469016403 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:51:05 - Initializing client with transport "xhr-polling"
+29 Mar 13:51:05 - Client 3924592158291489 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:51:16 - Initializing client with transport "xhr-polling"
+29 Mar 13:51:16 - Client 12601935327984393 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:51:21 - Client 002159173833206296 disconnected
+29 Mar 13:51:29 - Client 7412378469016403 disconnected
+29 Mar 13:51:34 - Client 3924592158291489 disconnected
+12601935327984393 You were disconnected for too long (C1).
+29 Mar 13:51:52 - Client 12601935327984393 disconnected
+29 Mar 13:51:57 - Couldnt find client with session id "12601935327984393"
+29 Mar 13:51:57 - Couldnt find client with session id "12601935327984393"
+29 Mar 13:51:57 - Couldnt find client with session id "12601935327984393"
+29 Mar 13:51:57 - Couldnt find client with session id "12601935327984393"
+29 Mar 13:51:57 - Couldnt find client with session id "12601935327984393"
+29 Mar 13:51:57 - Couldnt find client with session id "12601935327984393"
+29 Mar 13:51:57 - Initializing client with transport "xhr-polling"
+29 Mar 13:51:57 - Client 7708666450344026 connected
+7708666450344026 We cannot detect your session ID (E1).
+29 Mar 13:52:00 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:00 - Client 880464352434501 connected
+init kevinnuut
+29 Mar 13:52:01 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:01 - Client 10411015921272337 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:08 - Client 7708666450344026 disconnected
+29 Mar 13:52:16 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:16 - Client 8016988027375191 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:23 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:23 - Client 9868889970239252 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:28 - Client 880464352434501 disconnected
+29 Mar 13:52:29 - Client 10411015921272337 disconnected
+29 Mar 13:52:30 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:30 - Client 3243613224476576 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:35 - Initializing client with transport "jsonp-polling"
+29 Mar 13:52:35 - Client 6765949144028127 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:36 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:36 - Client 037417876766994596 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:38 - Client 28827681904658675 disconnected
+29 Mar 13:52:38 - Client 42726773931644857 disconnected
+29 Mar 13:52:43 - Client 3243613224476576 disconnected
+29 Mar 13:52:44 - Client 6765949144028127 disconnected
+29 Mar 13:52:45 - Client 8016988027375191 disconnected
+29 Mar 13:52:45 - Initializing client with transport "xhr-polling"
+29 Mar 13:52:45 - Client 5601972832810134 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:52:53 - Client 037417876766994596 disconnected
+5601972832810134 You were disconnected for too long (C1).
+29 Mar 13:53:12 - Initializing client with transport "xhr-polling"
+29 Mar 13:53:12 - Client 8012753794901073 connected
+init kevinnuut
+29 Mar 13:53:14 - Initializing client with transport "xhr-polling"
+29 Mar 13:53:14 - Client 21050571859814227 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:53:17 - Client 5601972832810134 disconnected
+29 Mar 13:53:22 - Client 8012753794901073 disconnected
+29 Mar 13:53:23 - Initializing client with transport "xhr-polling"
+29 Mar 13:53:23 - Client 24148402456194162 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:53:31 - Client 21050571859814227 disconnected
+29 Mar 13:53:39 - Initializing client with transport "xhr-polling"
+29 Mar 13:53:39 - Client 035639840411022305 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:53:47 - Client 24148402456194162 disconnected
+29 Mar 13:53:49 - Initializing client with transport "xhr-polling"
+29 Mar 13:53:49 - Client 3148008110001683 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:53:56 - Client 035639840411022305 disconnected
+29 Mar 13:53:59 - Initializing client with transport "xhr-polling"
+29 Mar 13:53:59 - Client 44793475489132106 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:54:07 - Client 3148008110001683 disconnected
+29 Mar 13:54:11 - Initializing client with transport "xhr-polling"
+29 Mar 13:54:11 - Client 396859428845346 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:54:19 - Client 44793475489132106 disconnected
+29 Mar 13:54:24 - Initializing client with transport "xhr-polling"
+29 Mar 13:54:24 - Client 421996574383229 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:54:28 - Initializing client with transport "xhr-polling"
+29 Mar 13:54:28 - Client 469455974875018 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:54:32 - Client 396859428845346 disconnected
+29 Mar 13:54:36 - Client 421996574383229 disconnected
+29 Mar 13:54:50 - Initializing client with transport "xhr-polling"
+29 Mar 13:54:50 - Client 40550151327624917 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:54:58 - Client 469455974875018 disconnected
+29 Mar 13:54:59 - Initializing client with transport "xhr-polling"
+29 Mar 13:54:59 - Client 7159696379676461 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:55:07 - Client 40550151327624917 disconnected
+29 Mar 13:55:16 - Initializing client with transport "xhr-polling"
+29 Mar 13:55:16 - Client 46678747958503664 connected
+init kevinnuut
+enabling kevinnuut
+29 Mar 13:55:17 - Client 7159696379676461 disconnected
+46678747958503664 You were disconnected for too long (C1).
+29 Mar 13:55:40 - Client 9868889970239252 disconnected
+29 Mar 13:55:41 - Initializing client with transport "xhr-polling"
+29 Mar 13:55:41 - Client 7214762908406556 connected
+init kevinnuut
+29 Mar 13:55:49 - Client 46678747958503664 disconnected
+7214762908406556 You were disconnected for too long (C1).
+29 Mar 13:56:07 - Initializing client with transport "xhr-polling"
+29 Mar 13:56:07 - Client 9119515297934413 connected
+init kevinnuut
+29 Mar 13:56:09 - Client 7214762908406556 disconnected
+9119515297934413 You were disconnected for too long (C1).
+29 Mar 13:56:45 - Initializing client with transport "xhr-polling"
+29 Mar 13:56:45 - Client 42868393915705383 connected
+init kevinnuut
+29 Mar 13:56:48 - Client 9119515297934413 disconnected
+42868393915705383 You were disconnected for too long (C1).
+29 Mar 13:57:10 - Initializing client with transport "xhr-polling"
+29 Mar 13:57:10 - Client 9363912595435977 connected
+init kevinnuut
+29 Mar 13:57:12 - Client 42868393915705383 disconnected
+9363912595435977 You were disconnected for too long (C1).
+29 Mar 13:57:32 - Client 9363912595435977 disconnected
