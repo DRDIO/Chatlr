@@ -139,8 +139,12 @@ $(function() {
                 $('#rooms div').tumblrchat('sortusers', function(a, b) {
                     var af     = $(a).is('.featured'),
                         bf     = $(b).is('.featured'),
-                        ab     = parseInt($(a).find('sup').text()) > parseInt($(b).find('sup').text()),
-                        result = (af && (!bf || ab)) || (!af && !bf && ab);
+                        ac     = parseInt($(a).find('sup').text()),
+                        bc     = parseInt($(b).find('sup').text()),
+                        at     = $(a).find('a').text(),
+                        bt     = $(b).find('b').text(),
+                        cc     = ac > bc || (ac == bc && at < bt),
+                        result = (af && (!bf || cc)) || (!af && !bf && cc);
                     
                     return (result ? -1 : 1);
                 });
@@ -198,7 +202,7 @@ $(function() {
                 }
 
                 // Update room hash
-                roomUrlChange(response.roomName == 'main' ? '' : response.roomName);
+                roomUrlChange(response.roomName == 'english' ? '' : response.roomName);
 
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                 // Do style updates (not on reconnects)
@@ -618,7 +622,7 @@ $(function() {
            e.preventDefault();
            var newRoom = $(this).attr('href').substr(1);
 
-           if(socket.connected && newRoom != (roomUrlGet() || 'main')) {
+           if(socket.connected && newRoom != (roomUrlGet() || 'english')) {
                // If a connection exists, send a roomchange event
                socket.send({
                    type: 'roomchange',
@@ -641,7 +645,7 @@ $(function() {
             $('#roomadd input').val('');
             $('#text').focus();
             
-            if(socket.connected && newRoom != (roomUrlGet() || 'main')) {
+            if(socket.connected && newRoom != (roomUrlGet() || 'english')) {
                 // If a connection exists, send a roomchange event
                 socket.send({
                     type: 'roomchange',

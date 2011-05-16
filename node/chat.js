@@ -81,7 +81,7 @@ io.Listener.prototype.chatMessageTypes = {
         console.log('init ' + user.name);
         
         // Setup core paramters as connected
-        user.roomName  = user.roomName || response.roomName || 'main';
+        user.roomName  = user.roomName || response.roomName || 'english';
         user.sessionId = client.sessionId;
         user.connected = true;
         user.tsConnect = time;
@@ -276,7 +276,7 @@ io.Listener.prototype.chatCleanup = function(listener) {
                 }
             } else if (!(user.roomName in listener.chatRooms) || !(userName in listener.chatRooms[user.roomName].users)) {
                 // RARE user says in room X which doen'st exist or not in room
-                listener.roomUserAdd('main', userName);
+                listener.roomUserAdd('english', userName);
             } else {
                 // Detect idle users and set them to away
                 if (!user.idle && time - user.tsMessage > config.intIdle) {
@@ -641,7 +641,7 @@ io.Listener.prototype.roomUserRemove = function(roomName, userName, message)
         }
     } else if (userName in listener.chatUsers) {
         if (listener.chatUsers[userName].roomName == roomName) {
-            listener.chatUsers[userName].roomName = 'main';
+            listener.chatUsers[userName].roomName = 'english';
         }
     }
 }
