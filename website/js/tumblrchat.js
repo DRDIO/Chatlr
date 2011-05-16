@@ -142,7 +142,7 @@ $(function() {
                         ac     = parseInt($(a).find('sup').text()),
                         bc     = parseInt($(b).find('sup').text()),
                         at     = $(a).find('a').text(),
-                        bt     = $(b).find('b').text(),
+                        bt     = $(b).find('a').text(),
                         cc     = ac > bc || (ac == bc && at < bt),
                         result = (af && (!bf || cc)) || (!af && !bf && cc);
                     
