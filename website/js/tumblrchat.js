@@ -246,11 +246,15 @@ $(function() {
                 document.title = '(' + userCount + ') Chatlr | ' + fancyRoom
 
                 // Sort rooms by featured then user count
-                $('#rooms div').tumblrchat('sortusers', function(a, b) {                    
+                $('#rooms div').tumblrchat('sortusers', function(a, b) {
                     var af     = $(a).is('.featured'),
                         bf     = $(b).is('.featured'),
-                        ab     = parseInt($(a).find('sup').text()) > parseInt($(b).find('sup').text()),
-                        result = (af && (!bf || ab)) || (!af && !bf && ab);
+                        ac     = parseInt($(a).find('sup').text()),
+                        bc     = parseInt($(b).find('sup').text()),
+                        at     = $(a).find('a').text(),
+                        bt     = $(b).find('b').text(),
+                        cc     = ac > bc || (ac == bc && at < bt),
+                        result = (af && (!bf || cc)) || (!af && !bf && cc);
                         
                     return (result ? -1 : 1);
                 });
