@@ -18,7 +18,7 @@
             });
         },
 
-        sortusers: function() {
+        sortusers: (function() {
             var sort = [].sort;
 
             return function(comparator, getSortable) {
@@ -50,13 +50,13 @@
                     placements[i].call(getSortable.call(this));
                 });
             };
-        }
+        })()
     };
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // Dynamic calling of methods out of tumblrchat objects
     
-    $.fn.tumblrchat = function(method) {
+    $.fn.tumblrchat = function(method) {       
         // Method calling logic
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -126,6 +126,7 @@ $(function() {
 
                     roomObj = $('<div/>')
                         .attr('id', 'r' + response.roomName)
+                        .addClass((response.roomFeatured ? 'featured' : ''))
                         .append($('<sup/>').text(response.roomCount))
                         .append($('<a/>')
                             .attr('href', '#' + response.roomName)
@@ -133,6 +134,16 @@ $(function() {
 
                     $('#rooms').append(roomObj);
                 }
+
+                // Sort rooms by featured then user count
+                $('#rooms div').tumblrchat('sortusers', function(a, b) {
+                    var af     = $(a).is('featured'),
+                        bf     = $(b).is('featured'),
+                        ab     = $(a).find('sup').text() > $(b).find('sup').text(),
+                        result = (af && (!bf || ab)) || (!af && !bf && ab);
+                    
+                    return (result ? -1 : 1);
+                });
             }
         },
 
@@ -181,7 +192,8 @@ $(function() {
                 for (var j in response.rooms) {
                     onMessages.roomchange({
                         roomName: j,
-                        roomCount: response.rooms[j]
+                        roomCount: response.rooms[j].roomCount,
+                        roomFeatured: response.rooms[j].roomFeatured
                     });
                 }
 
@@ -229,9 +241,14 @@ $(function() {
 
                 document.title = '(' + userCount + ') Chatlr | ' + fancyRoom
 
-                // Sort rooms alphabetically
-                $('#rooms div').tumblrchat('sortusers', function(a, b) {
-                    return $(a).find('sup').text() < $(b).find('sup').text() ? 1 : -1;
+                // Sort rooms by featured then user count
+                $('#rooms div').tumblrchat('sortusers', function(a, b) {                    
+                    var af     = $(a).is('featured'),
+                        bf     = $(b).is('featured'),
+                        ab     = $(a).find('sup').text() > $(b).find('sup').text(),
+                        result = (af && (!bf || ab)) || (!af && !bf && ab);
+                        
+                    return (result ? -1 : 1);
                 });
 
                 // Clear all from being red, then make current room red and move to top

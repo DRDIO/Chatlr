@@ -346,7 +346,10 @@ io.Listener.prototype.chatGetRooms = function()
     var rooms = {};
 
     for (var i in listener.chatRooms) {
-        rooms[i] = listener.chatRooms[i].userCount;
+        rooms[i] = {
+            roomCount: listener.chatRooms[i].userCount,
+            roomFeatured: listener.chatRooms[i].featured
+        };
     }
 
     return rooms;
@@ -397,11 +400,14 @@ io.Listener.prototype.chatRoomNotify = function(roomName)
         // Room is either new or has user changes, notify
         var room = listener.chatRooms[roomName];
 
-        if (!room.hidden) {            
+        if (!room.hidden) {
+            console.log(room.featured);
+            
             listener.broadcast({
                 type:      'roomchange',
                 roomName:  roomName,
-                roomCount: room.userCount
+                roomCount: room.userCount,
+                roomFeatured: room.featured
             });
         }
     } else {

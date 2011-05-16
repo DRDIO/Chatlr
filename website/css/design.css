@@ -138,6 +138,10 @@ body, input {
             background: #FFF2F2;
         }
 
+        #rooms div.featured a {
+            color: #E53F29;
+        }
+
         #users div.personal:nth-child(odd), #rooms div.op:nth-child(odd) {
             background: #FFE5E5;
         }
@@ -258,7 +262,7 @@ body, input {
                 background: #FFE5E5;
             }
 
-            #chat a.op, #rooms div.op a, #chat div.op {
+            #chat a.op, #chat div.op {
                 color: #E53F29;
                 background: inherit;
             }
