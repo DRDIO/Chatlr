@@ -137,9 +137,9 @@ $(function() {
 
                 // Sort rooms by featured then user count
                 $('#rooms div').tumblrchat('sortusers', function(a, b) {
-                    var af     = $(a).is('featured'),
-                        bf     = $(b).is('featured'),
-                        ab     = $(a).find('sup').text() > $(b).find('sup').text(),
+                    var af     = $(a).is('.featured'),
+                        bf     = $(b).is('.featured'),
+                        ab     = parseInt($(a).find('sup').text()) > parseInt($(b).find('sup').text()),
                         result = (af && (!bf || ab)) || (!af && !bf && ab);
                     
                     return (result ? -1 : 1);
@@ -243,9 +243,9 @@ $(function() {
 
                 // Sort rooms by featured then user count
                 $('#rooms div').tumblrchat('sortusers', function(a, b) {                    
-                    var af     = $(a).is('featured'),
-                        bf     = $(b).is('featured'),
-                        ab     = $(a).find('sup').text() > $(b).find('sup').text(),
+                    var af     = $(a).is('.featured'),
+                        bf     = $(b).is('.featured'),
+                        ab     = parseInt($(a).find('sup').text()) > parseInt($(b).find('sup').text()),
                         result = (af && (!bf || ab)) || (!af && !bf && ab);
                         
                     return (result ? -1 : 1);
