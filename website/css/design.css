@@ -473,6 +473,10 @@ body, input {
     background: #000;
 }
 
+.night #button-creator {
+    display: none;
+}
+
 .night #users, .night #rooms, .night #chat, .night #chat .top, .night #text, .night #roomadd input, .night #chat .bottom {
     background: #0c0c0c;
     color: #eee;
