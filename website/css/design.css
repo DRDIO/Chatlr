@@ -453,7 +453,7 @@ body, input {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
 
-    #notice, .topbuttons, .toplink, #usersbox {
+    #notice, .topbuttons, .toplink, #usersbox, #roomsbox, #button-help {
         display: none;
     }
 
@@ -474,7 +474,7 @@ body, input {
 }
 
 .night #users, .night #rooms, .night #chat, .night #chat .top, .night #text, .night #roomadd input, .night #chat .bottom {
-    background: #060606;
+    background: #0c0c0c;
     color: #eee;
 }
 
@@ -491,7 +491,7 @@ body, input {
 }
 
 .night #chat div:nth-child(odd), .night #users div:nth-child(odd), .night #rooms div:nth-child(even) {
-    background: #0c0c0c;
+    background: #111;
 }
 
 .night #chat div.personal, .night #users div.personal, .night #rooms div.op, .night #chat div.op {
