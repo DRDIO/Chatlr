@@ -894,11 +894,15 @@ $(function() {
         $('#roomsbox').outerHeight((($(window).height() - 66) / 3));
     }).resize();
     
-    $('body').bind('touchmove, touchstart', function(e) {
+    $('body').bind('touchstart, touchmove', function(e) {
         var touch  = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
         var y      = touch.clientY || touch.screenY || touch.pageY;
         var height = $(window).height();
         var chat   = $('#chat').height();
+        
+        console.log(y);
+        console.log(height);
+        console.log(chat);
         
         $('#chat').scrollTop(chat * y / height);
         e.preventDefault();
