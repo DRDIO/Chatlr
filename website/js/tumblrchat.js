@@ -895,6 +895,11 @@ $(function() {
     }).resize();
     
     $('body').bind('touchmove, touchstart', function(e) {
+        var y      = e.clientY || e.screenY || e.pageY;
+        var height = $(window).height();
+        var chat   = $('#chat').scrollHeight();
+        
+        $('#chat').scrollTop(chat * y / height);
         e.preventDefault();
     });
 });
