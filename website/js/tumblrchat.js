@@ -894,7 +894,7 @@ $(function() {
         $('#roomsbox').outerHeight((($(window).height() - 66) / 3));
     }).resize();
     
-    $('*').bind('touchmovie', function(e) {
+    $('body').bind('touchmove, touchstart', function(e) {
         e.preventDefault();
     });
 });
