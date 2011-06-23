@@ -539,16 +539,20 @@ $(function() {
                     isMobile = true;
                     $('.topbuttons, .toplink, .topicon, #notice').fadeOut(250);
                     $('#chat').css({overflowY: 'hidden'});
-                    $('#usersbox').animate({width: '0%', opacity: 0}, 250);
-                    $('#roomsbox').animate({width: '0%', opacity: 0}, 250);
-                    $('#chatbox').animate({width: '100%'}, 250);
+                    $('#usersbox').animate({opacity: 0}, 250);
+                    $('#roomsbox').animate({opacity: 0}, 250);
+                    
+                    $('#section-top-left').animate({width: '0%'}, 250);
+                    $('#section-top-right').animate({width: '100%'}, 250);
                 } else {
                     isMobile = false;
                     $('.topbuttons, .toplink, .topicon, #notice').fadeIn(250);
                     $('#chat').css({overflowY: 'auto'});
-                    $('#usersbox').animate({width: '15%', opacity: 1}, 250);
-                    $('#roomsbox').animate({width: '15%', opacity: 1}, 250);
-                    $('#chatbox').animate({width: '85%'}, 250);
+                    $('#usersbox').animate({opacity: 1}, 250);
+                    $('#roomsbox').animate({opacity: 1}, 250);
+                    
+                    $('#section-top-left').animate({width: '15%'}, 250);
+                    $('#section-top-right').animate({width: '85%'}, 250);
                 }
 
                 // No matter what, go to bottom of the page
