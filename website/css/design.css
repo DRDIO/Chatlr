@@ -58,7 +58,7 @@ body, input {
     opacity: 0.5;
 }
 
-.topbuttons, .toplink {
+.topbuttons, .toplink, .topicon {
     float: right;
     display: block;
     padding: 0.333em 1em;
@@ -78,6 +78,15 @@ body, input {
 
     .topbuttons:hover, .toplink:hover {
         background: rgba(255, 255, 255, 0.35);
+    }
+    
+    .topicon {
+        text-indent: -9999em;
+        padding: 0.25em 0.25em 0.333em;
+    }
+    
+    .ui-button-icon-only {
+        width: 1.5em;
     }
 
 #login, .login {

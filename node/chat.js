@@ -21,6 +21,10 @@ io.Listener.prototype.getStore = function() {
 }
 
 io.Listener.prototype.chatMessageTypes = {
+    logout: function(listener, client, response) {
+        listener.userClose(client.userName, 'You have been logged out.', true);
+    },
+   
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // INITIALIZE: user is initializing with session id and room
     //
@@ -401,7 +405,7 @@ io.Listener.prototype.chatRoomNotify = function(roomName)
         var room = listener.chatRooms[roomName];
 
         if (!room.hidden) {
-            console.log(room.featured);
+            // console.log(room.featured);
             
             listener.broadcast({
                 type:      'roomchange',
@@ -662,7 +666,7 @@ io.Listener.prototype.userEnable = function(userName)
     if (userName in listener.chatUsers) {
         var user = listener.chatUsers[userName];
 
-        console.log('enabling ' + userName);
+        // console.log('enabling ' + userName);
         // Set user as connected
         user.connected = true;
         user.tsConnect = time;
@@ -684,7 +688,7 @@ io.Listener.prototype.userEnable = function(userName)
  *
  * @see roomUserRemove()
  */
-io.Listener.prototype.userClose = function(userName, message)
+io.Listener.prototype.userClose = function(userName, message, logout)
 {
     var listener  = this;
 
@@ -702,7 +706,11 @@ io.Listener.prototype.userClose = function(userName, message)
         // Send a close message if possible
         if (message && sessionId in listener.clients) {
             var client = listener.clients[sessionId];
-            listener.userSendRestart(client, message);
+            if (logout) {
+                listener.userSendLogout(client);
+            } else {
+                listener.userSendRestart(client, message);
+            }
         }
 
         // console.log(userName + ' has global account deleted');
@@ -829,6 +837,15 @@ io.Listener.prototype.userSendRestart = function(client, message)
     });
 
     console.log(client.sessionId + ' ' + message);
+    
+    return false;
+}
+
+io.Listener.prototype.userSendLogout = function(client)
+{
+    client.send({
+        type: 'logout'
+    });
     
     return false;
 }

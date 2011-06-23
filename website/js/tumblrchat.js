@@ -109,6 +109,15 @@ $(function() {
                 location.href = '/clear';
             }
         },
+        
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // LOGOUT: User has requested a logout, force a clear back to the oauth
+        //
+        logout: function(response) {
+            // Add detailed messages on errors
+            eraseCookie('connect.sid');
+            location.href = '/clear';
+        },
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // ROOMCHANGE: add, or change a room listed on the side
@@ -482,7 +491,7 @@ $(function() {
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // CLICK EVENT: When buttons are clicked, show a popup
         //
-        $('.topbuttons').click(function(e) {
+        $('#button-help').click(function(e) {
             e.preventDefault();
 
             var message = 'This feature will be available in the next version!';
@@ -502,6 +511,20 @@ $(function() {
                         $(this).remove()}})                
                 .parent().position({my: 'center', at: 'center', of: document});
         });
+        
+        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        // CLICK EVENT: Logout
+        //
+        $('#button-logout').click(function(e) {
+            if (socket.connected) {
+                console.log('logging out');
+                socket.send({type: 'logout'});
+            } else {
+                console.log('redirect');
+                location.href = '/clear';
+            }
+            return false;
+        });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // SUBMIT EVENT: When the text box is submitted, prevent submission and send message
@@ -514,13 +537,13 @@ $(function() {
             if (message.search(/^\/mobile/i) == 0) {
                 if (!isMobile) {
                     isMobile = true;
-                    $('.topbuttons, .toplink, #notice').fadeOut(250);
+                    $('.topbuttons, .toplink, .topicon, #notice').fadeOut(250);
                     $('#chat').css({overflowY: 'hidden'});
                     $('#usersbox').animate({width: '0%', opacity: 0}, 250);
                     $('#chatbox').animate({width: '100%'}, 250);
                 } else {
                     isMobile = false;
-                    $('.topbuttons, .toplink, #notice').fadeIn(250);
+                    $('.topbuttons, .toplink, .topicon, #notice').fadeIn(250);
                     $('#chat').css({overflowY: 'auto'});
                     $('#usersbox').animate({width: '15%', opacity: 1}, 250);
                     $('#chatbox').animate({width: '85%'}, 250);
@@ -850,6 +873,10 @@ $(function() {
             createCookie(name,"",-1);
     }
 
+    $('#button-logout').button({text: false, icons: {primary: 'ui-icon-power'}});
+    $('#button-help').button({text: false, icons: {primary: 'ui-icon-help'}});
+    $('#button-follow').button({text: false, icons: {primary: 'ui-icon-plus'}});
+    
     $(window).resize(function() {
         $('#text').outerWidth($(window).width() - 12);
         $('#chatbox').outerHeight($(window).height() - 78);

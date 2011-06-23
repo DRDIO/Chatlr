@@ -62,7 +62,8 @@ module.exports = function(app)
     // Clear out user and refresh entire session
     //
     app.get('/clear', function(req, res) {
-        delete req.session;
+        delete req.session.user;
+        console.log('/clear');
         
         res.writeHead(303, {'Location': '/'});
         res.end();
@@ -74,6 +75,8 @@ module.exports = function(app)
     app.get('/:page?', function(req, res)
     {
         try {
+            console.log('user' in req.session);
+            
             if (!('user' in req.session)) {
                 // Store the page for when callback occurs
                 req.session.page = req.params.page || '';
