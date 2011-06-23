@@ -895,7 +895,8 @@ $(function() {
     }).resize();
     
     $('body').bind('touchmove, touchstart', function(e) {
-        var y      = e.clientY || e.screenY || e.pageY;
+        var touch  = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+        var y      = touch.clientY || touch.screenY || touch.pageY;
         var height = $(window).height();
         var chat   = $('#chat').height();
         
