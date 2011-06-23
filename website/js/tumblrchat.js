@@ -537,7 +537,7 @@ $(function() {
             if (message.search(/^\/mobile/i) == 0) {
                 if (!isMobile) {
                     isMobile = true;
-                    $('.topbuttons, .toplink, .topicon, #notice').fadeOut(250);
+                    $('.toplink, #button-help, #notice').fadeOut(250);
                     $('#chat').css({overflowY: 'hidden'});
                     $('#usersbox').animate({opacity: 0}, 250);
                     $('#roomsbox').animate({opacity: 0}, 250);
@@ -546,7 +546,7 @@ $(function() {
                     $('#section-top-right').animate({width: '100%'}, 250);
                 } else {
                     isMobile = false;
-                    $('.topbuttons, .toplink, .topicon, #notice').fadeIn(250);
+                    $('.toplink, #button-help, #notice').fadeIn(250);
                     $('#chat').css({overflowY: 'auto'});
                     $('#usersbox').animate({opacity: 1}, 250);
                     $('#roomsbox').animate({opacity: 1}, 250);
