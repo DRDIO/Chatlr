@@ -474,7 +474,7 @@ body, input {
 }
 
 .night #users, .night #rooms, .night #chat, .night #chat .top, .night #text, .night #roomadd input {
-    background: #030303;
+    background: #060606;
     color: #eee;
 }
 
@@ -491,7 +491,7 @@ body, input {
 }
 
 .night #chat div:nth-child(odd), .night #users div:nth-child(odd), .night #rooms div:nth-child(even) {
-    background: #090909;
+    background: #0c0c0c;
 }
 
 .night #chat div.personal, .night #users div.personal, .night #rooms div.op, .night #chat div.op {
