@@ -440,10 +440,6 @@ body, input {
     text-decoration: none;
 }
 
-#button-creator {
-    color: #e53f29; 
-}
-
 /* PHONES AND TABLETS */
 
 @media all and (max-device-width: 481px) {
