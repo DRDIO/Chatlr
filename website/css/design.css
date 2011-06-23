@@ -77,7 +77,7 @@ body, input {
 }
 
     .topbuttons:hover, .toplink:hover {
-        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
     }
     
     .topicon {
