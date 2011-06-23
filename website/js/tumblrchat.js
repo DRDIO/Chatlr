@@ -900,8 +900,6 @@ $(function() {
         var height = $(window).height();
         var chat   = $('#chat')[0].scrollHeight;
         
-        console.log('y ' + y + ' h ' + height + ' c ' + chat);
-        
         $('#chat').scrollTop(chat * y / height);
         e.preventDefault();
     });
