@@ -64,7 +64,7 @@ body, input {
     padding: 0.333em 0.75em;
     height: 1.167em;
     margin: 0.5em 0.5em 0.5em 0;    
-    color: #fff;
+    color: #ededed;
     font-weight: bold;
     text-decoration: none;
     border-radius: 0.25em;
@@ -77,7 +77,7 @@ body, input {
 }
 
     .topbuttons:hover, .toplink:hover {
-        background: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.25);
     }
     
     .topicon {
