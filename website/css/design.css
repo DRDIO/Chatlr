@@ -61,7 +61,7 @@ body, input {
 .topbuttons, .toplink, .topicon {
     float: right;
     display: block;
-    padding: 0.333em 1em;
+    padding: 0.333em 0.75em;
     height: 1.167em;
     margin: 0.5em 0.5em 0.5em 0;    
     color: #fff;
@@ -441,8 +441,7 @@ body, input {
 }
 
 #button-creator {
-    background: #e53f29;
-    background: -webkit-gradient(linear, left top, left bottom, from(#e53f29), to(#db3c27));    
+    color: #e53f29; 
 }
 
 /* PHONES AND TABLETS */
