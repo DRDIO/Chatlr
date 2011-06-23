@@ -178,8 +178,8 @@ body, input {
     }
 
         #roomadd input {
-            -webkit-border-radius: 0.25em;
-            -moz-border-radius: 0.25em;
+            box-sizing: border-box;
+            border-radius: 0.25em;
             border: 1px solid #ccc;
             padding: 0.25em;
             width: 100%;
