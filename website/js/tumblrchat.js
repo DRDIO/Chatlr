@@ -72,7 +72,7 @@
 // LOAD EVENT
 //
 $(function() {    
-    window.scrollTo(0, 1);
+    setTimeout(function() { window.scrollTo(0, 1) }, 100);
 
     // Setup initial title
     document.title = 'Chatlr (Connecting...)'
@@ -893,5 +893,4 @@ $(function() {
         $('#usersbox').outerHeight((($(window).height() - 66)  * 2 / 3) - 12);
         $('#roomsbox').outerHeight((($(window).height() - 66) / 3));
     }).resize();
-    
 });
