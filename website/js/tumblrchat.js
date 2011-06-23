@@ -562,6 +562,10 @@ $(function() {
                     type: 'roomchange',
                     room: newRoom});
                 $('#text').val('');
+            
+            } else if (message.search(/^\/night/i) == 0) {
+                $('html').toggleClass('night');
+                $('#text').val('');
                 
             } else if (message.search(/^\/topic$/i) == 0) {
                 onMessages.message({

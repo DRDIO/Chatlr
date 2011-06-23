@@ -468,3 +468,32 @@ body, input {
     vertical-align: text-bottom;
     margin-right: 0.5em;
 }
+
+.night #users, .night #rooms, .night #chat, .night #chat .top, .night #text, .night #roomadd input {
+    background: #030303;
+    color: #eee;
+}
+
+.night #roomadd input {
+    border-color: #111;
+}
+
+.night #chat a, .night #users a, .night #rooms a {
+    color: #ccc;
+}
+
+.night #chat a.op, .night #chat div.op {
+    color: #E53F29;
+}
+
+.night #chat div:nth-child(odd), .night #users div:nth-child(odd), .night #rooms div:nth-child(even) {
+    background: #090909;
+}
+
+.night #chat div.personal, .night #users div.personal, .night #rooms div.op, .night #chat div.op {
+    background: #000d0d;
+}
+
+.night #chat div.personal:nth-child(odd), .night #users div.personal:nth-child(odd), .night #rooms div.op:nth-child(odd) {
+    background: #001a1a;
+}
