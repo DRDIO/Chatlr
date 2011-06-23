@@ -501,3 +501,13 @@ body, input {
 .night #chat div.personal:nth-child(odd), .night #users div.personal:nth-child(odd), .night #rooms div.op:nth-child(odd) {
     background: #0d131a;
 }
+
+.night {
+    scrollbar-face-color: #333;
+    scrollbar-track-color: #000;
+    scrollbar-arrow-color: #fff;
+    scrollbar-highlight-color: #333;
+    scrollbar-3dlight-color: #444;
+    scrollbar-shadow-color: #222;
+    scrollbar-darkshadow-color: #111;
+}
