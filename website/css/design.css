@@ -469,6 +469,10 @@ body, input {
     margin-right: 0.5em;
 }
 
+.night body {
+    background: #000;
+}
+
 .night #users, .night #rooms, .night #chat, .night #chat .top, .night #text, .night #roomadd input {
     background: #030303;
     color: #eee;
@@ -491,9 +495,9 @@ body, input {
 }
 
 .night #chat div.personal, .night #users div.personal, .night #rooms div.op, .night #chat div.op {
-    background: #000d0d;
+    background: #060a0d;
 }
 
 .night #chat div.personal:nth-child(odd), .night #users div.personal:nth-child(odd), .night #rooms div.op:nth-child(odd) {
-    background: #001a1a;
+    background: #0d131a;
 }
