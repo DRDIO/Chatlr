@@ -162,10 +162,14 @@ io.Listener.prototype.chatMessageTypes = {
 
                         return;
 
+                    } else if (message.search(/^\/banlist/i) === 0) {
+                        
+                        return;
+                        
                     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                     // OP: Ban User For X Time
                     //
-                    } else if (message.search(/^\/ban [a-z0-9-]+( \d+)?/i) == 0) {
+                    } else if (message.search(/^\/ban [a-z0-9-]+( \d+)/i) == 0) {
                         // Get the name and duration of ban in minutes
                         // If duration is blank, set the ban to infinity
                         var banSplit = message.split(' ');
