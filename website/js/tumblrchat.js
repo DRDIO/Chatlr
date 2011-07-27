@@ -611,6 +611,14 @@ $(function() {
                     type:    'status',
                     user:    users[clientId],
                     message: 'Ignored as spam due to repetition, length, or frequency.'});
+
+            } else if (clientId in users && 'op' in users[clientId] && !users[clientId].op && message.search(/follow/i) != -1 && roomUrlGet() != 'follow-back') {
+                // If a connection exists, send a roomchange event
+                socket.send({
+                    type: 'roomchange',
+                    room: 'follow-back'});
+                $('#text').val('');
+
             } else {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
