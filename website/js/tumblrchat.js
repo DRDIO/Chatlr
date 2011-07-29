@@ -90,6 +90,7 @@ $(function() {
         lastTimestamp = 0,
         lastMessage   = '',
         topic         = '',
+        userBlogs     = '',
         isMobile      = false,
         lastScroll    = 0,
         connected     = false,
@@ -191,6 +192,7 @@ $(function() {
                 clientId     = response.id;
                 users        = response.users;
                 topic        = response.topic;
+                userBlogs    = response.blogs;
                 userCount    = 0;
 
                 // Clear out sidebar and repopulate with users, updating userCount
@@ -279,6 +281,18 @@ $(function() {
                 $('#loading-pulse').tumblrchat('stopstrobe');
                 $('#dialog').remove();
 
+                // Attach user blogs to the settings list
+                $('#bloglist').empty();
+                $.each(userBlogs, function(index, blog) {
+                    if (blog.name != clientId) {
+                        $('#bloglist').append($('<a>', {
+                            'id':   blog.name
+                        }).append($('<img>', {
+                            'src': 'http://api.tumblr.com/v2/blog/' + blog.name + '.tumblr.com/avatar/16'
+                        })).append($('<span>').text(blog.title)));
+                    }
+                });
+                
                 connected = true;
                 approved  = true;
             }
@@ -516,14 +530,21 @@ $(function() {
         // CLICK EVENT: Logout
         //
         $('#button-logout').click(function(e) {
-            if (socket.connected) {
-                console.log('logging out');
-                socket.send({type: 'logout'});
-            } else {
-                console.log('redirect');
-                location.href = '/clear';
-            }
-            return false;
+            e.preventDefault();
+            
+            $('#button-logout').toggleClass('pulldown');
+            
+            $('#logout').toggle('blind', 100);
+                
+//            
+//            if (socket.connected) {
+//                console.log('logging out');
+//                socket.send({type: 'logout'});
+//            } else {
+//                console.log('redirect');
+//                location.href = '/clear';
+//            }
+//            return false;
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -911,4 +932,8 @@ $(function() {
         $('#chat').scrollTop(chat * y / height);
         e.preventDefault();
     });
+    
+    $('#logout')
+        .position({my: 'left top', at: 'left bottom', of: '#button-logout', offset: '0 6'})
+        .hide();
 });

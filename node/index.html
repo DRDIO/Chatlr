@@ -29,14 +29,14 @@
             <!--<div id="count"></div>
             <div id="notice"></div>-->
 
-            <a id="button-logout" class="topicon" href="/clear" title="Logout">Logout</a>
+            <a id="button-logout" class="topicon ui-state-error" href="/clear" title="Logout">Logout</a>
 
             <a id="button-help" class="topicon" title="Chatlr Rules & Help" href="" rel="page-about">Rules</a>
 
             <a id="button-follow" class="topicon" href="http://www.tumblr.com/follow/chatlr" title="Follow Chatlr's Blog!" target="_blank">Follow</a>
 
             <a id="button-creator" class="toplink" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
-                <img src="http://28.media.tumblr.com/avatar_6ef19d797abb_16.png" alt="Ask KevinNuut.com" />
+                <img src="http://api.tumblr.com/v2/blog/kevinnuut.tumblr.com/avatar/16" alt="Ask KevinNuut.com" />
                 KevinNuut
             </a>
         </div>
@@ -144,5 +144,13 @@
         </div>
 
         <div id="loading"><div id="loading-pulse"></div></div>
+        
+        <div id="logout" class="ui-state-default">
+            <div id="bloglist"></div>
+            
+            <a id="logout-confirm">
+                <span class="ui-icon ui-icon-power"></span>Logout
+            </a>
+        </div>
     </body>
 </html>

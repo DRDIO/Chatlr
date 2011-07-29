@@ -94,7 +94,7 @@ body, input {
     height: 1.333em;
 }
 
-#login img, .login img, .topbuttons img, .toplink img {
+#login img, .login img, .topbuttons img, .toplink img, #bloglist img {
     border-radius: 0.25em;
     -moz-border-radius: 0.25em;
     width: 16px;
@@ -505,4 +505,53 @@ body, input {
     scrollbar-3dlight-color: #444;
     scrollbar-shadow-color: #222;
     scrollbar-darkshadow-color: #111;
+}
+
+#logout.ui-state-default {
+    min-width: 14.6em;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    position: absolute;
+    color: #EDEDED;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 0.25em 0 0.25em 0.25em;    
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+    background: #444 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.25)), to(rgba(255, 255, 255, 0.15)));
+    -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.5);
+}
+
+#logout a {
+    display: block;
+    background: #444 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.25)), to(rgba(255, 255, 255, 0.15)));
+    padding: 0.5em;
+}
+
+#bloglist a {
+    padding: 0.666em;
+    cursor: pointer;
+}
+
+#bloglist a:hover {
+    color: #fff;
+}
+
+#bloglist img, #logout-confirm span {
+    margin-right: 0.666em;
+}
+
+#logout-confirm {
+    border-top: 1px dotted rgba(255, 255, 255, 0.25);
+}
+
+#logout-confirm span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.pulldown {
+    border-radius: 0.25em 0.25em 0 0;
+    border-bottom: 7px solid rgba(0, 0, 0, 0.10);
 }

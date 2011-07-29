@@ -23,28 +23,29 @@ module.exports = function(app)
                 {
                     // Make sure we get actual data
                     if (typeof data == 'string') {
-                        var parser = new xml2js.Parser();
-
-                        parser.addListener('end', function(result)
-                        {
-                            if ('tumblelog' in result) {
-                                var tumblr = (0 in result['tumblelog'] ? result['tumblelog'][0] : result['tumblelog']);
-
-                                if ('@' in tumblr && 'name' in tumblr['@']) {
-                                    req.session.user = {
-                                        'name':   tumblr['@']['name'],
-                                        'title':  tumblr['@']['title'],
-                                        'url':    tumblr['@']['url'],
-                                        'avatar': tumblr['@']['avatar-url'].replace(/_128\./, '_16.')
-                                    }
-
-                                    res.writeHead(303, {'Location': '/' + (req.session.page || '')});
-                                    res.end();
+                        var result = JSON.parse(data);
+                        
+                        if ('response' in result && 'user' in result.response) {
+                            var blog;
+                            for (var count in result.response.user.blogs) {
+                                if (result.response.user.blogs[count].primary) {                                    
+                                    blog = result.response.user.blogs[count];
+                                    break;
                                 }
                             }
-                        });
+                            
+                            req.session.user = {
+                                'uid':    result.response.user.name,
+                                'name':   blog.name,
+                                'title':  blog.title,
+                                'url':    blog.url,
+                                'avatar': 'http://api.tumblr.com/v2/blog/' + blog.name + '.tumblr.com/avatar/16',
+                                'blogs':  result.response.user.blogs
+                            }
 
-                        parser.parseString(data);
+                            res.writeHead(303, {'Location': '/' + (req.session.page || '')});
+                            res.end();
+                        }                    
                     } else {
                         var message = (error.data || 'Invalid response from Tumblr') + ' (C2).';
                         res.writeHead(200, {'Content-type': 'text/html'});

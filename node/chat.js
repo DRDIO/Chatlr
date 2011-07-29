@@ -8,6 +8,7 @@ var config = require('../config/config'),
 // Room and Banned User Vars
 //
 io.Listener.prototype.chatUsers        = {};
+io.Listener.prototype.chatUserBlogs    = {};
 io.Listener.prototype.chatBanned       = {};
 io.Listener.prototype.chatRooms        = {};
 io.Listener.prototype.store            = null;
@@ -91,7 +92,8 @@ io.Listener.prototype.chatMessageTypes = {
         user.tsConnect = time;
 
         // (re)Attach user to the chat users list
-        listener.chatUsers[user.name] = user;
+        listener.chatUsers[user.name]     = user;
+        listener.chatUserBlogs[user.name] = session.user.blogs;
 
         // Place into proper room, initialize room and send info on users to client user
         listener.userInitRoom(user.roomName, client);
@@ -706,7 +708,8 @@ io.Listener.prototype.userClose = function(userName, message, logout)
 
         // Remove user from global list
         delete listener.chatUsers[userName];
-
+        delete listener.chatUserBlogs[userName];
+        
         // Send a close message if possible
         if (message && sessionId in listener.clients) {
             var client = listener.clients[sessionId];
@@ -753,7 +756,8 @@ io.Listener.prototype.userInitRoom = function(roomName, client)
         topic:    listener.chatRooms[roomName].topic,
         buffer:   listener.chatRooms[roomName].buffer,
         rooms:    rooms,
-        users:    roomUsers
+        users:    roomUsers,
+        blogs:    listener.chatUserBlogs[client.userName]
     });
 
     // console.log(client.userName + ' sent room init');
