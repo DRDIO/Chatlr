@@ -49,3 +49,5 @@ Alternatively, you can use the forever package by running the additional command
 	# Run Node.JS as a forever script
 	cd /usr/src/Chatlr
 	forever start node/index.js
+
+An example script can be found in `install.sh`.
