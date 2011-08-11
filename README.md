@@ -36,7 +36,7 @@ The following is an example of how to install Chatlr from scratch on Ubuntu 11.0
 	# Replace anything in all caps
 
 	# Run the Chatlr script and output errors to out.log
-	node node/index.js > out.log &
+	node chatlr.js > out.log &
 
 Alternatively, you can use the forever package by running the additional commands.
 
@@ -48,6 +48,6 @@ Alternatively, you can use the forever package by running the additional command
 
 	# Run Node.JS as a forever script
 	cd /usr/src/Chatlr
-	forever start node/index.js
+	forever start chatlr.js
 
 An example script can be found in `install.sh`.
