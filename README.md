@@ -1,6 +1,3 @@
-Chatlr README
-=============
-
 Introduction
 ------------
 
