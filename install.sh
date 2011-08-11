@@ -29,9 +29,5 @@ git submodule update --init --recursive
 # Copy config.js.bu and replace all of the open variables with user input
 sed -e "s/CHATLR_DOMAIN/$1/" -e "s/TUMBLR_CONSUMER_KEY/$2/" -e "s/TUMBLR_CONSUMER_SECRET/$3/" -e "s/TUMBLR_USERNAME/$4/" -e "s/SESSION_SECRET/$5/" config.js.bu >> config.js
 
-# Open config/config.js and set up the custom fields
-# Replace anything in all caps
-
 # Run the Chatlr script and output errors to out.log
-# cd /usr/src/Chatlr
-# forever start chatlr.js
+forever start chatlr.js
