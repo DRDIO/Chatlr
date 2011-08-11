@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-Chatlr is a web chat powered by node.js, socket.io, connect, and oauth verified users.
+Chatlr is a realtime chat powered by node.js, socket.io, and connect with Tumblr OAuth verification.
 
 Installation
 ------------
@@ -47,4 +47,10 @@ Alternatively, you can use the forever package by running the additional command
 	cd /usr/src/Chatlr
 	forever start chatlr.js
 
-An example script can be found in `install.sh`.
+An example script can be found in `install.sh`. This is great for getting Chatlr quickly running on Cloud or VPS instance.
+
+	
+	# Run this command from your local computer into your clean remote Ubuntu box
+	ssh root@IP_ADDRESS 'bash -s CHATLR_DOMAIN TUMBLR_CONSUMER_KEY TUMBLR_CONSUMER_SECRET TUMBLR_USERNAME SESSION_SECRET' < install.sh
+
+Note that there are other config options available in config.js, like changing the default IP address, port, and OAuth service.
