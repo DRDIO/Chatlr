@@ -15,10 +15,10 @@ make
 make install
 
 # Install NPM (Node Package Manager)
-curl http://npmjs.org/install.sh | sudo sh
+curl http://npmjs.org/install.sh | clean=no sh
 
 # Install Forever
-npm install forever
+npm -g install forever
 
 # install Chatlr
 cd /usr/src
@@ -29,7 +29,7 @@ cd Chatlr
 git submodule update --init --recursive
 
 # Copy config.js.bu and replace all of the open variables with user input
-sed -e "s/CHATLR_DOMAIN/$1/" -e "s/TUMBLR_CONSUMER_KEY/$2/" -e "s/TUMBLR_CONSUMER_SECRET/$3/" -e "s/TUMBLR_USERNAME/$4/" -e "s/SESSION_SECRET/$5/" config.js.bu >> config.js
+sed -e "s/CHATLR_DOMAIN/$1/" -e "s/TUMBLR_CONSUMER_KEY/$2/" -e "s/TUMBLR_CONSUMER_SECRET/$3/" -e "s/TUMBLR_USERNAME/$4/" -e "s/SESSION_SECRET/$5/" config/config.js.bu >> config/config.js
 
 # Run the Chatlr script and output errors to out.log
 forever start chatlr.js
