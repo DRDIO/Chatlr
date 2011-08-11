@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # Chatlr Install Script for Ubuntu
 
 # Get the essentials
