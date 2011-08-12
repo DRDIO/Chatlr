@@ -53,4 +53,4 @@ An example script can be found in `install.sh`. This is great for getting Chatlr
 	# Run this command from your local computer into your clean remote Ubuntu box
 	ssh root@IP_ADDRESS 'bash -s CHATLR_DOMAIN TUMBLR_CONSUMER_KEY TUMBLR_CONSUMER_SECRET TUMBLR_USERNAME SESSION_SECRET' < install.sh
 
-Note that there are other config options available in config.js, like changing the default IP address, port, and OAuth service.
+Note that there are other config options available in `config.js`, like changing the default IP address, port, and OAuth service.
