@@ -448,9 +448,8 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.Socket(null, {rememberTransport: false});
-        // socket = new io.Socket(null, {rememberTransport: false, transports: ['websocket', 'flashsocket', 'xhr-multipart']});
-
+        socket = new io.connect();
+        
         // Try to connect (using multiple tries if necessary)
         chatConnect();
 
@@ -459,12 +458,9 @@ $(function() {
         //
         socket.on('connect', function()
         {
-            var sid = readCookie('connect.sid');
-            
-            socket.send({
-                type:     'init',
-                roomName: roomUrlGet(),
-                sid:      sid
+            console.log('starting');
+            socket.emit('init', {
+                roomName: roomUrlGet()
             });
 
             // Clear reconnect timeout and set to 0 for attempts
@@ -488,6 +484,8 @@ $(function() {
         //
         socket.on('message', function(response)
         {
+            console.log(response);
+            
             if ('type' in response && response.type in onMessages) {
                 // if (typeof console !== 'undefined') console.log(response.type);
                 onMessages[response.type](response);
@@ -711,7 +709,7 @@ $(function() {
             $('#roomadd input').val('');
             $('#text').focus();
             
-            if(socket.connected && newRoom != (roomUrlGet() || 'english')) {
+            if(socket.socket.connected && newRoom != (roomUrlGet() || 'english')) {
                 // If a connection exists, send a roomchange event
                 socket.send({
                     type: 'roomchange',
@@ -807,17 +805,19 @@ $(function() {
     
     function chatConnect()
     {
+        return true;
+        
         if (typeof socket != 'undefined') {
             // Try connecting 3 times (reset to 0 on successful connect)
             if (attempts < 3) {
-                if (!socket.connecting && !socket.connected) {
+                if (!socket.socket.connecting && !socket.socket.connected) {
                     attempts++;
-                    socket.connect();
+                    io.connect();
                 }
 
                 // Check back after timeout for another attempt
                 clearTimeout(timeoutId);
-                timeoutId = setTimeout(chatConnect, socket.options.connectTimeout);
+                timeoutId = setTimeout(chatConnect, socket.socket.options['connect timeout']);
             } else {
                 onMessages.restart({
                     message: 'We were unable to connect you after ' + attempts + ' attempts (T1).'
@@ -832,7 +832,7 @@ $(function() {
 
     function notifyFailure(hasSocket)
     {
-        if (!hasSocket || (!socket.connecting && !socket.connected)) {
+        if (!hasSocket || (!socket.socket.connecting && !socket.socket.connected)) {
             // Stop logo pulsing and make sure the background is faded in
             $('#loading-pulse').tumblrchat('stopstrobe');
             $('#loading').show();

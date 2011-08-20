@@ -1,7 +1,6 @@
 var config = require('../config/config'),
     url    = require('url'),
     fs     = require('fs'),
-    xml2js = require('./xml2js'),
     oauth  = require('./oauth');
     
 module.exports = function(app)
@@ -9,14 +8,12 @@ module.exports = function(app)
     var oa = new oauth.OAuth(config.requestUrl, config.accessUrl, config.consumerKey, config.consumerSecret, '1.0', config.callbackUrl, 'HMAC-SHA1');
     
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // Callback Page (Parse XML from Tumblr Authenticate, store user in session, redirect to index)
+    // Callback Page (Parse JSON from Tumblr Authenticate, store user in session, redirect to index)
     //
     app.get('/callback', function(req, res)
     {
-        var parsedUrl = url.parse(req.url, true);
-
-        if ('query' in parsedUrl && typeof parsedUrl.query == 'object' && 'oauth_token' in parsedUrl.query) {
-            oa.getOAuthAccessToken(parsedUrl.query.oauth_token, req.session.secret, parsedUrl.query.oauth_verifier, function(error, token, secret, results)
+        if ('oauth_token' in req.query && 'oauth_verifier' in req.query) {
+            oa.getOAuthAccessToken(req.query.oauth_token, req.session.secret, req.query.oauth_verifier, function(error, token, secret, results)
             {
                 // Get Authentication Information
                 oa.getProtectedResource(config.authenticateUrl, 'POST', token, secret, function(error, data)
