@@ -1,9 +1,8 @@
-var config = require('../config/config'),
-    url    = require('url'),
+var url    = require('url'),
     fs     = require('fs'),
-    oauth  = require('./oauth');
+    oauth  = require('../oauth');
     
-module.exports = function(app)
+module.exports = function(app, config)
 {
     var oa = new oauth.OAuth(config.requestUrl, config.accessUrl, config.consumerKey, config.consumerSecret, '1.0', config.callbackUrl, 'HMAC-SHA1');
     
@@ -12,12 +11,18 @@ module.exports = function(app)
     //
     app.get('/callback', function(req, res)
     {
+        console.log('in callback, trying out oauth');
+        
         if ('oauth_token' in req.query && 'oauth_verifier' in req.query) {
             oa.getOAuthAccessToken(req.query.oauth_token, req.session.secret, req.query.oauth_verifier, function(error, token, secret, results)
             {
+                console.log('oauth token received');
+                
                 // Get Authentication Information
                 oa.getProtectedResource(config.authenticateUrl, 'POST', token, secret, function(error, data)
                 {
+                    console.log('oauth authentication received');
+                    
                     // Make sure we get actual data
                     if (typeof data == 'string') {
                         var result = JSON.parse(data);
@@ -73,8 +78,6 @@ module.exports = function(app)
     app.get('/:page?', function(req, res)
     {
         try {
-            console.log('user' in req.session);
-            
             if (!('user' in req.session)) {
                 // Store the page for when callback occurs
                 req.session.page = req.params.page || '';
@@ -86,10 +89,13 @@ module.exports = function(app)
                     res.end();
                 });
             } else {
-                fs.readFile(__dirname + '/index.html', function(err, data) {
+                fs.readFile(__dirname + config.appHtmlPath, function(err, data) {
                     if (!err) {
                         res.writeHead(200, {'Content-type': 'text/html'});
                         res.end(data || '');
+                    } else {
+                        res.writeHead(200, {'Content-type': 'text/html'});
+                        res.end('Unable to load application.');
                     }
                 });
             }

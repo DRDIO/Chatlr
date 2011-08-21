@@ -187,6 +187,8 @@ $(function() {
         // APPROVED: User has been approved, so create their account
         //
         approved: function(response) {
+            console.log('approval');
+            
             if ('id' in response && 'roomName' in response && 'topic' in response && 'buffer' in response && 'users' in response && 'rooms' in response) {
                 // On init, a list of users is grabbed (and add yourself)
                 clientId     = response.id;
@@ -302,6 +304,8 @@ $(function() {
         // CONNECTED: Set user into sidebar and update count
         //
         connected: function(response) {
+            console.log('connected');
+            
             if (response.user) {
                 // Update user counts on sidebar and in header
                 userCount++;
@@ -317,6 +321,8 @@ $(function() {
         // DISCONNECTED: Remove user from sidebar and update count
         //
         disconnected: function(response) {
+            console.log('disconnected');
+            
             if (response.id && response.id in users) {
                 response.type = 'status';
                 onMessages.message(response);
@@ -342,6 +348,8 @@ $(function() {
         // RECONNECTED: Set a user in sidebar as returned
         //
         reconnected: function(response) {
+            console.log('reconnected');
+            
             if (response.id) {
                 $('#u' + response.id).removeClass('idle');
             }
@@ -360,6 +368,8 @@ $(function() {
         // MESSAGE: User has sent a generic message
         //
         message: function(response) {
+            console.log('message');
+            
             if (response.message) {
                 if (response.id && response.id in users) {
                     if (users[response.id].name in ignore) {
@@ -643,7 +653,7 @@ $(function() {
                 lastTimestamp = timestamp;
 
                 // Send to server for broadcast
-                socket.send({
+                socket.json.send({
                     type: 'message',
                     message: message});
 
@@ -805,13 +815,13 @@ $(function() {
     
     function chatConnect()
     {
-        return true;
-        
         if (typeof socket != 'undefined') {
             // Try connecting 3 times (reset to 0 on successful connect)
             if (attempts < 3) {
                 if (!socket.socket.connecting && !socket.socket.connected) {
                     attempts++;
+                    console.log('chatConnect()');
+        
                     io.connect();
                 }
 
