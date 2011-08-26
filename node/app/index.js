@@ -9,7 +9,8 @@ chat.prototype.__construct = function()
     this.chatUsers        = {};
     this.chatUserBlogs    = {};
     this.chatBanned       = {};
-    this.chatRooms        = {}; 
+    this.chatRooms        = {};
+    this.chatOps          = this.config.chatOps;
     
     for (var roomName in this.config.chatRooms) {
         // Create each featured room and update list
@@ -26,53 +27,60 @@ chat.prototype.__construct = function()
 chat.prototype._init = function(sid)
 {   
     // Additional app setup
-    var session = this.__getSession(sid),
-        user = session.user || null;
-    
-    if (!session) {
-        return this.userSendRestart(sid, 'Unable to retrieve session.');        
-    }
-    
-    if (!user) {
+    var session     = this.__getSession(sid),
+        userSession = session.user || null,
+        time        = new Date().getTime(),
+        user        = {};
+        
+    // Kick for corrupt session data
+    if (!userSession || !userSession.uid) {
         return this.userSendRestart(sid, 'Unable to retrieve your account.');        
     }
-    
-    // Attach their current session id for use of sockets
-    user.sid = sid;
-    
-    var time = new Date().getTime();
-
-    // Banned Users
-    if (user.name in this.chatBanned) {
-        return this.userSendRestart(user.sid, 'You have been banned (N1).');
-    }
-
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        
+    console.log(userSession.uid);
+        
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     // GLOBAL MANAGEMENT FOR USER
-    //
-    if (user.name in this.chatUsers) {
+    //    
+    if (userSession.uid in this.chatUsers) {
         // If user is already in list, pull from list
-        user = this.chatUsers[user.name];
+        user = this.chatUsers[userSession.uid];
     } else {
-        // Otherwise initialize additional vars
-        user.op           = (user.name in this.config.chatOps);
+        console.log('user is new');
+        // UID is usually their name but we need to start using UID for all mapping
+        user.uid    = userSession.uid;
+        user.name   = userSession.name   || user.uid;
+        user.title  = userSession.title  || user.name;
+        user.url    = userSession.url    || null;
+        user.avatar = userSession.avatar || null;
+                            
+        // Otherwise initialize additional vars        
         user.lastMessage  = '';
         user.tsMessage    = time;
         user.tsDisconnect = time;
         user.idle         = false;
     }
 
-    console.log('init ' + user.name);
+    // Regardless, try to determine their OP status
+    user.op = (user.name in this.chatOps);
 
-    // Setup core paramters as connected
-    user.roomName  = user.roomName || 'english';
-    user.sessionId = this.sessionId;
+    // Banned Users
+    if (!user.op && user.name in this.chatBanned) {
+        user.banned   = true;
+        user.roomName = this.chatBanned[user.name] || 'banned';
+    } else {
+        // If not banned, try to put person in the proper room
+        user.roomName  = session.page || 'english';
+    }
+
+    // Attach current session, set to connected, continue on
+    user.sid       = sid;
     user.connected = true;
     user.tsConnect = time;
 
     // (re)Attach user to the chat users list
-    this.chatUsers[user.name]     = user;
-    this.chatUserBlogs[user.name] = session.user.blogs;
+    this.chatUsers[user.uid]     = user;
+    this.chatUserBlogs[user.uid] = userSession.blogs || null;
 
     // Place into proper room, initialize room and send info on users to client user
     this.userInitRoom(sid, user.name, user.roomName);
@@ -108,14 +116,6 @@ chat.prototype._disconnect = function(sid)
 chat.prototype._logout = function(sid) {
     this.userClose(this.sockets.sockets[sid].userId, 'You have been logged out.', true);
 };
-
-chat.prototype.userGetBySid = function(sid) {
-    var sessionUser = this.__getSession(sid).user || {},
-        userName    = sessionUser.name || null,
-        user        = this.chatUsers[userName] || {};
-    
-    return user;
-}
 
 chat.prototype._shout = function(sid, message) 
 {
@@ -172,36 +172,102 @@ chat.prototype._banlist = function(sid)
     }
 }
 
-chat.prototype._ban = function(sid, banUserName, banMinutes, reasonMessage)
+// When users are banned they are basically locked to a specific room
+// They can be locked for a duration of time with a reason
+//
+chat.prototype._ban = function(sid, banUserName, banMinutes, banRoomName, reasonMessage)
 {
-    var user = this.userGetBySid(sid),
-        time = new Date().getTime();
+    var user        = this.userGetBySid(sid),
+        time        = new Date().getTime(),
+        duration    = -1;
             
     if (user.op) {
-        banMinutes = parseInt(banMinutes);
-        
-        if (!banMinutes) {
-            if (banUserName in this.chatBanned) {
-                delete this.chatBanned[banUserName];
-            }
-        } else {
-            // Duration in milliseconds
-            var duration      = (banMinutes > 0 ? (time + banMinutes * 60000) : -1),
-                limitMessage  = (duration != -1 ? ' for ' + banMinutes + ' minutes' : 'forever'),
-                removeMessage = limitMessage + (reasonMessage ? ' for ' + reasonMessage : '');
-                
-            this.chatBanned[banUserName] = duration;
-
-            // Tell everyone they have been banned, with possible time
-            this.roomUserRemove(roomName, banName, 'has been banned' + removeMessage + '...');
-            this.userClose(banName, 'You have been banned ' + removeMessage + ' (N3).');                            
+        if (banMinutes && banMinutes == parseInt(banMinutes)) {
+            duration = (banMinutes > 0 ? (time + banMinutes * 60000) : -1);
         }
+        
+        // Default to the banned room
+        banRoomName = this.roomParse(banRoomName || 'banned');
+        
+        // Build a fancy message
+        var removeMessage = (duration != -1 ? ' for ' + banMinutes + ' minutes' : 'forever')
+                + ' to the #' + banRoomName + ' room'
+                + (reasonMessage ? ' for ' + reasonMessage : '');
+            
+        this.chatBanned[banUserName] = {
+            roomName: banRoomName,
+            duration: duration
+        };
+        
+        // Tell everyone they have been banned, with possible time
+        this.userInitRoom(sid, banUserName, banRoomName, 'has been banned' + removeMessage + '...');
     }    
 }
 
 chat.prototype._unban = function(sid, banUserName)
 {
-    this._userBan(sid, banUserName, 0, 'User has been unbanned.');
+    var user = this.userGetBySid(sid);
+    
+    if (user.op) {
+        if (banUserName in this.chatBanned) {
+            delete this.chatBanned[banUserName];
+            user.banned = false;
+            
+            // TODO: Update user status so they aren't visually banned
+        }
+    }
+}
+
+chat.prototype._op = function(sid, opUserName, opLevel)
+{
+    var user = this.userGetBySid(sid);
+    
+    opLevel = parseInt(opLevel || 1);
+    
+    if (user.op && user.op > opLevel) {
+        this.chatOps[opUserName] = opLevel;
+        
+        // If user is logged in, go ahead and update their status
+        if (opUserName in this.chatUsers) {            
+            this.chatUsers[opUserName].op = opLevel;
+            // TODO: Push status change out to everyone in that room
+        }
+        
+    }
+}
+
+chat.prototype._deop = function(sid, opUserName)
+{
+    var user = this.userGetBySid(sid);
+    
+    opLevel = parseInt(opLevel || 1);
+    
+    if (user.op && opUserName in this.chatOps && user.op > this.chatOps[upUserName]) {
+        this.chatOps[opUserName] = '';
+        
+        // If user is logged in, go ahead and update their status
+        if (opUserName in this.chatUsers) {            
+            this.chatUsers[opUserName].op = 0;
+            // TODO: Push status change out to everyone in that room
+        }
+    }
+    
+}
+
+chat.prototype._mod = function(sid, modUserName, roomName)
+{
+    var user = this.userGetBySid(sid);
+    
+    if (user.isAdmin && modUserName in this.chatUsers) {
+        var modUser     = this.chatUsers[modUserName];
+        modUser.isMod   = true;
+        modUser.modRoom = roomName;
+    }
+}
+
+chat.prototype._demod = function(sid, modUserName)
+{
+    this._mod(sid, modUserName);
 }
 
 chat.prototype._away = function(sid)
@@ -269,14 +335,23 @@ chat.prototype._message = function(sid, message) {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // ROOM CHANGE: User is requesting to change this.chatRooms
 //
-chat.prototype._roomchange = function(sid, roomName) {   
+chat.prototype._roomchange = function(sid, roomName) 
+{   
     var user = this.userGetBySid(sid);    
     this.userInitRoom(sid, user.name, roomName);
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-chat.prototype.roomBufferMessage(roomName, user, message)
+chat.prototype.userGetBySid = function(sid) {
+    var sessionUser = this.__getSession(sid).user || {},
+        userName    = sessionUser.name || null,
+        user        = this.chatUsers[userName] || {};
+    
+    return user;
+}
+
+chat.prototype.roomBufferMessage = function(roomName, user, message)
 {
     // Push messages into buffer for user logins
     this.chatRooms[roomName].buffer.push({
@@ -479,7 +554,7 @@ chat.prototype.roomCreate = function(roomName, featured)
     // TODO: Fix how private rooms works
     // 
     // Sanitize roomnames before creating them
-    roomName = roomName.toLowerCase().replace(/[^a-z0-9]+/ig, '-');    
+    roomName = this.roomParse(roomName);   
     
     // If Room does not exist, CREATE IT
     this.chatRooms[roomName] = {
@@ -491,6 +566,11 @@ chat.prototype.roomCreate = function(roomName, featured)
         hidden:    (roomName.substr(0, 1) == '!')};
 
    console.log(roomName + ' created.');
+}
+
+chat.prototype.roomParse = function(roomName) 
+{
+    return roomName.toLowerCase().replace(/[^a-z0-9]+/ig, '-'); 
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -765,13 +845,16 @@ chat.prototype.userInitRoom = function(sid, userName, roomName, removeMessage)
 
 chat.prototype.userSendRestart = function(sid, message)
 {
-    console.log(message);
+    console.log('restarting ' + message);
+    
     this.__send(sid, 'restart', message);
     return false;
 }
 
 chat.prototype.userSendLogout = function(client)
 {
+    console.log('logging out');
+    
     client.send({
         type: 'logout'
     });

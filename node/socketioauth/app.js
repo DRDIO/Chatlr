@@ -18,34 +18,25 @@ function app(sockets, config) {
     this.__construct();
     
     var self = this;
+    
     sockets.on('connection', function (socket) {
-//        console.log('socket connection started');
-        
         var sid = socket.id;
         
         // Extended by APP to initialize a socket (client/user)
         self._init(sid);
                 
         socket.on('message', function(data) {
-//            console.log('a message was received');
-            
-//            for (key in data) break;
-//            var method = '_' . key;
+            // Get the header (method name) and its arguments in order
+            for (var key in data) break;
+            var method = '_' + key;
 
-            var key    = data.type || null,
-                method = '_' + key;
+            console.log(method);
             
             if (method in self) {
-                var args = [sid];
-                for (var key in data) {
-                    if (key != 'type') {
-                        args.push(data[key]);
-                    }
-                }
-                
+                var args = [sid].concat(data[key]);                
                 self[method].apply(self, args);
             } else {
-                console.log('invalid convention method structure.');
+                console.log(method + ' invalid convention method structure.');
             }
         });
         

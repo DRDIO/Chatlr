@@ -6,6 +6,8 @@ Chatlr is a realtime chat powered by node.js, socket.io, and connect with Tumblr
 Installation
 ------------
 
+08-24-2011: The following instructions are out of date as I am updating Chatlr to use Socket.IO v0.7.
+
 The following is an example of how to install Chatlr from scratch on Ubuntu 11.04 (as root).
 
 	# Get the essentials

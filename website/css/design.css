@@ -94,7 +94,7 @@ body, input {
     height: 1.333em;
 }
 
-#login img, .login img, .topbuttons img, .toplink img, #bloglist img {
+#login img, .login img, .topbuttons img, .toplink img {
     border-radius: 0.25em;
     -moz-border-radius: 0.25em;
     width: 16px;
@@ -114,8 +114,8 @@ body, input {
 
     #users {
         background: #fff;
-        border-radius: 0.5em;
-        -moz-border-radius: 0.5em;
+        border-radius: 0.25em;
+        -moz-border-radius: 0.25em;
         overflow-x: hidden;
         overflow-y: auto;
         height: 100%;
@@ -187,8 +187,8 @@ body, input {
 
     #rooms {
         background: #fff;
-        border-radius: 0.5em;
-        -moz-border-radius: 0.5em;
+        border-radius: 0.25em;
+        -moz-border-radius: 0.25em;
         height: 100%;
         overflow-x: hidden;
         overflow-y: auto;
@@ -211,26 +211,31 @@ body, input {
 }
 
 #section-top-left {
-    width: 20%;
+    width: 180px;
     height: 100%;
     float: left;
 }
 
-#section-top-right {
-    width: 80%;
+#advertisement {
+    width: 120px;
     float: right;
     height: 100%;
+    background: #E53F29;
+    overflow: hidden;
+    border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
 }
 
 #chatbox {
+    float: left;
     overflow: hidden;
     height: 100%;
 }
 
     #chat {
         background: #fff;
-        border-radius: 0.5em;
-        -moz-border-radius: 0.5em;
+        border-radius: 0.25em;
+        -moz-border-radius: 0.25em;
         width: 100%;
         height: 100%;
         overflow-x: hidden;
@@ -292,8 +297,8 @@ body, input {
 
         #chat .bottom {
             background: #ffffff;
-            border-radius: 0 0 0.5em 0.5em;
-            -moz-border-radius: 0 0 0.5em 0.5em;
+            border-radius: 0 0 0.25em 0.25em;
+            -moz-border-radius: 0 0 0.25em 0.25em;
             display: block;
             margin-bottom: 0.5em;
             height: 0.5em;
@@ -301,8 +306,8 @@ body, input {
 
         #chat .top {
             background: #ffffff;            
-            border-radius: 0.5em 0.5em 0 0;
-            -moz-border-radius: 0.5em 0.5em 0 0;
+            border-radius: 0.25em 0.25em 0 0;
+            -moz-border-radius: 0.25em 0.25em 0 0;
             display: block;
             height: 0.5em;
         }
@@ -321,8 +326,8 @@ body, input {
 
 #text {
     outline: none;
-    border-radius: 0.5em;
-    -moz-border-radius: 0.5em;
+    border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
     display: block;
     width: 100%;
     padding: 0.5em;
@@ -448,11 +453,11 @@ body, input {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
 
-    #notice, .toplink, #section-top-left, #button-help {
+    #notice, .toplink, #section-top-left, #button-help, #advertisement {
         display: none;
     }
 
-    #section-top-right {
+    #chatbox {
         width: 100%;
         clear: both;        
     }
@@ -506,6 +511,7 @@ body, input {
     scrollbar-shadow-color: #222;
     scrollbar-darkshadow-color: #111;
 }
+
 
 #logout.ui-state-default {
     min-width: 14.6em;

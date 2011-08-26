@@ -1,83 +1,7 @@
-(function($) {
-    var methods = {
-        init: function(options) {
-            // Nothing to do yet
-        },
-        
-        strobe: function() {
-            return this.each(function() {
-                $(this).fadeTo(500, 0.5).fadeTo(500, 1.0, function() {
-                    $(this).tumblrchat('strobe');
-                });
-            });
-        },
-
-        stopstrobe: function() {
-            return this.each(function() {
-                $(this).stop(true).fadeTo(5000, 0.1);
-            });
-        },
-
-        sortusers: (function() {
-            var sort = [].sort;
-
-            return function(comparator, getSortable) {
-                getSortable = getSortable || function() {
-                    return this;
-                };
-
-                var placements = this.map(function() {
-                    var sortElement = getSortable.call(this),
-                        parentNode  = sortElement.parentNode,
-                        nextSibling = parentNode.insertBefore(
-                            document.createTextNode(''),
-                            sortElement.nextSibling
-                        );
-
-                    return function() {
-                        if (parentNode === this) {
-                            $.error('Cannot sort descendents of self');
-                        }
-
-                        parentNode.insertBefore(this, nextSibling);
-                        parentNode.removeChild(nextSibling);
-
-                    };
-
-                });
-
-                return sort.call(this, comparator).each(function(i) {
-                    placements[i].call(getSortable.call(this));
-                });
-            };
-        })()
-    };
-
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // Dynamic calling of methods out of tumblrchat objects
-    
-    $.fn.tumblrchat = function(method) {       
-        // Method calling logic
-        if (methods[method]) {
-            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-        } else if (typeof method === 'object' || !method) {
-            return methods.init.apply(this, arguments);
-        } else {
-            $.error('Method ' + method + ' does not exist on jQuery.');
-        }
-    }
-})(jQuery);
-
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // LOAD EVENT
 //
-$(function() {    
-    window.top.scrollTo(0, 1);
-
-    // Setup initial title
-    document.title = 'Chatlr (Connecting...)'
-    $('#loading-pulse').tumblrchat('strobe');
-
+$(function() {   
     // Initialize variables
     var socket,
         clientId,
@@ -102,7 +26,7 @@ $(function() {
         //
         restart: function(response) {
             // Add detailed messages on errors
-            eraseCookie('connect.sid');
+            // eraseCookie('connect.sid');
             notifyFailure(false);
             
             var message = response.message || 'There was an unknown error (E0)';
@@ -116,7 +40,7 @@ $(function() {
         //
         logout: function(response) {
             // Add detailed messages on errors
-            eraseCookie('connect.sid');
+            // eraseCookie('connect.sid');
             location.href = '/clear';
         },
 
@@ -139,7 +63,7 @@ $(function() {
                         .addClass((response.roomFeatured ? 'featured' : ''))
                         .append($('<sup/>').text(response.roomCount))
                         .append($('<a/>')
-                            .attr('href', '#' + response.roomName)
+                            .attr('href', response.roomName)
                             .text(roomLabel));
 
                     $('#rooms').append(roomObj);
@@ -321,7 +245,7 @@ $(function() {
         // DISCONNECTED: Remove user from sidebar and update count
         //
         disconnected: function(response) {
-            console.log('disconnected');
+            console.log('triggered disconnected');
             
             if (response.id && response.id in users) {
                 response.type = 'status';
@@ -458,25 +382,31 @@ $(function() {
     if (typeof io == 'undefined') {
         notifyFailure(false);
     } else {
-        socket = new io.connect();
+        socket = new io.connect(null, {
+            'transports': ['flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling'],
+            'connect timeout': 5000,
+            'try multiple transports': true,
+            'reconnect': true,
+            'reconnection delay': 250,
+            'max reconnection attempts': 3            
+        });
         
-        // Try to connect (using multiple tries if necessary)
-        chatConnect();
-
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // CONNECT: As soon as we connect, send credentials. Chat is still disabled at this time.
         //
         socket.on('connect', function()
         {
-            console.log('starting');
-            socket.emit('init', {
-                roomName: roomUrlGet()
-            });
-
-            // Clear reconnect timeout and set to 0 for attempts
-            // if (typeof console !== 'undefined') console.log(reconnects);
-            clearTimeout(timeoutId);
-            attempts = 0;
+            console.log('connection established with ' + this.transport);
+        });
+        
+        socket.on('connecting', function(type)
+        {
+            console.log('connecting with ' + type);
+        });
+        
+        socket.on('connect_failed', function()
+        {
+            console.log('connect failed');
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -484,9 +414,23 @@ $(function() {
         //
         socket.on('disconnect', function()
         {
-            approved = false;
-            reconnects++;            
-            chatConnect();
+            console.log('disconnected');
+            notifyFailure(false);
+        });
+        
+        socket.on('reconnect', function(type, attempts)
+        {
+            console.log('reconnected with ' + type + ' for ' + attempts);
+        });
+        
+        socket.on('reconnecting', function(delay, attempts)
+        {
+            console.log('reconnecting with ' + delay + ' for ' + attempts);
+        });
+        
+        socket.on('reconnect_failed', function()
+        {
+            console.log('reconnect failed');
         });
         
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -501,10 +445,32 @@ $(function() {
                 onMessages[response.type](response);
             }
         });
+        
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+// OUTGOING SOCKET METHODS
 
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // RESIZE EVENT: On resize, move to bottom of the screen
-        //
+        socket._roomChange = function(roomName)
+        {
+            socket.json.send({'roomchange': [
+                roomName
+            ]});
+        }
+        
+        socket._roomMessage = function(message)
+        {
+            socket.json.send({'message': [
+                message
+            ]});
+        }
+        
+        socket._userLogout = function()
+        {
+            socket.json.send({'logout': []});
+        }
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// RESIZE EVENT: On resize, move to bottom of the screen
+
         $(window).resize(function(e) {
             lastScroll = $('#chat').scrollTop();
             $('#chat').scrollTop($('#chat')[0].scrollHeight);
@@ -593,9 +559,7 @@ $(function() {
                 var newRoom = message.substr(6).toLowerCase();
 
                 // If a connection exists, send a roomchange event
-                socket.send({
-                    type: 'roomchange',
-                    room: newRoom});
+                socket._roomChange(newRoom);
                 $('#text').val('');
             
             } else if (message.search(/^\/night/i) == 0) {
@@ -643,9 +607,7 @@ $(function() {
 
             } else if (clientId in users && 'op' in users[clientId] && !users[clientId].op && message.search(/follow/i) != -1 && roomUrlGet() != 'follow-back') {
                 // If a connection exists, send a roomchange event
-                socket.send({
-                    type: 'roomchange',
-                    room: 'follow-back'});
+                socket._roomChange('follow-back');
                 $('#text').val('');
 
             } else {
@@ -653,9 +615,7 @@ $(function() {
                 lastTimestamp = timestamp;
 
                 // Send to server for broadcast
-                socket.json.send({
-                    type: 'message',
-                    message: message});
+                socket._roomMessage(message);
 
                 // Clear text box
                 $('#text').val('');
@@ -694,14 +654,12 @@ $(function() {
         //
         $('#rooms a, .room').live('click', function(e) {
            e.preventDefault();
-           var newRoom = $(this).attr('href').substr(1);
+           var newRoom = $(this).attr('href');
 
-           if(socket.connected && newRoom != (roomUrlGet() || 'english')) {
-               // If a connection exists, send a roomchange event
-               socket.send({
-                   type: 'roomchange',
-                   room: newRoom
-               });
+           console.log(newRoom);
+           
+           if(newRoom != (roomUrlGet() || 'english')) {
+               socket._roomChange(newRoom);
            }
         });
 
@@ -720,11 +678,7 @@ $(function() {
             $('#text').focus();
             
             if(socket.socket.connected && newRoom != (roomUrlGet() || 'english')) {
-                // If a connection exists, send a roomchange event
-                socket.send({
-                    type: 'roomchange',
-                    room: newRoom
-                });
+                socket._roomChange(newRoom);
             }
         });
     }
@@ -811,34 +765,7 @@ $(function() {
     function strip(message)
     {
         return $('<div/>').text(message).html();
-    }
-    
-    function chatConnect()
-    {
-        if (typeof socket != 'undefined') {
-            // Try connecting 3 times (reset to 0 on successful connect)
-            if (attempts < 3) {
-                if (!socket.socket.connecting && !socket.socket.connected) {
-                    attempts++;
-                    console.log('chatConnect()');
-        
-                    io.connect();
-                }
-
-                // Check back after timeout for another attempt
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(chatConnect, socket.socket.options['connect timeout']);
-            } else {
-                onMessages.restart({
-                    message: 'We were unable to connect you after ' + attempts + ' attempts (T1).'
-                });
-            }
-        } else {
-            onMessages.restart({
-                message: 'No socket connection exists (T2).'
-            });
-        }
-    }
+    }    
 
     function notifyFailure(hasSocket)
     {
@@ -896,42 +823,43 @@ $(function() {
             return hashRoom;
         }
     }
+       
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *       
+// MOBILE: Hide headers on iPhone
 
-    function createCookie(name,value,days) {
-        if (days) {
-                var date = new Date();
-                date.setTime(date.getTime()+(days*24*60*60*1000));
-                var expires = "; expires="+date.toGMTString();
-        }
-        else var expires = "";
-        document.cookie = name+"="+value+expires+"; path=/";
-    }
+    window.top.scrollTo(0, 1);
 
-    function readCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for(var i=0;i < ca.length;i++) {
-                    var c = ca[i];
-                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-            }
-            return null;
-    }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Setup initial title
 
-    function eraseCookie(name) {
-            createCookie(name,"",-1);
-    }
+    document.title = 'Chatlr (Connecting...)'
+    $('#loading-pulse').tumblrchat('strobe');        
+    
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Setup Button Icons
 
     $('#button-logout').button({text: false, icons: {primary: 'ui-icon-power'}});
     $('#button-help').button({text: false, icons: {primary: 'ui-icon-help'}});
     $('#button-follow').button({text: false, icons: {primary: 'ui-icon-plus'}});
     
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Setup window sizing for any resize (and load)
+
     $(window).resize(function() {
-        $('#text').outerWidth($(window).width() - 12);
-        $('#chatbox').outerHeight($(window).height() - 78);
-        $('#usersbox').outerHeight((($(window).height() - 66)  * 2 / 3) - 12);
-        $('#roomsbox').outerHeight((($(window).height() - 66) / 3));
+        var width      = $(window).width(),
+            height     = $(window).height(),
+            leftOffset = $('#section-top-left').outerWidth(),
+            chatOffset = $('#advertisement').is(':visible') ? 120 : 0;
+
+        $('#text').outerWidth(width - 12);
+        $('#chatbox').outerWidth(width - leftOffset - chatOffset - 18);
+        $('#chatbox, #advertisement').outerHeight(height - 78);
+        $('#usersbox').outerHeight((height - 66) * 2 / 3 - 12);
+        $('#roomsbox').outerHeight((height - 66) / 3);
     }).resize();
+    
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// MOBILE: Really shitty scrolling
     
     $('body').bind('touchstart touchmove', function(e) {
         var touch  = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
@@ -943,7 +871,10 @@ $(function() {
         e.preventDefault();
     });
     
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// Setup logout (multiple account) scroll down
+    
     $('#logout')
         .position({my: 'left top', at: 'left bottom', of: '#button-logout', offset: '0 6'})
-        .hide();
+        .hide();    
 });
