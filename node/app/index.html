@@ -20,6 +20,7 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/tinyscroll.js"></script>
         <script type="text/javascript" src="/js/effects.js"></script>
         <script type="text/javascript" src="/js/json.js"></script>
         <script type="text/javascript" src="/js/tumblrchat.js?v=$Id$"></script>        
@@ -30,36 +31,30 @@
             <!--<div id="count"></div>
             <div id="notice"></div>-->
 
+            <div id="tabs"></div>
+            
             <a id="button-logout" class="topicon ui-state-error" href="/clear" title="Logout">Logout</a>
+
+            <a id="button-settings" class="topicon" href="/settings" title="Settings">Settings</a>
 
             <a id="button-help" class="topicon" title="Chatlr Rules & Help" href="" rel="page-about">Rules</a>
 
             <a id="button-follow" class="topicon" href="http://www.tumblr.com/follow/chatlr" title="Follow Chatlr's Blog!" target="_blank">Follow</a>
-
-            <a id="button-creator" class="toplink" href="http://kevinnuut.com/" title="Visit KevinNuut.com!" target="_blank">
-                <img src="http://api.tumblr.com/v2/blog/kevinnuut.tumblr.com/avatar/16" alt="Ask KevinNuut.com" />
-                KevinNuut
-            </a>
         </div>
 
         <div id="section-top">
             <div id="section-top-left">
-                <div id="usersbox">
-                    <div id="users"></div>
+                <div id="usersbox" class="scrollbox">
+                    <div id="users" class="viewport"></div>
                 </div>
                                 
-
-                <div id="roomsbox">
-                    <div id="rooms">
-                        <form id="roomadd" action="">
-                            <input type="text" placeholder="Create a Room" title="Prefix with ! to create a Private Room" />
-                        </form>
-                    </div>
+                <div id="roomsbox" class="scrollbox">
+                    <div id="rooms" class="viewport"></div>
                 </div>
             </div>
 
-            <div id="chatbox">
-                <div id="chat"></div>
+            <div id="chatbox" class="scrollbox">
+                <div id="chat" class="viewport"></div>
             </div>
 
             <div id="advertisement">
@@ -162,6 +157,6 @@
             <a id="logout-confirm">
                 <span class="ui-icon ui-icon-power"></span>Logout
             </a>
-        </div>
+        </div>      
     </body>
 </html>

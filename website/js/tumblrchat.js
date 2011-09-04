@@ -67,10 +67,12 @@ $(function() {
                             .text(roomLabel));
 
                     $('#rooms').append(roomObj);
+                    
+                    $('.scrollbox').chatlr('scroll');
                 }
 
                 // Sort rooms by featured then user count
-                $('#rooms div').tumblrchat('sortusers', function(a, b) {
+                $('#rooms div').chatlr('sortusers', function(a, b) {
                     var af     = $(a).is('.featured'),
                         bf     = $(b).is('.featured'),
                         ac     = parseInt($(a).find('sup').text()),
@@ -183,7 +185,7 @@ $(function() {
                 document.title = '(' + userCount + ') Chatlr | ' + fancyRoom
 
                 // Sort rooms by featured then user count
-                $('#rooms div').tumblrchat('sortusers', function(a, b) {
+                $('#rooms div').chatlr('sortusers', function(a, b) {
                     var af     = $(a).is('.featured'),
                         bf     = $(b).is('.featured'),
                         ac     = parseInt($(a).find('sup').text()),
@@ -198,13 +200,13 @@ $(function() {
 
                 // Clear all from being red, then make current room red and move to top
                 $('#rooms div').removeClass('op');
-                $('#rooms #r' + response.roomName).addClass('op').insertAfter('#roomadd');
+                $('#rooms #r' + response.roomName).addClass('op').prependTo('#rooms');
 
                 // Remove possible dialog box with error warnings
                 // Show the chat if not already shown and clear any possible timeouts
                 $('#loading:visible').fadeOut(250);
                 $('#error:visible').remove();
-                $('#loading-pulse').tumblrchat('stopstrobe');
+                $('#loading-pulse').chatlr('stopstrobe');
                 $('#dialog').remove();
 
                 // Attach user blogs to the settings list
@@ -360,11 +362,12 @@ $(function() {
                     $('#chat').append(row.append(link).append(message));
                 }
 
-                // Scroll to the end of the page unless mouse is down
-                var thisScroll = $('#chat').scrollTop();
-                if (thisScroll >= lastScroll) {
-                    lastScroll = thisScroll;
-                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                // Scroll to the end of the page unless someone is hovering
+                if ($('body').data('hoverbox') != 'chatbox') {
+                    lastScroll = $('#chatbox').scrollTop();
+                    $('#chatbox').chatlr('scroll', $('#chatbox')[0].scrollHeight);
+                } else {
+                    $('#chatbox').chatlr('scroll');
                 }
             }
         },
@@ -468,14 +471,6 @@ $(function() {
             socket.json.send({'logout': []});
         }
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// RESIZE EVENT: On resize, move to bottom of the screen
-
-        $(window).resize(function(e) {
-            lastScroll = $('#chat').scrollTop();
-            $('#chat').scrollTop($('#chat')[0].scrollHeight);
-        });
-
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // CLICK EVENT: When buttons are clicked, show a popup
         //
@@ -551,8 +546,8 @@ $(function() {
                 }
 
                 // No matter what, go to bottom of the page
-                lastScroll = $('#chat').scrollTop();
-                $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                lastScroll = $('#chatbox').scrollTop();  
+                $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
                 $('#text').val('');
 
             } else if (message.search(/^\/room !?[a-z0-9-]{2,16}$/i) == 0) {
@@ -718,8 +713,10 @@ $(function() {
         if (id in users) {
             var user;
             if ($('#users #u' + id).length) {
+                // If we are updating user, clear their contents but keep order
                 user = $('#users #u' + id).empty();
             } else {
+                // Otherwise create element
                 user = $('<div/>').attr('id', 'u' + id);
             }
 
@@ -732,6 +729,8 @@ $(function() {
                     .attr('title', clean('Visit ' + users[id].title))
                     .text(clean(users[id].name)));
 
+            user.click(userPopup);
+            
             if (users[id].name in ignore) {
                 user.addClass('ignore');
             }
@@ -771,7 +770,7 @@ $(function() {
     {
         if (!hasSocket || (!socket.socket.connecting && !socket.socket.connected)) {
             // Stop logo pulsing and make sure the background is faded in
-            $('#loading-pulse').tumblrchat('stopstrobe');
+            $('#loading-pulse').chatlr('stopstrobe');
             $('#loading').show();
 
             $('<div/>')
@@ -823,6 +822,52 @@ $(function() {
             return hashRoom;
         }
     }
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *       
+// USER: Popup window and show information about user
+
+    function userPopup(e)
+    {
+        // Prevent it from visiting users site
+        // Prevent it from closing itself on catchall
+        e.preventDefault();
+        e.stopPropagation();
+        
+        var popup    = $('#user-popup'),
+            user     = $(this),
+            userLink = user.children('a'),
+            imageSrc = user.children('img').attr('src');
+            
+        if (!popup.length) {
+            popup = $('<div/>', {
+                'id':    'user-popup',
+                'click': function(e) {
+                    e.stopPropagation();
+                }
+            });
+            
+            $('body').append(popup);
+        } else if (popup.is(':visible') && popup.data('uid') == user.attr('id')) {
+            // If we are clicking the users name again, toggle popup off
+            popup.hide();
+            return;
+        }
+            
+        imageSrc = imageSrc.substr(0, imageSrc.length - 2) + 64;
+        
+        popup
+            .data('uid', user.attr('id'))
+            .empty()
+            .append($('<img />', {src: imageSrc}))
+            .append($('<a />', {
+                href:  userLink.attr('href'),
+                title: userLink.attr('title'),
+                html:  userLink.attr('title')}
+            ))
+            .append($('<span />'))
+            .show()
+            .position({my: 'left center', at: 'left center', of: user, offset: '48 0'});
+    }
        
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *       
 // MOBILE: Hide headers on iPhone
@@ -833,29 +878,38 @@ $(function() {
 // Setup initial title
 
     document.title = 'Chatlr (Connecting...)'
-    $('#loading-pulse').tumblrchat('strobe');        
+    $('#loading-pulse').chatlr('strobe');        
     
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Setup Button Icons
 
     $('#button-logout').button({text: false, icons: {primary: 'ui-icon-power'}});
+    $('#button-settings').button({text: false, icons: {primary: 'ui-icon-wrench'}});
     $('#button-help').button({text: false, icons: {primary: 'ui-icon-help'}});
     $('#button-follow').button({text: false, icons: {primary: 'ui-icon-plus'}});
     
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Setup window sizing for any resize (and load)
 
+    $('.scrollbox').chatlr('scroll');
+    
     $(window).resize(function() {
+        lastScroll = $('#chatbox').scrollTop();
+        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+
         var width      = $(window).width(),
             height     = $(window).height(),
             leftOffset = $('#section-top-left').outerWidth(),
-            chatOffset = $('#advertisement').is(':visible') ? 120 : 0;
+            chatOffset = $('#advertisement').is(':visible') ? 120 : 0,
+            chatHeight = Math.round((height - 66) * 2 / 3 - 18);
 
         $('#text').outerWidth(width - 12);
         $('#chatbox').outerWidth(width - leftOffset - chatOffset - 18);
         $('#chatbox, #advertisement').outerHeight(height - 78);
-        $('#usersbox').outerHeight((height - 66) * 2 / 3 - 12);
-        $('#roomsbox').outerHeight((height - 66) / 3);
+        $('#usersbox').outerHeight(chatHeight);
+        $('#roomsbox').outerHeight(height - chatHeight - 84);
+        
+        $('.scrollbox').chatlr('scroll');
     }).resize();
     
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -865,9 +919,9 @@ $(function() {
         var touch  = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
         var y      = touch.clientY || touch.screenY || touch.pageY;
         var height = $(window).height();
-        var chat   = $('#chat')[0].scrollHeight;
+        var chat   = $('#chatbox')[0].scrollHeight;
         
-        $('#chat').scrollTop(chat * y / height);
+        $('#chatbox').scrollTop(chat * y / height);
         e.preventDefault();
     });
     
@@ -876,5 +930,12 @@ $(function() {
     
     $('#logout')
         .position({my: 'left top', at: 'left bottom', of: '#button-logout', offset: '0 6'})
-        .hide();    
+        .hide();
+        
+    $('body').click(function(e) {
+       $('#user-popup').hide(); 
+    });
 });
+
+       
+        
