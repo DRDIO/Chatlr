@@ -1,7 +1,9 @@
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // LOAD EVENT
 //
-$(function() {   
+$(function() {  
+    $('#logout').hide();
+    
     // Initialize variables
     var socket,
         clientId,
@@ -59,12 +61,12 @@ $(function() {
                     var roomLabel = roomGetFancyName(response.roomName);
 
                     roomObj = $('<div/>')
-                        .attr('id', 'r' + response.roomName)
-                        .addClass((response.roomFeatured ? 'featured' : ''))
-                        .append($('<sup/>').text(response.roomCount))
+                        .attr('id', 'r' + response.roomName)                     
+                        .append($('<span/>', {'class': (response.roomFeatured ? 'ui-icon ui-icon-heart' : 'ui-icon ui-icon-radio-off')}))
                         .append($('<a/>')
                             .attr('href', response.roomName)
-                            .text(roomLabel));
+                            .text(roomLabel))
+                        .append($('<sup/>').text(response.roomCount));
 
                     $('#rooms').append(roomObj);
                     
@@ -202,6 +204,10 @@ $(function() {
                 $('#rooms div').removeClass('op');
                 $('#rooms #r' + response.roomName).addClass('op').prependTo('#rooms');
 
+console.log(response);
+                $('#currentroom .ui-icon').attr('class', (response.rooms[response.roomName].roomFeatured ? 'ui-icon ui-icon-heart' : 'ui-icon ui-icon-radio-off'));
+                $('#currentroom .text').html(roomGetFancyName(response.roomName) + ' Room');
+                
                 // Remove possible dialog box with error warnings
                 // Show the chat if not already shown and clear any possible timeouts
                 $('#loading:visible').fadeOut(250);
@@ -883,10 +889,11 @@ $(function() {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Setup Button Icons
 
-    $('#button-logout').button({text: false, icons: {primary: 'ui-icon-power'}});
-    $('#button-settings').button({text: false, icons: {primary: 'ui-icon-wrench'}});
-    $('#button-help').button({text: false, icons: {primary: 'ui-icon-help'}});
-    $('#button-follow').button({text: false, icons: {primary: 'ui-icon-plus'}});
+    $('#button-logout').button({text: true, icons: {primary: 'ui-icon-power'}});
+    $('#button-settings').button({text: true, icons: {primary: 'ui-icon-wrench'}});
+    $('#button-changeroom').button({text: true, icons: {primary: 'ui-icon-comment'}});    
+    $('#button-help').button({text: true, icons: {primary: 'ui-icon-help'}});
+    $('#button-follow').button({text: true, icons: {primary: 'ui-icon-plus'}});
     
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Setup window sizing for any resize (and load)

@@ -27,7 +27,7 @@ body, input {
     font-size: 1em;
     background: url(/img/header.png) no-repeat 0 0;
     display: block;
-    width: 12.167em;
+    width: 11.5em;
     height: 2em;
     text-indent: -9999em;
     overflow: hidden;
@@ -61,7 +61,7 @@ body, input {
 .topbuttons, .toplink, .topicon {
     float: right;
     display: block;
-    padding: 0.333em 0.75em;
+    padding: 0.25em 0.75em 0.333em 0.75em;
     height: 1.167em;
     margin: 0.5em 0.5em 0.5em 0;    
     color: #ededed;
@@ -185,10 +185,17 @@ body, input {
     #rooms {
         background: #fff;
         min-height: 100%;
+        overflow: hidden;
+        width: auto;
     }
+    
+        #rooms .ui-icon {
+            float: left;
+            margin-right: 0.5em;
+        }
 
         #rooms sup {
-            margin-right: 0.5em;
+            float: right;
             width: 1.333em;
             height: 1.333em;
             display: inline-block;
@@ -204,7 +211,7 @@ body, input {
 }
 
 #section-top-left {
-    width: 148px;
+    width: 12em;
     height: 100%;
     float: left;
 }
@@ -574,11 +581,14 @@ body, input {
     margin-right: 0.5em;
 }
 
-#user-popup h1 {
+#user-popup a {
     font-size: 1.167em;
     display: block;
     line-height: 1;
     margin: 0;
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
 }
 
 .ui-button-icon-only {
@@ -601,3 +611,35 @@ body, input {
     width: 0.75em;
     cursor: pointer;
 }
+
+#tabs {
+    float: left;
+}
+
+#currentroom {
+    color: #333;
+    background: #eee;
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.9)), to(rgba(255, 255, 255, 1)));    
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+}
+
+#currentroom .ui-icon {
+    float: left;
+    margin: -0.083em 0.167em 0 -0.333em;
+    opacity: 0.75;
+}
+
+#currentroom .text {
+    font-weight: bold;
+}
+
+.ui-widget {
+    font-size: 1em;
+}
+
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text, .ui-button-text-only .ui-button-text {
+    padding: 0 0 0 1.25em;
+    margin-top: -0.083em;
+    font-weight: normal;
+}    

@@ -18,7 +18,7 @@ make install
 curl http://npmjs.org/install.sh | clean=no sh
 
 # Install Forever
-npm -g install forever
+npm -g install express connect socket.io forever
 
 # install Chatlr
 cd /usr/src
@@ -26,6 +26,7 @@ git clone git://github.com/KevinNuut/Chatlr.git
 
 # Setup Chatlr
 cd Chatlr
+git checkout -b dev
 git submodule update --init --recursive
 
 # Copy config.js.bu and replace all of the open variables with user input

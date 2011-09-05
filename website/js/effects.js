@@ -71,7 +71,7 @@
                         .outerHeight(self.innerHeight(), true)
                         .position({my: 'right top', at: 'right top', of: self});
 
-                    scrollheight = Math.max(18, scrollbar.height() * Math.min(1, scrollbar.outerHeight() / viewport[0].scrollHeight));
+                    scrollheight = Math.max(24, scrollbar.height() * Math.min(1, scrollbar.outerHeight() / viewport[0].scrollHeight));
                     
                     scrollclick
                         .outerHeight(scrollheight)
