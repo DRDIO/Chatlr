@@ -392,7 +392,7 @@ console.log(response);
         notifyFailure(false);
     } else {
         socket = new io.connect(null, {
-            'transports': ['flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling'],
+            'transports': ['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling'],
             'connect timeout': 5000,
             'try multiple transports': true,
             'reconnect': true,
