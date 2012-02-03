@@ -46,8 +46,7 @@ body, input {
     -moz-border-radius: 0.3em;
     min-width: 0.6em;
     text-align: center;
-    -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 #notice {
@@ -71,9 +70,10 @@ body, input {
     -moz-border-radius: 0.25em;
     text-align: center;
     border: 1px solid rgba(0,0,0,0.10);
-    border-bottom: 1px solid rgba(255,255,255,0.10);
-    background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.25)), to(rgba(255,255,255,0.15)));
-    -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.5);
+    background: linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    box-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 
     .topbuttons:hover, .toplink:hover {
@@ -120,6 +120,7 @@ body, input {
 
         #users div, #rooms div {            
             padding: 0.5em;
+            border-bottom: 1px solid rgb(240,240,240);
         }
 
         #users img {
@@ -133,30 +134,30 @@ body, input {
             color: #333;
             text-decoration: none;
             font-weight: bold;
-        }
-
-        #users div:nth-child(odd), #rooms div:nth-child(even) {
-            background: #F6F6F6;
+            vertical-align: middle;
         }
 
         #users div.personal, #rooms div.op {
-            background: #FFF2F2;
+            background-image: linear-gradient(top, rgb(255,255,255) 0%, rgb(240,240,240) 100%);
+            background-image: -webkit-linear-gradient(top, rgb(255,255,255) 0%, rgb(240,240,240) 100%);
+            background-image: -moz-linear-gradient(top, rgb(255,255,255) 0%, rgb(240,240,240) 100%);
+            border-bottom: 1px solid rgb(220,220,220);
         }
 
         #rooms div.featured a {
             color: #E53F29;
         }
-
-        #users div.personal:nth-child(odd), #rooms div.op:nth-child(odd) {
-            background: #FFE5E5;
-        }
-
+        
         #users div.idle {
             opacity: 0.5;
         }
 
-        #users div.op a {
-            color: #E53F29;
+        #users div.op a, #chat a.op {
+            color: #36a3d9;
+        }
+        
+        #users div.personal a {
+            color: #6EBF1C;
         }
 
         #users div.ignore {
@@ -189,7 +190,7 @@ body, input {
         width: auto;
     }
     
-        #rooms .ui-icon {
+        #rooms .ui-icon, #chat div.op .ui-icon {
             float: left;
             margin-right: 0.5em;
         }
@@ -234,12 +235,16 @@ body, input {
 }
 
     #chat {
-        background: #fff;
+        background: rgb(240,240,240);
+        background-image: linear-gradient(top, rgb(220, 220, 220) 0%, rgb(68, 68, 68) 100%);
+        background-image: -webkit-linear-gradient(top, rgb(220, 220, 220) 0%, rgb(68, 68, 68) 100%);
+        background-image: -moz-linear-gradient(top, rgb(220, 220, 220) 0%, rgb(68, 68, 68) 100%);
         min-height: 100%;
     }
 
         #chat div {
             padding: 0.5em;
+            background: #fff;
         }
 
         #chat img {
@@ -248,68 +253,62 @@ body, input {
             -moz-border-radius: 0.25em;
             vertical-align: middle;
         }
-
+        
         #chat a {
             color: #333;
             text-decoration: none;
             font-weight: bold;
         }
-
-
-            #chat div:nth-child(odd) {
-                background: #F6F6F6;
-            }
+        
+        #chat span a {
+            color: #36A3D9;
+        }
 
             #chat div.status {
-                opacity: 0.5;
+                background: #fff;
+                padding-top: 0;
             }
-
-            #chat div.personal {
-                background: #FFF2F2;
+            
+            #chat div.status span {
+                display: block;                
+                padding: 0.5em;
+                background: linear-gradient(top, rgb(204,238,255) 0%, rgb(194,226,242) 100%);
+                background: -webkit-linear-gradient(top, rgb(204,238,255) 0%, rgb(194,226,242) 100%);
+                background: -moz-linear-gradient(top, rgb(204,238,255) 0%, rgb(194,226,242) 100%);
+                box-shadow: 0 0.1em 0.1em rgba(0, 0, 0, 0.1);
+                border-radius: 0 0 0.25em 0.25em;
             }
-
-            #chat div.personal:nth-child(odd) {
-                background: #FFE5E5;
-            }
-
-            #chat a.op, #chat div.op {
-                color: #E53F29;
-                background: inherit;
+            
+            #chat div.personal > a {                
+                color: #6ebf1c;
             }
 
             #chat div.op {
+                border-radius: 0.25em 0.25em 0 0;
+                background-image: linear-gradient(top, rgb(255,255,255) 0%, rgb(240,240,240) 100%);
+                background-image: -webkit-linear-gradient(top, rgb(255,255,255) 0%, rgb(240,240,240) 100%);
+                background-image: -moz-linear-gradient(top, rgb(255,255,255) 0%, rgb(240,240,240) 100%);
+                border-bottom: 1px solid rgb(220,220,220);
+                box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
                 font-weight: bold;
-                background: #FFF2F2;
+                margin-top: 0.5em;
             }
-
-            #chat span a {
-                color: #444;
+            
+            #chat div.op:first-child {
+                margin-top: 0;
             }
-
-        #chat .divider {
-            background: #444;
-            display: block;
-        }
 
         #chat .bottom {
             background: #ffffff;
             border-radius: 0 0 0.25em 0.25em;
             -moz-border-radius: 0 0 0.25em 0.25em;
             display: block;
-            margin-bottom: 0.5em;
+/*            margin-bottom: 0.5em;*/
+            padding: 0;
             height: 0.5em;
+            box-shadow: 0 0.1em 0.25em rgba(0, 0, 0, 0.1);
         }
-
-        #chat .top {
-            background: #ffffff;            
-            border-radius: 0.25em 0.25em 0 0;
-            -moz-border-radius: 0.25em 0.25em 0 0;
-            display: block;
-            height: 0.5em;
-        }
-
-
-
+        
 #form {
     display: block;
     width: 100%;
@@ -337,15 +336,8 @@ body, input {
     padding: 1em;
     background: #f5f5fff;
     border: 2px solid white;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 1px 10px rgba(29, 35, 41, 0.6);
-    -moz-box-shadow: 0px 1px 10px rgba(29, 35, 41, 0.6);
     box-shadow: 0px 1px 10px rgba(29, 35, 41, 0.6);
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
     letter-spacing: 0.05em;
 }
 
@@ -373,8 +365,6 @@ body, input {
     right: 0;
     margin: 0;
     background: #ddd;
-    -webkit-border-radius: 1em;
-    -moz-border-radius: 1em;
     border-radius: 1em;
     padding: 0.25em;
 }
@@ -469,45 +459,25 @@ body, input {
     background: #000;
 }
 
-.night #users, .night #rooms, .night #chat, .night #chat .top, .night #text, .night #roomadd input, .night #chat .bottom {
-    background: #0c0c0c;
+.night #chat, .night #chat div, .night #users, .night #rooms, .night #text {
+    background: #222;
     color: #eee;
 }
 
-.night #roomadd input {
-    border-color: #111;
+.night #users div, .night #rooms div, .night #chat div.op {
+    border-bottom: 1px solid #444;
+}
+
+
+.night #chat div.op, .night #users div.personal, .night #rooms div.op {
+    background-image: linear-gradient(top, #222 0%, #333 100%);
+    background-image: -webkit-linear-gradient(top, #222 0%, #333 100%);
+    background-image: -moz-linear-gradient(top, #222 0%, #333 100%);
 }
 
 .night #chat a, .night #users a, .night #rooms a {
-    color: #ccc;
+    color: #eee;
 }
-
-.night #chat a.op, .night #chat div.op {
-    color: #E53F29;
-}
-
-.night #chat div:nth-child(odd), .night #users div:nth-child(odd), .night #rooms div:nth-child(even) {
-    background: #111;
-}
-
-.night #chat div.personal, .night #users div.personal, .night #rooms div.op, .night #chat div.op {
-    background: #060a0d;
-}
-
-.night #chat div.personal:nth-child(odd), .night #users div.personal:nth-child(odd), .night #rooms div.op:nth-child(odd) {
-    background: #0d131a;
-}
-
-.night {
-    scrollbar-face-color: #333;
-    scrollbar-track-color: #000;
-    scrollbar-arrow-color: #fff;
-    scrollbar-highlight-color: #333;
-    scrollbar-3dlight-color: #444;
-    scrollbar-shadow-color: #222;
-    scrollbar-darkshadow-color: #111;
-}
-
 
 #logout.ui-state-default {
     min-width: 14.6em;
@@ -521,13 +491,17 @@ body, input {
     border-radius: 0.25em 0 0.25em 0.25em;    
     border: 1px solid rgba(0, 0, 0, 0.10);
     border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-    background: #444 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.25)), to(rgba(255, 255, 255, 0.15)));
-    -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.5);
+    background: #444 linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    background: #444 -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    background: #444 -moz-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    box-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 
 #logout a {
     display: block;
-    background: #444 -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.25)), to(rgba(255, 255, 255, 0.15)));
+    background: #444 linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    background: #444 -webkit-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
+    background: #444 -moz-linear-gradient(top, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
     padding: 0.5em;
 }
 
@@ -550,7 +524,6 @@ body, input {
 
 #logout-confirm span {
     display: inline-block;
-    vertical-align: middle;
 }
 
 .pulldown {
@@ -566,8 +539,7 @@ body, input {
     z-index: 100;
     background: #fff;
     border-radius: 0.25em;
-    -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     width: auto;
     min-width: 24em;
@@ -606,7 +578,7 @@ body, input {
 
 .scrollbox .scrollclick {
     background: #888;
-    opacity: 0.75;
+    opacity: 0.333;
     border-radius: 0.25em;
     width: 0.75em;
     cursor: pointer;
@@ -619,9 +591,12 @@ body, input {
 #currentroom {
     color: #333;
     background: #eee;
-    background: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0.9)), to(rgba(255, 255, 255, 1)));    
+    background: linear-gradient(top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
+    background: -moz-linear-gradient(top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
     border: 1px solid rgba(255, 255, 255, 0.10);
     border-bottom: 1px solid rgba(0, 0, 0, 0.10);
+    display: none;
 }
 
 #currentroom .ui-icon {
@@ -643,3 +618,21 @@ body, input {
     margin-top: -0.083em;
     font-weight: normal;
 }    
+
+#button-room {
+    display: block;
+    width: auto;
+    overflow: auto;
+    background: #36A3D9;
+    padding: 0.5em;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    vertical-align: middle;
+}
+
+#button-room span {
+    float: left;
+    margin: 0 0.5em 0 0;
+    height: 17px;
+}

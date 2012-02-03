@@ -20,7 +20,6 @@
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="/js/tinyscroll.js"></script>
         <script type="text/javascript" src="/js/effects.js"></script>
         <script type="text/javascript" src="/js/json.js"></script>
         <script type="text/javascript" src="/js/tumblrchat.js?v=$Id$"></script>        
@@ -32,9 +31,9 @@
             <div id="notice"></div>-->
 
             <div id="tabs">
-                <a id="button-changeroom" class="topbuttons" href="#" title="Change Room">
+<!--                <a id="button-changeroom" class="topbuttons" href="#" title="Change Room">
                     Create Room
-                </a>
+                </a>-->
                 <div id="currentroom" class="topbuttons">
                     <span class="ui-icon ui-icon-pin-s"></span>
                     <span class="text"></span>
@@ -63,6 +62,10 @@
                 </div>
                                 
                 <div id="roomsbox" class="scrollbox">
+                    <a href="" id="button-room" title="Create Room">
+                        <span class="ui-icon ui-icon-plus"></span>
+                        Create Room
+                    </a>
                     <div id="rooms" class="viewport"></div>
                 </div>
             </div>
@@ -108,7 +111,7 @@
 
             <p>
                 <strong>Rules</strong><br />
-                Failure to abide by the following rules will result in escalating ban:
+                Failure to abide by the following rules will result in an escalating ban:
             </p>
 
             <ul>
@@ -138,12 +141,13 @@
                 <a href="http://www.tumblr.com/oauth/apps" title="Visit Tumblr OAuth" target="_blank">Tumblr OAuth</a>,
                 <a href="http://socket.io/" title="Visit Socket.IO" target="_blank">Socket.IO</a>,
                 <a href="http://nodejs.org/" title="Visit Node.JS" target="_blank">Node.JS</a>, and
-                <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>.
-                
-                We'd love it if you followed the
-                <a href="http://blog.chatlr.com/" title="Chatlr Blog" target="_blank">Blog</a>
-                or <a href="http://www.tumblr.com/directory/recommend/startups/chatlr" title="Recommend Chatlr">Recommend</a>
-                Chatlr as a startup!
+                <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>.                                
+            </p>
+            
+            <p>
+                <strong>
+                    <a href="http://www.tumblr.com/follow/chatlr" title="Chatlr Blog" target="_blank">Follow Chatlr</a>!
+                </strong>
             </p>
         </div>
 

@@ -83,6 +83,10 @@
                     
                     if (scroll) {
                         self.scrollTop(scroll);
+                        
+                        var moveY = Math.min(scrollclick.data('maxY'), Math.max(0, scroll));
+                        
+                        scrollclick.css({'margin-top': moveY});
                     }
                 }
             });    

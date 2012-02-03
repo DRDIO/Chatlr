@@ -558,7 +558,7 @@ chat.prototype.roomCreate = function(roomName, featured)
     
     // If Room does not exist, CREATE IT
     this.chatRooms[roomName] = {
-        topic:     'Anything',
+        topic:     '',
         buffer:    [],
         users:     {},
         userCount: 0,

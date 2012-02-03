@@ -18,7 +18,6 @@ $(function() {
         topic         = '',
         userBlogs     = '',
         isMobile      = false,
-        lastScroll    = 0,
         connected     = false,
         approved      = false;
 
@@ -62,15 +61,13 @@ $(function() {
 
                     roomObj = $('<div/>')
                         .attr('id', 'r' + response.roomName)                     
-                        .append($('<span/>', {'class': (response.roomFeatured ? 'ui-icon ui-icon-heart' : 'ui-icon ui-icon-radio-off')}))
+                        .append($('<span/>', {'class': (response.roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off')}))
                         .append($('<a/>')
                             .attr('href', response.roomName)
                             .text(roomLabel))
                         .append($('<sup/>').text(response.roomCount));
 
                     $('#rooms').append(roomObj);
-                    
-                    $('.scrollbox').chatlr('scroll');
                 }
 
                 // Sort rooms by featured then user count
@@ -151,30 +148,31 @@ $(function() {
                 if (!connected || approved) {
                     var fancyRoom = roomGetFancyName(response.roomName);
 
-                    if (!$('#chat').is(':empty')) {
-                        $('#chat')
-                            .append($('<b />')
-                                .addClass('divider')
-                                .append($('<b />')
-                                    .addClass('bottom'))
-                                .append($('<b />')
-                                    .addClass('top')));
-                    } else {
-                        $('#chat')
-                                .append($('<b />')
-                                    .addClass('top'));
-                    }
-
+                    console.log(response);
+                    
+                    $('#chat div.op').removeClass('title-primary');
+                    
                     $('#chat')
                         .append($('<div />')
                             .addClass('op')
-                            .text(fancyRoom + ' Room'));
+                            .addClass('title-primary')
 
-                    // Update status to say they joined                    
-                    onMessages.message({
-                        type:    'status',
-                        message: 'The topic is \'' + topic + '\''
-                    });
+                            .append($('<span/>', {'class': (response.rooms[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off')}))
+                            .append($('<strong/>')
+                                .text(fancyRoom + ' Room')
+                            )
+                        )
+                            
+                        .append($('<div />')
+                            .addClass('bottom'));
+
+                    if (topic) {
+                        // Update status to say they joined                    
+                        onMessages.message({
+                            type:    'status',
+                            message: 'The topic is \'' + topic + '\''
+                        });
+                    }
 
                     // Output buffer messages
                     for (var j in response.buffer) {
@@ -204,8 +202,7 @@ $(function() {
                 $('#rooms div').removeClass('op');
                 $('#rooms #r' + response.roomName).addClass('op').prependTo('#rooms');
 
-console.log(response);
-                $('#currentroom .ui-icon').attr('class', (response.rooms[response.roomName].roomFeatured ? 'ui-icon ui-icon-heart' : 'ui-icon ui-icon-radio-off'));
+                $('#currentroom .ui-icon').attr('class', (response.rooms[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off'));
                 $('#currentroom .text').html(roomGetFancyName(response.roomName) + ' Room');
                 
                 // Remove possible dialog box with error warnings
@@ -365,15 +362,14 @@ console.log(response);
                     }
 
                     // insert message
-                    $('#chat').append(row.append(link).append(message));
+                    $('#chat div:last').before(row.append(link).append(message));
                 }
 
                 // Scroll to the end of the page unless someone is hovering
                 if ($('body').data('hoverbox') != 'chatbox') {
-                    lastScroll = $('#chatbox').scrollTop();
-                    $('#chatbox').chatlr('scroll', $('#chatbox')[0].scrollHeight);
+                    $('#chatbox').chatlr('scroll', $('#chat').outerHeight(true) - 6);
                 } else {
-                    $('#chatbox').chatlr('scroll');
+                    // $('#chatbox').chatlr('scroll');
                 }
             }
         },
@@ -507,19 +503,19 @@ console.log(response);
         $('#button-logout').click(function(e) {
             e.preventDefault();
             
-            $('#button-logout').toggleClass('pulldown');
-            
-            $('#logout').toggle('blind', 100);
-                
+//            $('#button-logout').toggleClass('pulldown');
 //            
-//            if (socket.connected) {
-//                console.log('logging out');
-//                socket.send({type: 'logout'});
-//            } else {
-//                console.log('redirect');
-//                location.href = '/clear';
-//            }
-//            return false;
+//            $('#logout').toggle('blind', 100);
+                
+            
+            if (socket.connected) {
+                console.log('logging out');
+                socket.send({type: 'logout'});
+            } else {
+                console.log('redirect');
+                location.href = '/clear';
+            }
+            return false;
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -531,29 +527,34 @@ console.log(response);
             var timestamp = new Date().getTime();
 
             if (message.search(/^\/mobile/i) == 0) {
+                var width      = $(window).width(),
+                    leftOffset = $('#section-top-left').outerWidth(),
+                    chatOffset = $('#advertisement').is(':visible') ? 120 : 0;
+                
                 if (!isMobile) {
                     isMobile = true;
-                    $('.toplink, #button-help, #notice').fadeOut(250);
-                    $('#chat').css({overflowY: 'hidden'});
-                    $('#usersbox').animate({opacity: 0}, 250);
-                    $('#roomsbox').animate({opacity: 0}, 250);
                     
-                    $('#section-top-left').animate({width: '0%'}, 250);
-                    $('#section-top-right').animate({width: '100%'}, 250);
+                    $('.toplink, #button-help, #notice, #button-follow').fadeOut(250);
+                    
+                    $('#usersbox, #roomsbox, #advertisement').animate({opacity: 0}, 250);
+                    $('#section-top-left').animate({width: '0px'}, 250);                    
+                    $('#chatbox').animate({width: (width - 12) + 'px'}, 250);
+                    
                 } else {
                     isMobile = false;
-                    $('.toplink, #button-help, #notice').fadeIn(250);
-                    $('#chat').css({overflowY: 'auto'});
-                    $('#usersbox').animate({opacity: 1}, 250);
-                    $('#roomsbox').animate({opacity: 1}, 250);
                     
-                    $('#section-top-left').animate({width: '15%'}, 250);
-                    $('#section-top-right').animate({width: '85%'}, 250);
+                    $('.toplink, #button-help, #notice, #button-follow').fadeIn(250);
+                    
+                    $('#usersbox, #roomsbox, #advertisement').animate({opacity: 1}, 250);
+                    $('#section-top-left').animate({width: '12em'}, 250);
+                    $('#chatbox').animate({width: (width - 144 - chatOffset - 18) + 'px'}, 250);
                 }
+                
+                setTimeout(function() {
+                    $('.scrollbox').chatlr('scroll');
+                }, 250);
 
-                // No matter what, go to bottom of the page
-                lastScroll = $('#chatbox').scrollTop();  
-                $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
+                // Clear the current text values                
                 $('#text').val('');
 
             } else if (message.search(/^\/room !?[a-z0-9-]{2,16}$/i) == 0) {
@@ -568,10 +569,12 @@ console.log(response);
                 $('#text').val('');
                 
             } else if (message.search(/^\/topic$/i) == 0) {
-                onMessages.message({
-                    type:    'status',
-                    message: 'The topic is \'' + topic + '\'...'
-                });
+                if (topic) {
+                    onMessages.message({
+                        type:    'status',
+                        message: 'The topic is \'' + topic + '\'...'
+                    });
+                }
                 
                 $('#text').val('');
 
@@ -889,21 +892,16 @@ console.log(response);
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Setup Button Icons
 
-    $('#button-logout').button({text: true, icons: {primary: 'ui-icon-power'}});
-    $('#button-settings').button({text: true, icons: {primary: 'ui-icon-wrench'}});
-    $('#button-changeroom').button({text: true, icons: {primary: 'ui-icon-comment'}});    
-    $('#button-help').button({text: true, icons: {primary: 'ui-icon-help'}});
-    $('#button-follow').button({text: true, icons: {primary: 'ui-icon-plus'}});
+    $('#button-logout').button({text: false, icons: {primary: 'ui-icon-power'}});
+    $('#button-settings').button({text: false, icons: {primary: 'ui-icon-wrench'}});
+    $('#button-changeroom').button({text: false, icons: {primary: 'ui-icon-comment'}});    
+    $('#button-help').button({text: false, icons: {primary: 'ui-icon-help'}});
+    $('#button-follow').button({text: false, icons: {primary: 'ui-icon-plus'}});
     
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // Setup window sizing for any resize (and load)
 
-    $('.scrollbox').chatlr('scroll');
-    
     $(window).resize(function() {
-        lastScroll = $('#chatbox').scrollTop();
-        $('#chatbox').scrollTop($('#chatbox')[0].scrollHeight);
-
         var width      = $(window).width(),
             height     = $(window).height(),
             leftOffset = $('#section-top-left').outerWidth(),
@@ -933,7 +931,7 @@ console.log(response);
     });
     
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-// Setup logout (multiple account) scroll down
+// Setup logout (multiple account)
     
     $('#logout')
         .position({my: 'left top', at: 'left bottom', of: '#button-logout', offset: '0 6'})

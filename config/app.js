@@ -12,7 +12,7 @@ exports.chatOps = {
 };
 
 exports.chatRooms = {
-    'main':     '',
+    'english':  '',
     'spam':     '',
     'italian':  '',
     'spanish':  '',

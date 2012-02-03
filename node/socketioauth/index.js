@@ -43,7 +43,7 @@ module.exports = function(config) {
             data.sessionID = data.cookie['express.sid'];
             // (literally) get the session data from the session store
             sessionStore.get(data.sessionID, function (err, session) {
-                if (err) {
+                if (err) {s
                     // if we cannot grab a session, turn down the connection
                     accept(err.message, false);
                 } else {

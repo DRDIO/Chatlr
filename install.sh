@@ -10,6 +10,7 @@ apt-get install git-core build-essential libssl-dev
 cd /usr/src
 git clone https://github.com/joyent/node
 cd node
+git checkout v0.4
 ./configure
 make
 make install
@@ -26,7 +27,7 @@ git clone git://github.com/KevinNuut/Chatlr.git
 
 # Setup Chatlr
 cd Chatlr
-git checkout -b dev
+git checkout dev
 git submodule update --init --recursive
 
 # Copy config.js.bu and replace all of the open variables with user input
