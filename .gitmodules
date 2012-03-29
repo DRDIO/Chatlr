@@ -1,6 +1,0 @@
-[submodule "node/connect"]
-	path = node/connect
-	url = git://github.com/KevinNuut/connect.git
-[submodule "node/socket"]
-	path = node/socket
-	url = git://github.com/KevinNuut/Socket.IO-node.git
