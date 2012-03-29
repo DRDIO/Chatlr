@@ -16,7 +16,7 @@ exports.consumerKey    = 'svbT4DJfa0G1LDo4BkFlxPhlshIIYzrOoE1IWieuww0fS07P21';
 exports.consumerSecret = 'TpF7X2GIWV2duq7g2sHijZ64QMNtvfB7i050zyiDvkhw6aC8Sk';
 exports.callbackUrl    = exports.protocol + exports.domain + '/callback';
 
-exports.websitePath    = '/../../website';
-exports.appHtmlPath    = '/../app/index.html';
+exports.websitePath    = __dirname + '/../website';
+exports.appHtmlPath    = exports.websitePath + '/content.html';
 
 exports.logLevel       = 2;

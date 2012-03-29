@@ -18,3 +18,9 @@ exports.chatRooms = {
     'spanish':  '',
     'tagalog':  ''
 };
+
+exports.dbUrl = 'chatlr';
+exports.dbCollections = [
+    'user',
+    'room'
+];
