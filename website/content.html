@@ -9,20 +9,20 @@
 
         <link rel="stylesheet" href="http://jquery-ui.googlecode.com/svn/tags/1.8.13/themes/black-tie/jquery-ui.css" type="text/css" />
         <link rel="stylesheet" type="text/css" href="/css/design.css?v=$Id$" />
-        
+
         <link rel="icon" href="favicon.ico" sizes="16x16" />
         <link rel="icon" href="favicon.ico" sizes="48x48" />
 
         <link rel="apple-touch-icon" href="/img/iphoneicon.png" />
         <link rel="apple-touch-startup-image" href="/img/startup.png">
-        
+
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
 
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="/js/effects.js"></script>
         <script type="text/javascript" src="/js/json.js"></script>
-        <script type="text/javascript" src="/js/tumblrchat.js?v=$Id$"></script>        
+        <script type="text/javascript" src="/js/tumblrchat.js?v=$Id$"></script>
     </head>
     <body>
         <div id="top">
@@ -37,9 +37,9 @@
                 <div id="currentroom" class="topbuttons">
                     <span class="ui-icon ui-icon-pin-s"></span>
                     <span class="text"></span>
-                </div>                
+                </div>
             </div>
-            
+
             <a id="button-logout" class="topbuttons ui-state-error" href="/clear" title="Logout">
                 Logout
             </a>
@@ -60,7 +60,7 @@
                 <div id="usersbox" class="scrollbox">
                     <div id="users" class="viewport"></div>
                 </div>
-                                
+
                 <div id="roomsbox" class="scrollbox">
                     <a href="" id="button-room" title="Create Room">
                         <span class="ui-icon ui-icon-plus"></span>
@@ -83,7 +83,9 @@
                     google_ad_height = 600;
                     //-->
                 </script>
+            <!--
                 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+            -->
             </div>
         </div>
 
@@ -92,7 +94,7 @@
                 <input id="text" type="text" autocomplete="off" placeholder="Type something and hit enter!" />
             </form>
         </div>
-        
+
         <div id="page-about" class="page">
             <p style="margin-top: 0;">
                 <strong>Commands</strong><br />
@@ -127,7 +129,7 @@
                 <strong>Problems</strong><br />
                 Chatlr works in Explorer, Firefox,
                 <a href="http://www.apple.com/safari/" title="Get Safari!">Safari</a> and
-                <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>.                
+                <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>.
                 Please report all problems to the
                 <a href="http://blog.chatlr.com/ask" title="Chatlr's Ask Box" target="_blank">Ask Box</a>
                 along with your OS, browser version, and any error messages.
@@ -141,9 +143,9 @@
                 <a href="http://www.tumblr.com/oauth/apps" title="Visit Tumblr OAuth" target="_blank">Tumblr OAuth</a>,
                 <a href="http://socket.io/" title="Visit Socket.IO" target="_blank">Socket.IO</a>,
                 <a href="http://nodejs.org/" title="Visit Node.JS" target="_blank">Node.JS</a>, and
-                <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>.                                
+                <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>.
             </p>
-            
+
             <p>
                 <strong>
                     <a href="http://www.tumblr.com/follow/chatlr" title="Chatlr Blog" target="_blank">Follow Chatlr</a>!
@@ -168,13 +170,13 @@
         </div>
 
         <div id="loading"><div id="loading-pulse"></div></div>
-        
+
         <div id="logout" class="ui-state-default">
             <div id="bloglist"></div>
-            
+
             <a id="logout-confirm">
                 <span class="ui-icon ui-icon-power"></span>Logout
             </a>
-        </div>      
+        </div>
     </body>
 </html>

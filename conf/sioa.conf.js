@@ -2,7 +2,7 @@
 // Configuration Variables, YAY!
 //
 exports.ipaddr   = '0.0.0.0';
-exports.port     = process.env.C9_PORT;
+exports.port     = process.env.PORT;
 exports.secret  = 'sauce';
 
 exports.protocol        = 'http://';
