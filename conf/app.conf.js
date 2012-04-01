@@ -2,16 +2,22 @@ exports.interval = 10000;
 exports.intIdle  = 300000;
 exports.intKick  = 1800000;
 
-exports.chatOps = {
-    'kevinnuut':     '',
-    'lacey':         '',
-    'gompr':         '',
-    'topherchris':   '',
-    'brittanyforks': '',
-    'fajita':        ''
+exports.opLevel = {
+    0: 'owner',
+    1: 'admin',
+    2: 'moderator'
 };
 
-exports.chatRooms = {
+exports.opList = {
+    'kevinnuut':     0,
+    'lacey':         1,
+    'gompr':         1,
+    'topherchris':   1,
+    'brittanyforks': 1,
+    'fajita':        1
+};
+
+exports.roomList = {
     'english':  '',
     'spam':     '',
     'italian':  '',
