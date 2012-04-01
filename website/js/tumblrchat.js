@@ -114,16 +114,19 @@ $(function() {
         approved: function(response) {
             console.log('approval');
             
-            if ('id' in response && 'roomName' in response && 'topic' in response && 'buffer' in response && 'users' in response && 'rooms' in response) {
+            if ('id' in response && 'roomName' in response && 'topic' in response && 'buffer' in response && 'roomUserList' in response && 'roomList' in response) {
                 // On init, a list of users is grabbed (and add yourself)
                 clientId     = response.id;
-                users        = response.users;
+                users        = response.roomUserList;
                 topic        = response.topic;
                 userBlogs    = response.blogs;
                 userCount    = 0;
 
                 // Clear out sidebar and repopulate with users, updating userCount
-                clearUsers();                                
+                clearUsers();    
+                for (var i in response.userList) {
+                    displayUser()
+                }
                 for (var i in users) {
                     displayUser(i);
                     userCount++;
@@ -131,11 +134,11 @@ $(function() {
 
                 // Clear out sidebar rooms and populate with room list
                 $('#rooms>div').remove();
-                for (var j in response.rooms) {
+                for (var j in response.roomList) {
                     onMessages.roomchange({
                         roomName: j,
-                        roomCount: response.rooms[j].roomCount,
-                        roomFeatured: response.rooms[j].roomFeatured
+                        roomCount: response.roomList[j].roomCount,
+                        roomFeatured: response.roomList[j].roomFeatured
                     });
                 }
 
@@ -157,7 +160,7 @@ $(function() {
                             .addClass('op')
                             .addClass('title-primary')
 
-                            .append($('<span/>', {'class': (response.rooms[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off')}))
+                            .append($('<span/>', {'class': (response.roomList[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off')}))
                             .append($('<strong/>')
                                 .text(fancyRoom + ' Room')
                             )
@@ -202,7 +205,7 @@ $(function() {
                 $('#rooms div').removeClass('op');
                 $('#rooms #r' + response.roomName).addClass('op').prependTo('#rooms');
 
-                $('#currentroom .ui-icon').attr('class', (response.rooms[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off'));
+                $('#currentroom .ui-icon').attr('class', (response.roomList[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off'));
                 $('#currentroom .text').html(roomGetFancyName(response.roomName) + ' Room');
                 
                 // Remove possible dialog box with error warnings
@@ -226,6 +229,9 @@ $(function() {
                 
                 connected = true;
                 approved  = true;
+            } else {
+                console.log('incomplete response');
+                console.log(response);
             }
         },
 
@@ -445,7 +451,7 @@ $(function() {
         {
             console.log(response);
             
-            if ('type' in response && response.type in onMessages) {
+            if (response.type && response.type in onMessages) {
                 // if (typeof console !== 'undefined') console.log(response.type);
                 onMessages[response.type](response);
             }

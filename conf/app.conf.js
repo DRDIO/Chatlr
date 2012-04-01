@@ -34,26 +34,26 @@ exports.db = {
 };
 
 exports.server = {
-    host:       '0.0.0.0',
-    port:       process.env.PORT,
+    host:       '',
+    port:       8080,
     secret:     'sauce1!',
     publicPath: __dirname + '/../website'
 };
 
 exports.oauth = {
     protocol:        'http://',
-    domain:          'chatlr.kevinnuut.c9.io',
+    domain:          'tumblrchat.loc:8080',
 
     requestUrl:      'http://www.tumblr.com/oauth/request_token',
     accessUrl:       'http://www.tumblr.com/oauth/access_token',
     authorizeUrl:    'http://www.tumblr.com/oauth/authorize',
     authenticateUrl: 'http://api.tumblr.com/v2/user/info',
 
-    consumerKey:     'BgIkIo9ReF5A5VSFNwNmtY8EHoYqw3KWA3ScKxCMHHNxi0DLxm',
-    consumerSecret:  'z7FMJmNa34wHsokEfyiK1OCFArY1KWX1MprmXz1uMjJ6OG9P4A',
-    callbackUrl:     'http://chatlr.kevinnuut.c9.io/callback',
+    consumerKey:     'svbT4DJfa0G1LDo4BkFlxPhlshIIYzrOoE1IWieuww0fS07P21',
+    consumerSecret:  'TpF7X2GIWV2duq7g2sHijZ64QMNtvfB7i050zyiDvkhw6aC8Sk',
+    callbackUrl:     'http://tumblrchat.loc:8080/callback',
 
-    appHtmlPath:     exports.server.webPath + '/content.html'
+    appHtmlPath:     exports.server.publicPath + '/content.html'
 };
 
 exports.socketio = {
