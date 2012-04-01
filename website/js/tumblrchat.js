@@ -119,7 +119,7 @@ $(function() {
                 clientId     = response.id;
                 users        = response.roomUserList;
                 topic        = response.topic;
-                userBlogs    = response.blogs;
+                userBlogs    = response.userBlogList;
                 userCount    = 0;
 
                 // Clear out sidebar and repopulate with users, updating userCount
@@ -151,8 +151,6 @@ $(function() {
                 if (!connected || approved) {
                     var fancyRoom = roomGetFancyName(response.roomName);
 
-                    console.log(response);
-                    
                     $('#chat div.op').removeClass('title-primary');
                     
                     $('#chat')
