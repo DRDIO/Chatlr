@@ -49,7 +49,12 @@ $(function() {
         // ROOMCHANGE: add, or change a room listed on the side
         //
         roomchange: function(response) {
-            if ('roomName' in response && 'roomCount' in response) {                
+            console.log(response);
+            
+            if ('roomName' in response && 'roomCount' in response) {
+                // hotfix on room name (since ! freaks stuff out)
+                response.roomName = response.roomName.replace('!', '_');
+                
                 var roomObj = $('#rooms #r' + response.roomName);
 
                 if (roomObj.length) {
@@ -61,7 +66,7 @@ $(function() {
 
                     roomObj = $('<div/>')
                         .attr('id', 'r' + response.roomName)                     
-                        .append($('<span/>', {'class': (response.roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off')}))
+                        .append($('<span/>', {'class': 'ui-icon ' + (response.roomFeatured ? 'ui-icon-star' : (response.roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet'))}))
                         .append($('<a/>')
                             .attr('href', response.roomName)
                             .text(roomLabel))
@@ -83,6 +88,8 @@ $(function() {
                     
                     return (result ? -1 : 1);
                 });
+                
+                $('.scrollbox').chatlr('scroll');
             }
         },
 
@@ -92,6 +99,7 @@ $(function() {
         roomdelete: function(response) {
             if ('roomName' in response) {
                 $('#rooms #r' + response.roomName).remove();
+                $('.scrollbox').chatlr('scroll');            
             }
         },
 
@@ -128,7 +136,7 @@ $(function() {
                     displayUser()
                 }
                 for (var i in users) {
-                    displayUser(i);
+                    displayUser(users[i].name);
                     userCount++;
                 }
 
@@ -138,7 +146,8 @@ $(function() {
                     onMessages.roomchange({
                         roomName: j,
                         roomCount: response.roomList[j].roomCount,
-                        roomFeatured: response.roomList[j].roomFeatured
+                        roomFeatured: response.roomList[j].roomFeatured,
+                        roomHidden: response.roomList[j].roomHidden
                     });
                 }
 
@@ -158,7 +167,7 @@ $(function() {
                             .addClass('op')
                             .addClass('title-primary')
 
-                            .append($('<span/>', {'class': (response.roomList[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off')}))
+                            .append($('<span/>', {'class': 'ui-icon ' + (response.roomList[response.roomName].roomFeatured ? 'ui-icon-star' : (response.roomList[response.roomName].roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet'))}))
                             .append($('<strong/>')
                                 .text(fancyRoom + ' Room')
                             )
@@ -203,7 +212,7 @@ $(function() {
                 $('#rooms div').removeClass('op');
                 $('#rooms #r' + response.roomName).addClass('op').prependTo('#rooms');
 
-                $('#currentroom .ui-icon').attr('class', (response.roomList[response.roomName].roomFeatured ? 'ui-icon ui-icon-bullet' : 'ui-icon ui-icon-radio-off'));
+                $('#currentroom .ui-icon').attr('class', 'ui-icon ' + (response.roomList[response.roomName].roomFeatured ? 'ui-icon-star' : (response.roomList[response.roomName].roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet')));
                 $('#currentroom .text').html(roomGetFancyName(response.roomName) + ' Room');
                 
                 // Remove possible dialog box with error warnings
@@ -227,6 +236,9 @@ $(function() {
                 
                 connected = true;
                 approved  = true;
+                
+                $('.scrollbox').chatlr('scroll');
+            
             } else {
                 console.log('incomplete response');
                 console.log(response);
@@ -242,7 +254,7 @@ $(function() {
             if (response.user) {
                 // Update user counts on sidebar and in header
                 userCount++;
-                document.title = '(' + userCount + ') Chatlr';
+                document.title = '(' + userCount + ') Chatlr';                
                 
                 // Display user on side and add
                 users[response.user.name] = response.user;
@@ -267,6 +279,8 @@ $(function() {
                 // Update user counts on sidebar and in header
                 userCount--;
                 document.title = '(' + userCount + ') Chatlr';
+                
+                $('.scrollbox').chatlr('scroll');
             }
         },
 
@@ -342,7 +356,7 @@ $(function() {
                     response.message = strip(response.message);
                     response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?(#\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
                     response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
-                    response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$1" class="room" title="Go to $2 Room">$1</a>');
+                    response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$2" class="room" title="Go to $2 Room">$1</a>');
 
                     // MESSAGE: The default message from a user
                     if (response.type == 'message') {
@@ -447,8 +461,6 @@ $(function() {
         //
         socket.on('message', function(response)
         {
-            console.log(response);
-            
             if (response.type && response.type in onMessages) {
                 // if (typeof console !== 'undefined') console.log(response.type);
                 onMessages[response.type](response);
@@ -511,6 +523,7 @@ $(function() {
 //            
 //            $('#logout').toggle('blind', 100);
                 
+            console.log(socket.connected);
             
             if (socket.connected) {
                 console.log('logging out');
@@ -525,6 +538,37 @@ $(function() {
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // SUBMIT EVENT: When the text box is submitted, prevent submission and send message
         //
+        
+        $('#text').keydown(function(e) {
+            var self = $(this),
+                key  = e.which;
+                
+            if (key == 16) {
+                console.log('shifted');
+                self.data('shift', true);
+            } else {
+                self.data('prev', key);
+            }
+            
+            if (key == 50 && self.data('shift')) {
+                console.log('amped');
+                self.data('amp', true);
+            }
+            
+            if(self.data('amp') && ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || key == 189)) {
+                console.log(e.key);
+            }
+        });
+        
+        $('#text').keyup(function(e) {
+            var self = $(this),
+                key  = e.which;
+                
+            if (key == 16) {
+                self.data('shift', false);
+            }
+        })
+        
         $('#form').submit(function(e) {
             e.preventDefault();
             var message   = $('#text').val();
@@ -663,8 +707,6 @@ $(function() {
         $('#rooms a, .room').live('click', function(e) {
            e.preventDefault();
            var newRoom = $(this).attr('href');
-
-           console.log(newRoom);
            
            if(newRoom != (roomUrlGet() || 'english')) {
                socket._roomChange(newRoom);
@@ -704,9 +746,7 @@ $(function() {
 
     function roomGetFancyName(roomName)
     {
-        if (roomName.charAt(0) == '!') {
-            roomName = roomName.substr(1);
-        }
+        roomName = roomName.replace(/[!_]+/ig, '');
         
         var parts = roomName.split('-');
         for (var i in parts) {
@@ -719,6 +759,7 @@ $(function() {
     function clearUsers()
     {
         $('#users').html('');
+        $('.scrollbox').chatlr('scroll');
     }
 
     function displayUser(id)
@@ -732,7 +773,7 @@ $(function() {
                 // Otherwise create element
                 user = $('<div/>').attr('id', 'u' + id);
             }
-
+            
             user
                 .append($('<img/>')
                     .attr('src', clean(users[id].avatar)))
@@ -762,6 +803,8 @@ $(function() {
             if (users[id].idle) {
                 user.addClass('idle');
             }
+            
+            $('.scrollbox').chatlr('scroll');            
         }
     }
 

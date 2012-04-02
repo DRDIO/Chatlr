@@ -18,11 +18,8 @@ exports.opList = {
 };
 
 exports.roomList = {
-    'english':  '',
-    'spam':     '',
-    'italian':  '',
-    'spanish':  '',
-    'tagalog':  ''
+    'english':  true,
+    'random':   true
 };
 
 exports.db = {

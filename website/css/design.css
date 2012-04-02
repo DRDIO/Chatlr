@@ -131,6 +131,7 @@ body, input {
         }
 
         #users a, #rooms a {
+            overflow: hidden;
             color: #333;
             text-decoration: none;
             font-weight: bold;
@@ -628,11 +629,23 @@ body, input {
     color: #fff;
     font-weight: bold;
     text-decoration: none;
-    vertical-align: middle;
+    vertical-align: middle; 
+    border-top: 1px solid rgba(255,255,255,0.4);
+    border-bottom: 3px solid rgba(0,0,0,0.25);
+    background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.15) 0, rgba(0,0,0,0.15) 100%);
+}
+
+#button-room:hover {
+    border-radius: 4px;
+    opacity: 0.9;
 }
 
 #button-room span {
     float: left;
-    margin: 0 0.5em 0 0;
-    height: 17px;
+    margin: -2px 0.5em 0 0;
+    height: 18px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: none;
 }
