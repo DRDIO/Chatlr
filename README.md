@@ -1,4 +1,4 @@
-Introduction
+Introduction 2
 ------------
 
 Chatlr is a realtime chat powered by node.js, socket.io, and connect with Tumblr OAuth verification.
