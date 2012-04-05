@@ -472,7 +472,7 @@ $(function() {
 
         socket._roomChange = function(roomName)
         {
-            socket.json.send({'roomchange': [
+            socket.json.send({'change': [
                 roomName
             ]});
         }
