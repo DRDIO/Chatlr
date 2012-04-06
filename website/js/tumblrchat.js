@@ -21,6 +21,7 @@ $(function() {
         connected     = false,
         approved      = false;
 
+    
     var onMessages = {
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // RESTART: Prompt a confirm box and help user restart session with a blank session ID
@@ -49,8 +50,6 @@ $(function() {
         // ROOMCHANGE: add, or change a room listed on the side
         //
         roomchange: function(response) {
-            console.log(response);
-            
             if ('roomName' in response && 'roomCount' in response) {
                 // hotfix on room name (since ! freaks stuff out)
                 response.roomName = response.roomName.replace('!', '_');
@@ -120,8 +119,6 @@ $(function() {
         // APPROVED: User has been approved, so create their account
         //
         approved: function(response) {
-            console.log('approval');
-            
             if ('id' in response && 'roomName' in response && 'topic' in response && 'buffer' in response && 'roomUserList' in response && 'roomList' in response) {
                 // On init, a list of users is grabbed (and add yourself)
                 clientId     = response.id;
@@ -249,8 +246,6 @@ $(function() {
         // CONNECTED: Set user into sidebar and update count
         //
         connected: function(response) {
-            console.log('connected');
-            
             if (response.user) {
                 // Update user counts on sidebar and in header
                 userCount++;
@@ -295,8 +290,6 @@ $(function() {
         // RECONNECTED: Set a user in sidebar as returned
         //
         reconnected: function(response) {
-            console.log('reconnected');
-            
             if (response.id) {
                 $('#u' + response.id).removeClass('idle');
             }
@@ -315,8 +308,6 @@ $(function() {
         // MESSAGE: User has sent a generic message
         //
         message: function(response) {
-            console.log('message');
-            
             if (response.message) {
                 if (response.id && response.id in users) {
                     if (users[response.id].name in ignore) {
@@ -519,20 +510,7 @@ $(function() {
         $('#button-logout').click(function(e) {
             e.preventDefault();
             
-//            $('#button-logout').toggleClass('pulldown');
-//            
-//            $('#logout').toggle('blind', 100);
-                
-            console.log(socket.connected);
-            
-            if (socket.connected) {
-                console.log('logging out');
-                socket.send({type: 'logout'});
-            } else {
-                console.log('redirect');
-                location.href = '/clear';
-            }
-            return false;
+            socket._userLogout();
         });
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

@@ -1,6 +1,6 @@
-exports.interval = 10000;
-exports.intIdle  = 300000;
-exports.intKick  = 1800000;
+exports.interval = 5000;
+exports.intIdle  = 20000;
+exports.intKick  = 40000;
 
 exports.opLevel = {
     0: 'owner',
