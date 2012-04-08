@@ -1,6 +1,8 @@
-exports.interval = 5000;
-exports.intIdle  = 20000;
-exports.intKick  = 40000;
+exports.timerList = {
+    cleanup: 2.5 * 60000,
+    idle:    5   * 60000,
+    kick:    20  * 60000        
+};
 
 exports.opLevel = {
     0: 'owner',
