@@ -18,10 +18,98 @@ $(function() {
         approved      = false,
         elScrollers   = $('.scrollbox'),
         elCurrentRoom = $('#currentroom'),
-        elRooms       = $('#rooms'),
-        elChat        = $('#chat'),
-        elText        = $('#text');
+        
+        elBody        = $('body'),
+        
+        elHeader      = elBody.children('#top'),
+          btnLogout     = elHeader.children('#button-logout'),
+          btnHelp       = elHeader.children('#button-help'),
+          btnFollow     = elHeader.children('#button-follow'),
 
+        elTop         = elBody.children('#section-top'),
+          elAd          = elTop.children('#advertisement'),
+          elSide        = elTop.children('#section-top-left'),
+            elRoomsbox    = elSide.children('#roomsbox'),
+              btnRoom       = elRoomsbox.children('#button-room'),
+              elRooms       = elRoomsbox.children('#rooms'),
+              
+            elUsersbox    = elSide.children('#usersbox'),
+              elUsers       = elUsersbox.children('#users'),
+            
+          elChatbox     = elTop.children('#chatbox'),
+            elChat        = elChatbox.children('#chat'),
+            
+        elBottom      = elBody.children('#section-bottom'),
+          elForm        = elBottom.children('#form'),
+            elText        = elForm.children('#text'),
+
+        popAbout      = elBody.children('#page-about'),
+        popRooms      = elBody.children('#page-rooms'),
+        popError      = elBody.children('#page-error'),
+
+        elLoading     = elBody.children('#loading'),
+          elPulse       = elLoading.children('#loading-pulse'),
+
+        elLogout      = elBody.children('#logout');
+
+    var Util = {
+        sort: function(a, b)
+        {
+            var af     = $(a).is('.featured'),
+                bf     = $(b).is('.featured'),
+                ac     = parseInt($(a).find('sup').text()),
+                bc     = parseInt($(b).find('sup').text()),
+                at     = $(a).find('a').text(),
+                bt     = $(b).find('a').text(),
+                cc     = ac > bc || (ac == bc && at < bt),
+                result = (af && (!bf || cc)) || (!af && !bf && cc);
+
+            return (result ? -1 : 1);
+        },
+        
+        clean: function(message)
+        {
+            return (message ? $('<div/>').text(message).text() : '');
+        },
+        
+        strip: function(message)
+        {
+            return $('<div/>').text(message).html();
+        },
+        
+        callServer: function(method, params) 
+        {
+            var pkg = {};
+            pkg[method] = params;
+
+            socket.json.send(pkg); 
+        },
+        
+        notifyFailure: function(hasSocket)
+        {
+            if (!hasSocket || (!socket.socket.connecting && !socket.socket.connected)) {
+                // Stop logo pulsing and make sure the background is faded in
+                elPulse.chatlr('stopstrobe');
+                elLoading.show();
+
+                $('<div/>')
+                    .attr('title', 'Oh Nos, Chatlr Died!')
+                    .attr('id', 'dialog')
+                    .html(popAbout.html())
+                    .css({top: 0, left: 0})
+                    .dialog({
+                        width: Math.min(640, $(window).width() * 0.8),
+                        height: Math.min(400, $(window).height() * 0.8),
+                        resizable: false,
+                        close: function() {
+                            $(this).remove()
+                        }
+                    })
+                    .parent().position({my: 'center', at: 'center', of: document});
+            }
+        }
+    };
+    
     var DomEvent = {
         popupRoomCreate: function(e) 
         {
@@ -33,10 +121,10 @@ $(function() {
 
             // Clear window and remove focus
             $('#roomadd input').val('');
-            $('#text').focus();
+            elText.focus();
             
             if(socket.socket.connected && newRoom != (roomUrlGet() || 'english')) {
-                callServer('change', [ newRoom ]);
+                Util.callServer('change', [ newRoom ]);
             }
         },
         
@@ -44,6 +132,8 @@ $(function() {
         {
             e.preventDefault();
 
+            console.log($(this));
+            
             var message = 'This feature will be available in the next version!';
             if ($(this).attr('rel')) {
                 message = $('#' + $(this).attr('rel')).html();
@@ -58,7 +148,9 @@ $(function() {
                     height: Math.min(400, $(window).height() * 0.8),
                     resizable: false,
                     close: function() {
-                        $(this).remove()}})                
+                        $(this).remove()
+                    }
+                })                
                 .parent().position({my: 'center', at: 'center', of: document});
         },
         
@@ -82,7 +174,7 @@ $(function() {
                     }
                 });
 
-                $('body').append(popup);
+                elBody.append(popup);
             } else if (popup.is(':visible') && popup.data('uid') == user.attr('id')) {
                 // If we are clicking the users name again, toggle popup off
                 popup.hide();
@@ -110,9 +202,9 @@ $(function() {
             var touch  = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
             var y      = touch.clientY || touch.screenY || touch.pageY;
             var height = $(window).height();
-            var chat   = $('#chatbox')[0].scrollHeight;
+            var chat   = elChatbox[0].scrollHeight;
 
-            $('#chatbox').scrollTop(chat * y / height);
+            elChatbox.scrollTop(chat * y / height);
             e.preventDefault();
         },
         
@@ -123,21 +215,21 @@ $(function() {
         
         resizeWindow: function()
         {
-            var width      = $(window).width(),
+            var width  = $(window).width(),
             height     = $(window).height(),
-            leftOffset = $('#section-top-left').outerWidth(),
-            chatOffset = $('#advertisement').is(':visible') ? 120 : 0,
+            leftOffset = elSide.outerWidth(),
+            chatOffset = elAd.is(':visible') ? 120 : 0,
             chatHeight = Math.round((height - 66) * 2 / 3 - 18);
 
-            $('#text').outerWidth(width - 12);
-            $('#chatbox').outerWidth(width - leftOffset - chatOffset - 18);
+            elText.outerWidth(width - 12);
+            elChatbox.outerWidth(width - leftOffset - chatOffset - 18);
             $('#chatbox, #advertisement').outerHeight(height - 78);
-            $('#usersbox').outerHeight(chatHeight);
-            $('#roomsbox').outerHeight(height - chatHeight - 84);
+            elUsersbox.outerHeight(chatHeight);
+            elRoomsbox.outerHeight(height - chatHeight - 84);
 
-            $('.scrollbox').chatlr('scroll');
+            elScrollers.chatlr('scroll');
             
-            $('#logout').position({my: 'left top', at: 'left bottom', of: '#button-logout', offset: '0 6'});
+            elLogout.position({my: 'left top', at: 'left bottom', of: '#button-logout', offset: '0 6'});
         },
         
         submitText: function(e)
@@ -159,8 +251,8 @@ $(function() {
 
                     console.log(command, content);
 
-                    if (command in commandList) {
-                        if (commandList[command](content)) {
+                    if (command in Command) {
+                        if (Command[command](content)) {
                             elText.val('');
                             return true;
                         }
@@ -168,7 +260,7 @@ $(function() {
                 }
             }
 
-            if (commandList.message(message)) {
+            if (Command.message(message)) {
                 elText.val('');
                 return true;
             }
@@ -178,7 +270,8 @@ $(function() {
         {
             e.preventDefault();
             
-            var url = $(this).attr('href');
+            var self = $(this),
+                url  = self.attr('href');
             
             $('<div/>')
                 .attr('title', 'Visit External Link?')
@@ -186,11 +279,11 @@ $(function() {
                 .dialog({
                     buttons: {
                         'No': function() {
-                            $(this).dialog('close');
+                            self.dialog('close');
                         },
                         'Yes': function() {
                             window.open(url);
-                            $(this).dialog('close');
+                            self.dialog('close');
                         }
                     },
                     width: Math.min(640, $(window).width() * 0.8),
@@ -202,7 +295,7 @@ $(function() {
         logout: function(e)
         {
             e.preventDefault();            
-            commandList.logout();
+            Command.logout();
         },
         
         changeRooms: function(e)
@@ -211,7 +304,7 @@ $(function() {
            var newRoom = $(this).attr('href');
            
            if(newRoom != (Room.getUrl() || 'english')) {
-               callServer('change', [ newRoom ]);
+               Util.callServer('change', [ newRoom ]);
            }
         },
         
@@ -249,13 +342,87 @@ $(function() {
     };
     
     var User = {
+        populate: function(list)
+        {        
+            elUsers.empty();
+            
+            for (var i in list) {
+                User.display(list[i].name);
+                userCount++;
+            }
+        },
+        
+        isOp: function()
+        {
+            return (clientId in users && 'op' in users[clientId] && users[clientId].op);
+        },
+        
         isValidName: function(name)
         {
-            
+            return (name.search(/^[a-z0-9-]+$/i) == 0);
+        },
+        
+        display: function(id)
+        {
+            if (id in users) {
+                var user = elUsers.children('#users #u' + id);
+                
+                if (user.length) {
+                    // If we are updating user, clear their contents but keep order
+                    user.empty();
+                } else {
+                    // Otherwise create element
+                    user = $('<div/>').attr('id', 'u' + id);
+                }
+
+                user
+                    .append($('<img/>')
+                        .attr('src', Util.clean(users[id].avatar)))
+                    .append($('<a/>')
+                        .attr('href', Util.clean(users[id].url))
+                        .attr('target', '_blank')
+                        .attr('title', Util.clean('Visit ' + users[id].title))
+                        .text(Util.clean(users[id].name)));
+
+                if (users[id].name in ignore) {
+                    user.addClass('ignore');
+                }
+
+                if (clientId && id == clientId) {
+                    user.addClass('personal');
+                    elUsers.prepend(user);
+                } else {
+                    elUsers.append(user);
+                }
+
+                if (users[id].op) {
+                    user.addClass('op');
+                }
+
+                if (users[id].idle) {
+                    user.addClass('idle');
+                }
+
+                elScrollers.chatlr('scroll');            
+            }
         }
     };
     
     var Room = {
+        populate: function(list)
+        {
+            elRooms.empty();
+                
+            for (var i in list) {
+                Action.roomchange({
+                    roomName: i,
+                    roomCount: list[i].roomCount,
+                    roomFeatured: list[i].roomFeatured,
+                    roomHidden: list[i].roomHidden
+                });
+            }
+        },
+        
         isValidName: function(name)
         {
             return (name.search(/^!?[a-z0-9-]{2,16}$/i) == 0);
@@ -319,16 +486,16 @@ $(function() {
         }
     };
     
-    var commandList = {
+    var Command = {
         away: function()
         {
-            callServer('away', []);
+            Util.callServer('away', []);
             return true;
         },
         
         banlist: function() {
-            if (isUserOp()) {
-                callServer('banlist', []);
+            if (User.isOp()) {
+                Util.callServer('banlist', []);
                 
                 return true;
             }
@@ -337,11 +504,11 @@ $(function() {
         },
         
         ban: function(message) {
-            if (isUserOp()) {
+            if (User.isOp()) {
                 var list = message.split(' ', 3);
                 
-                if (isUserName(list[0])) {
-                    callServer('ban', list);
+                if (User.isValidName(list[0])) {
+                    Util.callServer('ban', list);
                     
                     return true;
                 }
@@ -351,11 +518,11 @@ $(function() {
         },
         
         kick: function(message) {
-            if (isUserOp()) {
+            if (User.isOp()) {
                 var list = message.split(' ', 2);
                 
-                if (isUserName(list[0])) {
-                    callServer('kick', list);
+                if (User.isValidName(list[0])) {
+                    Util.callServer('kick', list);
                     
                     return true;
                 }
@@ -366,8 +533,8 @@ $(function() {
         
         deban: function(debanUserName)
         {
-            if (isUserOp() && isUserName(debanUserName)) {
-                callServer('deban', [ debanUserName ]);
+            if (User.isOp() && User.isValidName(debanUserName)) {
+                Util.callServer('deban', [ debanUserName ]);
                 
                 return true;
             }
@@ -377,29 +544,30 @@ $(function() {
         
         layout: function(type) {            
             var width      = $(window).width(),
-                chatOffset = $('#advertisement').is(':visible') ? 120 : 0;
+                chatOffset = elAd.is(':visible') ? 120 : 0;
 
             if (!isMobile && (type == 'mobile' || type == 'compact')) {
                 isMobile = true;
 
                 $('.toplink, #button-help, #notice, #button-follow').fadeOut(250);
 
-                $('#usersbox, #roomsbox, #advertisement').animate({opacity: 0}, 250);
-                $('#section-top-left').animate({width: '0px'}, 250);                    
-                $('#chatbox').animate({width: (width - 12) + 'px'}, 250);
+                [elUsersbox, elRoomsbox, elAd].animate({opacity: 0}, 250);
+                elSide.animate({width: '0px'}, 250);                    
+                elChatbox.animate({width: (width - 12) + 'px'}, 250);
 
             } else if (isMobile && (type == 'desktop' || type == 'default')) {
                 isMobile = false;
 
                 $('.toplink, #button-help, #notice, #button-follow').fadeIn(250);
 
-                $('#usersbox, #roomsbox, #advertisement').animate({opacity: 1}, 250);
-                $('#section-top-left').animate({width: '12em'}, 250);
-                $('#chatbox').animate({width: (width - 144 - chatOffset - 18) + 'px'}, 250);
+                [elUsersbox, elRoomsbox, elAd].animate({opacity: 1}, 250);
+                elSide.animate({width: '12em'}, 250);
+                elChatbox.animate({width: (width - 144 - chatOffset - 18) + 'px'}, 250);
             }
 
+            // After animations finish, update scrollbars
             setTimeout(function() {
-                $('.scrollbox').chatlr('scroll');
+                elScrollers.chatlr('scroll');
             }, 250);
             
             return true;
@@ -407,14 +575,14 @@ $(function() {
         
         mobile: function()
         {
-            commandList.layout(isMobile ? 'default' : 'compact');
+            Command.layout(isMobile ? 'default' : 'compact');
         },
         
         room: function(page) {
             if (Room.isValidName(page)) {
                 var newRoomName = page.toLowerCase();
                 
-                callServer('change', [ newRoomName ]);
+                Util.callServer('change', [ newRoomName ]);
                 
                 return true;
             }
@@ -424,33 +592,37 @@ $(function() {
         
         theme: function(type) {
             if (type == 'light' || type == 'day') {
-                $('html').removeClass('night');
+                elBody.removeClass('night');
             } else if (type == 'dark' || type == 'night') {
-                $('html').removeClass('night');
+                elBody.removeClass('night');
             }            
             
             return true;
         },
         
         night: function() {
-            commandList.theme($('html').hasClass('night') ? 'light' : 'dark');
+            Command.theme(elBody.hasClass('night') ? 'light' : 'dark');
         },
         
         topic: function(topic) {
-            if (isUserOp() && topic) {
-                callServer('topic', [ topic ]);
+            if (User.isOp() && topic) {
+                Util.callServer('topic', [ topic ]);
                 
                 return true;
             } else {
-                onMessages.message({
+                Action.message({
                     type:    'status',
                     message: 'The topic is \'' + (topic ? topic : 'Not Set') + '\'...'
                 });
+                
+                return true;
             }
+            
+            return false;
         },
         
         help: function() {
-            $('#button-help').click();
+            btnHelp.trigger('click');
             
             return true;
         },
@@ -463,7 +635,7 @@ $(function() {
 
                     for (var i in users) {
                         if (ignoreUserName == users[i].name) {
-                            $('#u' + i).removeClass('ignore');
+                            elUsers.children('#u' + i).removeClass('ignore');
                         }
                     }
                 } else {
@@ -472,7 +644,7 @@ $(function() {
 
                     for (var i in users) {
                         if (ignoreUserName == users[i].name) {
-                            $('#u' + i).addClass('ignore');
+                            elUsers.children('#u' + i).addClass('ignore');
                         }
                     }
                 }
@@ -484,8 +656,8 @@ $(function() {
         },
         
         shout: function(message) {
-            if (isUserOp()) {
-                callServer('shout', [ message ]);
+            if (User.isOp()) {
+                Util.callServer('shout', [ message ]);
                 
                 return true;
             }
@@ -494,8 +666,8 @@ $(function() {
         },
         
         feature: function(featureName) {
-            if (isUserOp() && Room.isValidName(featureName)) {
-                callServer('feature', [ featureName ]);
+            if (User.isOp() && Room.isValidName(featureName)) {
+                Util.callServer('feature', [ featureName ]);
                 
                 return true;
             }
@@ -504,8 +676,8 @@ $(function() {
         },
         
         defeature: function(defeatureName) {
-            if (isUserOp() && Room.isValidName(defeatureName)) {
-                callServer('defeature', [ defeatureName ]);
+            if (User.isOp() && Room.isValidName(defeatureName)) {
+                Util.callServer('defeature', [ defeatureName ]);
                 
                 return true;
             }
@@ -514,8 +686,8 @@ $(function() {
         },
         
         op: function(opUid) {
-            if (isUserOp() && isUserName(opUid)) {
-                callServer('op', [ opUid ]);
+            if (User.isOp() && User.isValidName(opUid)) {
+                Util.callServer('op', [ opUid ]);
                 
                 return true;
             }
@@ -524,8 +696,8 @@ $(function() {
         },
         
         deop: function(deopUid) {
-            if (isUserOp() && isUserName(deopUid)) {
-                callServer('deop', [ deopUid ]);
+            if (User.isOp() && User.isValidName(deopUid)) {
+                Util.callServer('deop', [ deopUid ]);
                 
                 return true;
             }
@@ -536,44 +708,44 @@ $(function() {
         message: function(message) {
             var timestamp = new Date().getTime();
             
-            if (!isUserOp() && (message == lastMessage || timestamp - lastTimestamp < 2000 || message.length > 350)) {
+            if (!User.isOp() && (message == lastMessage || timestamp - lastTimestamp < 2000 || message.length > 350)) {
                 // Quickly display message to self in pink
-                onMessages.message({
+                Action.message({
                     type:    'status',
                     user:    users[clientId],
                     message: 'Ignored as spam due to repetition, length, or frequency.'});
 
-            } else if (!isUserOp() && message.search(/follow/i) != -1 && Room.getUrl() != 'follow-back') {
+            } else if (!User.isOp() && message.search(/follow/i) != -1 && Room.getUrl() != 'follow-back') {
                 // If user asks for followers, kick them to the 'follow-back' room                
-                callServer('change', [ 'follow-back' ]);
-                $('#text').val('');
+                Util.callServer('change', [ 'follow-back' ]);
+                elText.val('');
 
             } else {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
                 // Send to server for broadcast
-                callServer('message', [ message ]);
+                Util.callServer('message', [ message ]);
 
                 // Clear text box
-                $('#text').val('');
+                elText.val('');
             }
         },
         
         logout: function()
         {
-            callServer('logout', []);
+            Util.callServer('logout', []);
         }
     };
     
-    var onMessages = {
+    var Action = {
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
         // RESTART: Prompt a confirm box and help user restart session with a blank session ID
         //
         restart: function(response) {
             // Add detailed messages on errors
             // eraseCookie('connect.sid');
-            notifyFailure(false);
+            Util.notifyFailure(false);
             
             var message = response.message || 'There was an unknown error (E0)';
             if (confirm(message + '\nWould you like to restart Chatlr?')) {
@@ -619,18 +791,7 @@ $(function() {
                 }
 
                 // Sort rooms by featured then user count
-                elRooms.children('div').chatlr('sortusers', function(a, b) {
-                    var af     = $(a).is('.featured'),
-                        bf     = $(b).is('.featured'),
-                        ac     = parseInt($(a).find('sup').text()),
-                        bc     = parseInt($(b).find('sup').text()),
-                        at     = $(a).find('a').text(),
-                        bt     = $(b).find('a').text(),
-                        cc     = ac > bc || (ac == bc && at < bt),
-                        result = (af && (!bf || cc)) || (!af && !bf && cc);
-                    
-                    return (result ? -1 : 1);
-                });
+                elRooms.children('div').chatlr('sortusers', Util.sort);
                 
                 elScrollers.chatlr('scroll');
             }
@@ -652,7 +813,7 @@ $(function() {
         settopic: function(response) {
             if (response.topic) {
                 topic = response.topic;
-                onMessages.message({
+                Action.message({
                     type:    'status',
                     message: 'The new topic is \'' + response.topic + '\''
                 });
@@ -672,29 +833,13 @@ $(function() {
                 userCount    = 0;
 
                 // Clear out sidebar and repopulate with users, updating userCount
-                clearUsers();    
-                for (var i in response.userList) {
-                    displayUser()
-                }
-                for (var i in users) {
-                    displayUser(users[i].name);
-                    userCount++;
-                }
+                User.populate(users);                
 
                 // Clear out sidebar rooms and populate with room list
-                elRooms.empty();
+                Room.populate(response.roomList);
                 
-                for (var j in response.roomList) {
-                    onMessages.roomchange({
-                        roomName: j,
-                        roomCount: response.roomList[j].roomCount,
-                        roomFeatured: response.roomList[j].roomFeatured,
-                        roomHidden: response.roomList[j].roomHidden
-                    });
-                }
-
                 // Update room hash
-                Room.changeUrl(response.roomName == 'english' ? '' : response.roomName);
+                Room.changeUrl(response.roomName);
 
                 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
                 // Do style updates (not on reconnects)
@@ -720,7 +865,7 @@ $(function() {
 
                     if (topic) {
                         // Update status to say they joined                    
-                        onMessages.message({
+                        Action.message({
                             type:    'status',
                             message: 'The topic is \'' + topic + '\''
                         });
@@ -728,7 +873,7 @@ $(function() {
 
                     // Output buffer messages
                     for (var j in response.buffer) {
-                        onMessages.message(response.buffer[j]);
+                        Action.message(response.buffer[j]);
                     }
                 }
 
@@ -737,18 +882,7 @@ $(function() {
                 document.title = '(' + userCount + ') Chatlr | ' + fancyRoom
 
                 // Sort rooms by featured then user count
-                elRooms.children('div').chatlr('sortusers', function(a, b) {
-                    var af     = $(a).is('.featured'),
-                        bf     = $(b).is('.featured'),
-                        ac     = parseInt($(a).find('sup').text()),
-                        bc     = parseInt($(b).find('sup').text()),
-                        at     = $(a).find('a').text(),
-                        bt     = $(b).find('a').text(),
-                        cc     = ac > bc || (ac == bc && at < bt),
-                        result = (af && (!bf || cc)) || (!af && !bf && cc);
-                        
-                    return (result ? -1 : 1);
-                });
+                elRooms.children('div').chatlr('sortusers', Util.sort);
 
                 // Clear all from being red, then make current room red and move to top
                 elRooms.children('div').removeClass('op');
@@ -759,27 +893,26 @@ $(function() {
                 
                 // Remove possible dialog box with error warnings
                 // Show the chat if not already shown and clear any possible timeouts
-                $('#loading:visible').fadeOut(250);
-                $('#error:visible').remove();
-                $('#loading-pulse').chatlr('stopstrobe');
+                elLoading.filter(':visible').fadeOut(250);
+                elPulse.chatlr('stopstrobe');
                 $('#dialog').remove();
 
                 // Attach user blogs to the settings list
-                $('#bloglist').empty();
-                $.each(userBlogs, function(index, blog) {
-                    if (blog.name != clientId) {
-                        $('#bloglist').append($('<a>', {
-                            'id':   blog.name
-                        }).append($('<img>', {
-                            'src': 'http://api.tumblr.com/v2/blog/' + blog.name + '.tumblr.com/avatar/16'
-                        })).append($('<span>').text(blog.title)));
-                    }
-                });
+//                $('#bloglist').empty();
+//                $.each(userBlogs, function(index, blog) {
+//                    if (blog.name != clientId) {
+//                        $('#bloglist').append($('<a>', {
+//                            'id':   blog.name
+//                        }).append($('<img>', {
+//                            'src': 'http://api.tumblr.com/v2/blog/' + blog.name + '.tumblr.com/avatar/16'
+//                        })).append($('<span>').text(blog.title)));
+//                    }
+//                });
                 
                 connected = true;
                 approved  = true;
                 
-                $('.scrollbox').chatlr('scroll');
+                elScrollers.chatlr('scroll');
             
             } else {
                 console.log('incomplete response');
@@ -798,7 +931,7 @@ $(function() {
                 
                 // Display user on side and add
                 users[response.user.name] = response.user;
-                displayUser(response.user.name);                
+                User.display(response.user.name);                
             }
         },
 
@@ -810,17 +943,17 @@ $(function() {
             
             if (response.id && response.id in users) {
                 response.type = 'status';
-                onMessages.message(response);
+                Action.message(response);
                 
                 // Remove user from side and delete
-                $('#users #u' + response.id).remove();
+                elUsers.children('#u' + response.id).remove();
                 delete users[response.id];
 
                 // Update user counts on sidebar and in header
                 userCount--;
                 document.title = '(' + userCount + ') Chatlr';
                 
-                $('.scrollbox').chatlr('scroll');
+                elScrollers.chatlr('scroll');
             }
         },
 
@@ -828,7 +961,7 @@ $(function() {
         // KICKED: Remove user from sidebar and update count
         //
         kicked: function(response) {
-            onMessages.disconnected(response);
+            Action.disconnected(response);
         },
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -836,7 +969,7 @@ $(function() {
         //
         reconnected: function(response) {
             if (response.id) {
-                $('#u' + response.id).removeClass('idle');
+                elUsers.children('#u' + response.id).removeClass('idle');
             }
         },
 
@@ -845,7 +978,7 @@ $(function() {
         //
         away: function(response) {
             if (response.id) {
-                $('#u' + response.id).addClass('idle');
+                elUsers.children('#u' + response.id).addClass('idle');
             }
         },
 
@@ -861,7 +994,7 @@ $(function() {
 
                     // User sent a message, so not idle, and update response to pass to message
                     response.user = users[response.id];
-                    $('#u' + response.id).removeClass('idle');
+                    elUsers.children('#u' + response.id).removeClass('idle');
                 }
 
                 // Display message
@@ -874,14 +1007,14 @@ $(function() {
                     // Some status messages are from the server (no user)
                     if ('user' in response) {
                         var title = $('<div/>')
-                                .text('Visit ' + clean(response.user.title)),
+                                .text('Visit ' + Util.clean(response.user.title)),
                             link = $('<a/>')
-                                .attr('href', clean(response.user.url))
+                                .attr('href', Util.clean(response.user.url))
                                 .attr('target', '_blank')
-                                .attr('title', clean(title.html()))
-                                .text(clean(response.user.name));
+                                .attr('title', Util.clean(title.html()))
+                                .text(Util.clean(response.user.name));
 
-                        row.append($('<img/>').attr('src', clean(response.user.avatar)));
+                        row.append($('<img/>').attr('src', Util.clean(response.user.avatar)));
 
                         if ('op' in response.user && response.user.op) {
                             link.addClass('op');
@@ -889,7 +1022,7 @@ $(function() {
                     }
 
                     // Clean message then update usernames to tumblr links
-                    response.message = strip(response.message);
+                    response.message = Util.strip(response.message);
                     response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?(#\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
                     response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
                     response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$2" class="room" title="Go to $2 Room">$1</a>');
@@ -916,14 +1049,12 @@ $(function() {
                     }
 
                     // insert message
-                    $('#chat div:last').before(row.append(link).append(message));
+                    elChat.children('div:last').before(row.append(link).append(message));
                 }
 
                 // Scroll to the end of the page unless someone is hovering
-                if ($('body').data('hoverbox') != 'chatbox') {
-                    $('#chatbox').chatlr('scroll', $('#chat').outerHeight(true) - 6);
-                } else {
-                    // $('#chatbox').chatlr('scroll');
+                if (elBody.data('hoverbox') != 'chatbox') {
+                    elChatbox.chatlr('scroll', elChat.outerHeight(true) - 6);
                 }
             }
         },
@@ -932,242 +1063,92 @@ $(function() {
         // STATUS: A grayed out message sent to everyone, does not require an ID
         //
         status: function(response) {
-            onMessages.message(response);
+            Action.message(response);
         }
     }
         
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-    // Connect to socket server
-    if (typeof io == 'undefined') {
-        notifyFailure(false);
-    } else {
-        socket = new io.connect(null, {
-            'transports': ['websocket', 'flashsocket', 'htmlfile', 'xhr-multipart', 'xhr-polling', 'jsonp-polling'],
-            'connect timeout': 5000,
-            'try multiple transports': true,
-            'reconnect': true,
-            'reconnection delay': 250,
-            'max reconnection attempts': 3            
-        });
-        
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // CONNECT: As soon as we connect, send credentials. Chat is still disabled at this time.
-        //
-        socket.on('connect', function()
-        {
-            console.log('connection established with ' + this.transport);
-        });
-        
-        socket.on('connecting', function(type)
-        {
-            console.log('connecting with ' + type);
-        });
-        
-        socket.on('connect_failed', function()
-        {
-            console.log('connect failed');
-        });
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // DISCONNECT: Attempt to reconnect immediately
-        //
-        socket.on('disconnect', function()
-        {
-            console.log('disconnected');
-            notifyFailure(false);
-        });
-        
-        socket.on('reconnect', function(type, attempts)
-        {
-            console.log('reconnected with ' + type + ' for ' + attempts);
-        });
-        
-        socket.on('reconnecting', function(delay, attempts)
-        {
-            console.log('reconnecting with ' + delay + ' for ' + attempts);
-        });
-        
-        socket.on('reconnect_failed', function()
-        {
-            console.log('reconnect failed');
-        });
-        
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // MESSAGE: Process a response from the server based on onMessages methods
-        //
-        socket.on('message', function(response)
-        {
-            if (response.type && response.type in onMessages) {
-                // if (typeof console !== 'undefined') console.log(response.type);
-                onMessages[response.type](response);
-            }
-        });
-
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-        // SUBMIT EVENT: When the text box is submitted, prevent submission and send message
-        //
-        
-        $('#text').on('keydown', DomEvent.keydownText);
-        $('#text').on('keyup', DomEvent.keyupText);
-        
-        $('#text').keydown(function(e) {
-            var self = $(this),
-                key  = e.which;
-                
-            if (key == 16) {
-                console.log('shifted');
-                self.data('shift', true);
-            } else {
-                self.data('prev', key);
-            }
-            
-            if (key == 50 && self.data('shift')) {
-                console.log('amped');
-                self.data('amp', true);
-            }
-            
-            if(self.data('amp') && ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || key == 189)) {
-                console.log(e.key);
-            }
-        });
-        
-        $('#text').keyup(function(e) {
-            var self = $(this),
-                key  = e.which;
-                
-            if (key == 16) {
-                self.data('shift', false);
-            }
-        })
-    }
-    
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-    function callServer(method, params) {
-        var pkg = {};
-        pkg[method] = params;
-        
-        socket.json.send(pkg); 
-    };
-     
-    function clearUsers()
-    {
-        $('#users').html('');
-        $('.scrollbox').chatlr('scroll');
-    }
-
-    function displayUser(id)
-    {
-        if (id in users) {
-            var user;
-            if ($('#users #u' + id).length) {
-                // If we are updating user, clear their contents but keep order
-                user = $('#users #u' + id).empty();
-            } else {
-                // Otherwise create element
-                user = $('<div/>').attr('id', 'u' + id);
-            }
-            
-            user
-                .append($('<img/>')
-                    .attr('src', clean(users[id].avatar)))
-                .append($('<a/>')
-                    .attr('href', clean(users[id].url))
-                    .attr('target', '_blank')
-                    .attr('title', clean('Visit ' + users[id].title))
-                    .text(clean(users[id].name)));
-            
-            if (users[id].name in ignore) {
-                user.addClass('ignore');
-            }
-
-            if (clientId && id == clientId) {
-                user.addClass('personal');
-                $('#users').prepend(user);
-            } else {
-                $('#users').append(user);
-            }
-
-            if (users[id].op) {
-                user.addClass('op');
-            }
-
-            if (users[id].idle) {
-                user.addClass('idle');
-            }
-            
-            $('.scrollbox').chatlr('scroll');            
-        }
-    }
-
-    function isUserOp()
-    {
-        return (clientId in users && 'op' in users[clientId] && users[clientId].op);
-    }
-    
-    function isUserName(name)
-    {
-        return (name.search(/^[a-z0-9-]+$/i) == 0);
-    }
-    
-    function toggleUserOptions(e) {
-
-    }
-
-    function clean(message)
-    {
-        return (message ? $('<div/>').text(message).text() : '');
-    }
-
-    function strip(message)
-    {
-        return $('<div/>').text(message).html();
-    }    
-
-    function notifyFailure(hasSocket)
-    {
-        if (!hasSocket || (!socket.socket.connecting && !socket.socket.connected)) {
-            // Stop logo pulsing and make sure the background is faded in
-            $('#loading-pulse').chatlr('stopstrobe');
-            $('#loading').show();
-
-            $('<div/>')
-                .attr('title', 'Oh Nos, Chatlr Died!')
-                .attr('id', 'dialog')
-                .html($('#page-about').html())
-                .css({top: 0, left: 0})
-                .dialog({
-                    width: Math.min(640, $(window).width() * 0.8),
-                    height: Math.min(400, $(window).height() * 0.8),
-                    resizable: false,
-                    close: function() {
-                        $(this).remove()}})
-                .parent().position({my: 'center', at: 'center', of: document});
-        }
-    }
-
     var Init = {
+        connect: function()
+        {            
+            socket = new io.connect();
+                        
+            // CONNECT: As soon as we connect, send credentials. Chat is still disabled at this time.
+            socket.on('connect', function()
+            {
+                console.log('connection established');
+            });
+            
+            // DISCONNECT: Attempt to reconnect immediately
+            socket.on('disconnect', function()
+            {
+                console.log('disconnected');
+                Util.notifyFailure(false);
+            });
+
+            // MESSAGE: Process a response from the server based on Action methods
+            socket.on('message', function(response)
+            {
+                if (response.type && response.type in Action) {
+                    // if (typeof console !== 'undefined') console.log(response.type);
+                    Action[response.type](response);
+                }
+            });
+
+            socket.on('connecting', function(type)
+            {
+                console.log('connecting with ' + type);
+            });
+
+            socket.on('connect_failed', function()
+            {
+                console.log('connect failed');
+            });
+
+            socket.on('reconnect', function(type, attempts)
+            {
+                console.log('reconnected with ' + type + ' for ' + attempts);
+            });
+
+            socket.on('reconnecting', function(delay, attempts)
+            {
+                console.log('reconnecting with ' + delay + ' for ' + attempts);
+            });
+
+            socket.on('reconnect_failed', function()
+            {
+                console.log('reconnect failed');
+            });
+        },
+        
         buttons: function()
         {
             // Setup Button Icons
-            $('#button-logout').button({text: false, icons: {primary: 'ui-icon-power'}});
-            $('#button-settings').button({text: false, icons: {primary: 'ui-icon-wrench'}});
-            $('#button-changeroom').button({text: false, icons: {primary: 'ui-icon-comment'}});    
-            $('#button-help').button({text: false, icons: {primary: 'ui-icon-help'}});
-            $('#button-follow').button({text: false, icons: {primary: 'ui-icon-plus'}});
+            btnLogout.button({text: false, icons: {primary: 'ui-icon-power'}});
+            btnHelp.button({text: false, icons: {primary: 'ui-icon-help'}});
+            btnFollow.button({text: false, icons: {primary: 'ui-icon-plus'}});
+            
+//            $('#button-settings').button({text: false, icons: {primary: 'ui-icon-wrench'}});            
         },
         
         events: function()
         {
             // CLICK EVENT: When buttons are clicked, show a popup
-            $('#button-help').on('click', DomEvent.popupHelp);
+            btnHelp.on('click', DomEvent.popupHelp);
 
             // CLICK EVENT: Logout
-            $('#button-logout').on('click', DomEvent.logout);
+            btnLogout.on('click', DomEvent.logout);
 
             // SUBMIT EVENT: Trigger text submission
-            $('#form').on('submit', DomEvent.submitText);
+            elForm.on('submit', DomEvent.submitText);
 
+            
+            elText
+                // Process keys for helper methods
+                .on('keydown', DomEvent.keydownText)
+                
+                // Store information on command keys
+                .on('keyup', DomEvent.keyupText);
+            
             $(document)
                 // LIVE EVENT: User has clicked an external link, show prompt dialog
                 .on('click', '.external', DomEvent.linkExternal)
@@ -1178,15 +1159,18 @@ $(function() {
                 // LIVE EVENT: Show user dialog with extra features
                 .on('click', '#users>div', DomEvent.popupUserInfo);
 
-            // RESIZE EVENT: Setup window sizing for any resize (and load)
-            $(window).on('resize', DomEvent.windowResize).trigger('resize');
+            
+            $(window)
+                // RESIZE EVENT: Setup window sizing for any resize (and load)
+                .on('resize', DomEvent.resizeWindow)
+                .trigger('resize');
 
             // CLICK EVENT: Dialog box to create a room for user
-            $('#button-room').on('click', '#button-room', DomEvent.createRoom)
+            btnRoom.on('click', '#button-room', DomEvent.createRoom)
 
-            $('body')
+            elBody
                 // TOUCH EVENT: Mobile scrolling event
-                .on('touchstart touchmove', DomEvent.touchScroll)
+                .on('touchstart touchmove', DomEvent.scrollMobile)
 
                 // CLICK EVENT: Hide any popup using the bubbling trick
                 .on('click', 'body', DomEvent.hidePopup);
@@ -1199,20 +1183,18 @@ $(function() {
 
             // Setup initial title
             document.title = 'Chatlr (Connecting...)'
-            $('#loading-pulse').chatlr('strobe'); 
+            elPulse.chatlr('strobe'); 
             
-            $('#logout').hide();        
+            elLogout.hide();        
         }
     };
     
-    function init() {
+    (function init() {
         // Call all of the init methods
         for (var i in Init) {
             Init[i]();
         }
-    }
-    
-    init();
+    })();
 });
 
        
