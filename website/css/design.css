@@ -9,7 +9,7 @@ body {
     background: #444;
 }
 
-body, input {
+body, input, .ui-button {
     font: 12px Helvetica, Arial, sans-serif;
     text-shadow: 0 1px 0 rgba(128, 128, 128, 0.15);
 }
@@ -60,9 +60,9 @@ body, input {
 .topbuttons, .toplink, .topicon {
     float: right;
     display: block;
-    padding: 0.25em 0.75em 0.333em 0.75em;
+    padding: 0.333em 0.9em 0.4em 0.9em;
     height: 1.167em;
-    margin: 0.5em 0.5em 0.5em 0;    
+    margin: 0.5em 0.48em 0.5em 0;    
     color: #ededed;
     font-weight: bold;
     text-decoration: none;
@@ -648,4 +648,83 @@ body, input {
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
     border: none;
+}
+
+#page-createroom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5em;
+    z-index: 100;
+    background: #fff;
+    border-radius: 0.25em;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    width: auto;
+    min-width: 24em;
+    clear: both;
+}
+
+#page-createroom fieldset {
+    border: none;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+#page-createroom #room-name {
+    border-radius: 0.25em;
+    border: 1px solid #ccc;
+    box-shadow: inset 0 0.25em 0.25em rgba(0,0,0,0.1);
+    padding: 0.666em;
+    width: 24em;
+    margin: 0 0 0.5em 0;
+}
+
+#page-createroom #room-name:focus {
+    outline: none;
+    box-shadow: inset 0 0.25em 0.25em rgba(0,0,0,0.1), 0 0 0.25em #36A3D9;    
+}
+
+#page-createroom #room-type {
+    margin: 0;
+    background: #36A3D9;
+    color: #fff;
+    border: 1px solid #aaa;
+    box-shadow: inset 0 0.25em 0.25em rgba(0,0,0,0.1);
+    margin-bottom: 2px;
+    width: 6em;
+    text-align: left;
+}
+
+#page-createroom #room-submit {
+    float: right;
+    display: block;
+    padding: 0.6em 1em;
+    margin: 0;
+    background: #36A3D9;
+    color: #fff;
+    font-weight: bold;
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.25);
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.15) 0, rgba(0, 0, 0, 0.15) 100%);
+}
+
+#page-createroom .ui-button-text {
+    padding: 0.6em 1em 0.6em 2em;    
+}
+
+.title-primary {
+    position: relative;
+}
+
+#chat div.op .ui-icon.toggle-feature {
+    float: right;
+    margin-right: 1em;
+    display: block;
+    width: 16px;
+    height: 16px; 
+    overflow: hidden;
+    opacity: 0.5;
+    cursor: pointer;
 }

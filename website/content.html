@@ -57,12 +57,12 @@
 
         <div id="section-top">
             <div id="section-top-left">
-                <div id="usersbox" class="scrollbox">
+                <div id="usersbox" class="scrollbox animator">
                     <div id="users" class="viewport"></div>
                 </div>
 
-                <div id="roomsbox" class="scrollbox">
-                    <a href="" id="button-room" class="ui-state-default" title="Create Room">
+                <div id="roomsbox" class="scrollbox animator">
+                    <a href="" id="button-room" class="ui-state-default" title="Create Room" rel="page-createroom">
                         <span class="ui-icon ui-icon-plus"></span>
                         Create Room
                     </a>
@@ -74,7 +74,7 @@
                 <div id="chat" class="viewport"></div>
             </div>
 
-            <div id="advertisement">
+            <div id="advertisement" class="animator">
                 <script type="text/javascript"><!--
                     google_ad_client = "ca-pub-7413795255296720";
                     /* Chatlr.com Sidebar */
@@ -153,20 +153,23 @@
             </p>
         </div>
 
-        <div id="page-rooms" class="page">
-            Featured Rooms:
-            <ul id="rooms-featured" style="margin: 0.5em 0;"></ul>
-            <div style="clear: both;"></div><br />
-            User Created Rooms:
-            <ul id="rooms-users" style="margin: 0.5em 0;"></ul>
-            <div style="clear: both;"></div>
-        </div>
-
         <div id="page-error" class="page">
             Chatlr works in
             <a href="http://www.mozilla.com/en-US/firefox/beta/" title="Get Firefox 4 Beta!">Firefox 4</a>,
             <a href="http://www.apple.com/safari/" title="Get Safari!">Safari</a>,
             <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>, and Explorer.
+        </div>
+        
+        <div id="page-createroom">
+            <form id="room-form">
+                <fieldset>
+                    <input type="text" id="room-name" placeholder="Room Name" />
+                </fieldset>
+                <fieldset>            
+                    <button id="room-type" value="Public">Public</button>
+                    <input id="room-submit" type="submit" value="Create Room" />
+                </fieldset>
+            </form>
         </div>
 
         <div id="loading"><div id="loading-pulse"></div></div>

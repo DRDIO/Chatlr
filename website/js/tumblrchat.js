@@ -16,10 +16,13 @@ $(function() {
         isMobile      = false,
         connected     = false,
         approved      = false,
-        elScrollers   = $('.scrollbox'),
         elCurrentRoom = $('#currentroom'),
         
         elBody        = $('body'),
+        
+        elScrollers   = elBody.find('.scrollbox'),
+        elAnimators   = elBody.find('.animator'),        
+        elNotMobile   = elBody.find('.toplink, #button-help, #notice, #button-follow'),
         
         elHeader      = elBody.children('#top'),
           btnLogout     = elHeader.children('#button-logout'),
@@ -44,7 +47,10 @@ $(function() {
             elText        = elForm.children('#text'),
 
         popAbout      = elBody.children('#page-about'),
-        popRooms      = elBody.children('#page-rooms'),
+        popCreateRoom = elBody.children('#page-createroom'),
+          elRoomForm    = popCreateRoom.children('#room-form'),
+            elRoomName    = elRoomForm.find('#room-name'),
+            elRoomType    = elRoomForm.find('#room-type'),
         popError      = elBody.children('#page-error'),
 
         elLoading     = elBody.children('#loading'),
@@ -111,36 +117,61 @@ $(function() {
     };
     
     var DomEvent = {
-        popupRoomCreate: function(e) 
+        toggleRoomType: function(e)
         {
             e.preventDefault();
-
-            // Get room and format it to be a url
-            var newRoom = $('#roomadd input').val();
-            newRoom = Room.getUrlName(newRoom);
-
-            // Clear window and remove focus
-            $('#roomadd input').val('');
-            elText.focus();
             
-            if(socket.socket.connected && newRoom != (roomUrlGet() || 'english')) {
-                Util.callServer('change', [ newRoom ]);
+            var self = $(this);
+            
+            if (self.val() == 'Public') {
+                self.val('Private');
+                self.button({icons: {primary: 'ui-icon-comment'}});
+                self.find('.ui-button-text').text('Private');
+            } else {
+                self.val('Public');
+                self.button({icons: {primary: 'ui-icon-bullet'}});
+                self.find('.ui-button-text').text('Public');
             }
+        },
+        
+        stopPropagation: function(e)
+        {
+            e.stopPropagation();
+        },
+        
+        popupCreateRoom: function(e) 
+        {
+            var self = $(this);
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            elRoomName.val('');
+                                        
+            elRoomType
+                .val('Public')
+                .button({icons: {primary: 'ui-icon-bullet'}});
+            
+            popCreateRoom
+                .show()
+                .position({my: 'left center', at: 'left center', of: self, offset: '48 0'});
+                
+            elRoomName.focus();
         },
         
         popupHelp: function(e)
         {
+            var self = $(this);
+            
             e.preventDefault();
-
-            console.log($(this));
             
             var message = 'This feature will be available in the next version!';
-            if ($(this).attr('rel')) {
-                message = $('#' + $(this).attr('rel')).html();
+            if (self.attr('rel')) {
+                message = $('#' + self.attr('rel')).html();
             }
 
             $('<div/>')
-                .attr('title', $(this).attr('title'))
+                .attr('title', self.attr('title'))
                 .attr('id', 'dialog')
                 .html(message)
                 .dialog({
@@ -148,7 +179,7 @@ $(function() {
                     height: Math.min(400, $(window).height() * 0.8),
                     resizable: false,
                     close: function() {
-                        $(this).remove()
+                        self.remove()
                     }
                 })                
                 .parent().position({my: 'center', at: 'center', of: document});
@@ -210,7 +241,8 @@ $(function() {
         
         hidePopup: function()
         {
-            $('#user-popup').hide(); 
+            $('#user-popup').hide();
+            popCreateRoom.filter(':visible').hide();
         },
         
         resizeWindow: function()
@@ -223,7 +255,9 @@ $(function() {
 
             elText.outerWidth(width - 12);
             elChatbox.outerWidth(width - leftOffset - chatOffset - 18);
-            $('#chatbox, #advertisement').outerHeight(height - 78);
+            
+            elChatbox.outerHeight(height - 78);
+            elAd.outerHeight(height - 78);
             elUsersbox.outerHeight(chatHeight);
             elRoomsbox.outerHeight(height - chatHeight - 84);
 
@@ -266,6 +300,20 @@ $(function() {
             }
         },
         
+        toggleFeatured: function(e)
+        {
+            e.preventDefault();
+            
+            var self = $(this);
+            
+            if (self.attr('data-featured')) {
+                Command.defeature(self.attr('rel'));
+            } else {
+                Command.feature(self.attr('rel'));
+            }
+            
+        },
+        
         linkExternal: function(e)
         {
             e.preventDefault();
@@ -296,6 +344,19 @@ $(function() {
         {
             e.preventDefault();            
             Command.logout();
+        },
+        
+        createRoom: function(e)
+        {
+            e.preventDefault();
+            
+            var isPrivate = (elRoomType.val() == 'Private' ? '!' : ''),
+                urlName   = Room.getUrlName(elRoomName.val());
+                
+            if (urlName) {
+                Util.callServer('change', [ isPrivate + urlName ]);
+                popCreateRoom.hide();
+            }
         },
         
         changeRooms: function(e)
@@ -403,7 +464,8 @@ $(function() {
                     user.addClass('idle');
                 }
 
-                elScrollers.chatlr('scroll');            
+                // Update user box since more have been added
+                elUsersbox.chatlr('scroll');            
             }
         }
     };
@@ -549,18 +611,18 @@ $(function() {
             if (!isMobile && (type == 'mobile' || type == 'compact')) {
                 isMobile = true;
 
-                $('.toplink, #button-help, #notice, #button-follow').fadeOut(250);
+                elNotMobile.fadeOut(250);
 
-                [elUsersbox, elRoomsbox, elAd].animate({opacity: 0}, 250);
+                elAnimators.animate({opacity: 0}, 250);
                 elSide.animate({width: '0px'}, 250);                    
                 elChatbox.animate({width: (width - 12) + 'px'}, 250);
 
             } else if (isMobile && (type == 'desktop' || type == 'default')) {
                 isMobile = false;
 
-                $('.toplink, #button-help, #notice, #button-follow').fadeIn(250);
+                elNotMobile.fadeIn(250);
 
-                [elUsersbox, elRoomsbox, elAd].animate({opacity: 1}, 250);
+                elAnimators.animate({opacity: 1}, 250);
                 elSide.animate({width: '12em'}, 250);
                 elChatbox.animate({width: (width - 144 - chatOffset - 18) + 'px'}, 250);
             }
@@ -775,6 +837,9 @@ $(function() {
                 if (roomObj.length) {
                     // Update a room count
                     roomObj.children('sup').text(response.roomCount);
+                    roomObj.children('span').attr('class', 
+                        'ui-icon ' + (response.roomFeatured ? 'ui-icon-star' : (response.roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet'))
+                    );
                 } else {
                     // Create a new room
                     var roomLabel = Room.getFancyName(response.roomName);
@@ -793,7 +858,8 @@ $(function() {
                 // Sort rooms by featured then user count
                 elRooms.children('div').chatlr('sortusers', Util.sort);
                 
-                elScrollers.chatlr('scroll');
+                // Update room box since new ones were added
+                elRoomsbox.chatlr('scroll');
             }
         },
 
@@ -803,7 +869,9 @@ $(function() {
         roomdelete: function(response) {
             if ('roomName' in response) {
                 elRooms.children('#r' + response.roomName).remove();
-                elScrollers.chatlr('scroll');            
+                
+                // Update room box since new ones were removed
+                elRoomsbox.chatlr('scroll');            
             }
         },
 
@@ -849,16 +917,28 @@ $(function() {
 
                     elChat.children('div.op').removeClass('title-primary');
                     
-                    elChat
-                        .append($('<div />')
-                            .addClass('op')
-                            .addClass('title-primary')
+                    var room = response.roomList[response.roomName];
+                    
+                    var titleBar = $('<div />')
+                        .addClass('op')
+                        .addClass('title-primary')
 
-                            .append($('<span/>', {'class': 'ui-icon ' + (response.roomList[response.roomName].roomFeatured ? 'ui-icon-star' : (response.roomList[response.roomName].roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet'))}))
-                            .append($('<strong/>')
-                                .text(fancyRoom + ' Room')
-                            )
-                        )
+                        .append($('<span/>', {'class': 'ui-icon ' + (room.roomFeatured ? 'ui-icon-star' : (room.roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet'))}))
+                        .append($('<strong/>')
+                            .text(fancyRoom + ' Room')
+                        );
+                            
+                    if (User.isOp()) {
+                        titleBar.append($('<a />', {
+                            'href':  '#',
+                            'rel':   response.roomName,
+                            'title': (room.roomFeatured ? 'De-Feature Room' : 'Feature Room'),
+                            'class': 'toggle-feature ui-icon ' + (room.roomFeatured ? 'ui-icon-bullet' : 'ui-icon-star')
+                        }));
+                    }
+                        
+                    elChat
+                        .append(titleBar)
                             
                         .append($('<div />')
                             .addClass('bottom'));
@@ -912,7 +992,7 @@ $(function() {
                 connected = true;
                 approved  = true;
                 
-                elScrollers.chatlr('scroll');
+                // elScrollers.chatlr('scroll');
             
             } else {
                 console.log('incomplete response');
@@ -968,8 +1048,22 @@ $(function() {
         // RECONNECTED: Set a user in sidebar as returned
         //
         reconnected: function(response) {
-            if (response.id) {
-                elUsers.children('#u' + response.id).removeClass('idle');
+            console.log(response);
+            
+            if ('id' in response) {                
+                var user = elUsers.children('#u' + response.id);
+                
+                if (user) {
+                    user.removeClass('idle');
+
+                    if ('op' in response) {
+                        if (response.op) {
+                            user.addClass('op');
+                        } else {
+                            user.removeClass('op');
+                        }
+                    }
+                }
             }
         },
 
@@ -1064,6 +1158,10 @@ $(function() {
         //
         status: function(response) {
             Action.message(response);
+        },
+        
+        userstatus: function(response) {
+            // TODO
         }
     }
         
@@ -1126,6 +1224,8 @@ $(function() {
             btnLogout.button({text: false, icons: {primary: 'ui-icon-power'}});
             btnHelp.button({text: false, icons: {primary: 'ui-icon-help'}});
             btnFollow.button({text: false, icons: {primary: 'ui-icon-plus'}});
+                        
+            $('#room-submit').button();
             
 //            $('#button-settings').button({text: false, icons: {primary: 'ui-icon-wrench'}});            
         },
@@ -1157,23 +1257,32 @@ $(function() {
                 .on('click', '#rooms a, .room', DomEvent.changeRooms)
 
                 // LIVE EVENT: Show user dialog with extra features
-                .on('click', '#users>div', DomEvent.popupUserInfo);
+                .on('click', '#users>div', DomEvent.popupUserInfo)
+                
+                // LIVE EVENT: Toggle featured room
+                .on('click', '.toggle-feature', DomEvent.toggleFeatured);
 
             
             $(window)
                 // RESIZE EVENT: Setup window sizing for any resize (and load)
                 .on('resize', DomEvent.resizeWindow)
                 .trigger('resize');
-
-            // CLICK EVENT: Dialog box to create a room for user
-            btnRoom.on('click', '#button-room', DomEvent.createRoom)
-
+            
             elBody
                 // TOUCH EVENT: Mobile scrolling event
                 .on('touchstart touchmove', DomEvent.scrollMobile)
 
                 // CLICK EVENT: Hide any popup using the bubbling trick
-                .on('click', 'body', DomEvent.hidePopup);
+                .on('click', DomEvent.hidePopup);
+
+            // CLICK EVENT: Dialog box to create a room for user
+            btnRoom.on('click', DomEvent.popupCreateRoom)
+
+            popCreateRoom.on('click', DomEvent.stopPropagation);
+            
+            elRoomForm.on('submit', DomEvent.createRoom);
+            
+            elRoomType.on('click', DomEvent.toggleRoomType);
         },
         
         dom: function()
@@ -1185,7 +1294,9 @@ $(function() {
             document.title = 'Chatlr (Connecting...)'
             elPulse.chatlr('strobe'); 
             
-            elLogout.hide();        
+            elLogout.hide();  
+            
+            popCreateRoom.hide();
         }
     };
     
