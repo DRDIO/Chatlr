@@ -121,6 +121,7 @@ body, input, .ui-button {
         #users div, #rooms div {            
             padding: 0.5em;
             border-bottom: 1px solid rgb(240,240,240);
+            overflow: hidden;
         }
 
         #users img {
@@ -136,6 +137,15 @@ body, input, .ui-button {
             text-decoration: none;
             font-weight: bold;
             vertical-align: middle;
+        }
+        
+        #rooms a {            
+            display: block;
+            float: left;
+            width: 7em;
+            height: 1.25em;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         #users div.personal, #rooms div.op {

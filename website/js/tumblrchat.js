@@ -847,9 +847,11 @@ $(function() {
                     roomObj = $('<div/>')
                         .attr('id', 'r' + response.roomName)                     
                         .append($('<span/>', {'class': 'ui-icon ' + (response.roomFeatured ? 'ui-icon-star' : (response.roomHidden ? 'ui-icon-comment' : 'ui-icon-bullet'))}))
-                        .append($('<a/>')
-                            .attr('href', response.roomName)
-                            .text(roomLabel))
+                        .append($('<a/>', {
+                            'href': response.roomName,
+                            'text': roomLabel,
+                            'title': roomLabel
+                        }))
                         .append($('<sup/>').text(response.roomCount));
 
                     elRooms.append(roomObj);
