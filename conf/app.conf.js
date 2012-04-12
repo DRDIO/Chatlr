@@ -1,5 +1,6 @@
 exports.timerList = {
     cleanup: 2.5 * 60000,
+    remove:  2.5 * 60000,
     idle:    5   * 60000,
     kick:    20  * 60000        
 };

@@ -717,6 +717,18 @@ $(function() {
             return false;
         },
         
+        settimer: function(message) {
+          if (User.isOp()) {
+              var list = message.split(' ', 2);
+                
+              Util.callServer('settimer', list);
+              
+              return true;
+          }  
+          
+          return false;
+        },
+        
         shout: function(message) {
             if (User.isOp()) {
                 Util.callServer('shout', [ message ]);
