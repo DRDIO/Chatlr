@@ -21,39 +21,25 @@ The following is an example of how to install Chatlr from scratch on Ubuntu 11.0
 	apt-get install git-core build-essential libssl-dev
 
 	# Install node.js
-	cd /usr/src
-	git clone https://github.com/joyent/node
-	cd node
-	./configure
-	make
-	make install
+	apt-get install nodejs npm
+	npm install -g n forever
+	
+	# Switch node to the latest stable release (0.6.14 in this example)
+	n 0.6.14 
 
 	# install Chatlr
 	cd /usr/src
-	git clone git://github.com/KevinNuut/Chatlr.git
+	git clone git://github.com/DRDIO/Chatlr.git
 
 	# Setup Chatlr
 	cd Chatlr
-	git submodule update --init --recursive
-	cp config/config.js.bu config/config.js
+	cp conf/app.conf.bu.js conf/app.conf.js
 
 	# Open config/config.js and set up the custom fields
 	# Replace anything in all caps
 
 	# Run the Chatlr script and output errors to out.log
-	node chatlr.js > out.log &
-
-Alternatively, you can use the forever package by running the additional commands.
-
-	# Install NPM (Node Package Manager)
-	curl http://npmjs.org/install.sh | sudo sh
-
-	# Install Forever
-	npm install forever
-
-	# Run Node.JS as a forever script
-	cd /usr/src/Chatlr
-	forever start chatlr.js
+	forever start /usr/src/Chatlr
 
 An example script can be found in `install.sh`. This is great for getting Chatlr quickly running on Cloud or VPS instance.
 
@@ -61,4 +47,4 @@ An example script can be found in `install.sh`. This is great for getting Chatlr
 	# Run this command from your local computer into your clean remote Ubuntu box
 	ssh root@IP_ADDRESS 'bash -s CHATLR_DOMAIN TUMBLR_CONSUMER_KEY TUMBLR_CONSUMER_SECRET TUMBLR_USERNAME SESSION_SECRET' < install.sh
 
-Note that there are other config options available in `config.js`, like changing the default IP address, port, and OAuth service.
+Note that there are other config options available in `conf/app.conf.js`, like changing the default IP address, port, and OAuth service.
