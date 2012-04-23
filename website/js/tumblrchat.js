@@ -306,10 +306,14 @@ $(function() {
             
             var self = $(this);
             
-            if (self.attr('data-featured')) {
+            if (self.hasClass('ui-icon-bullet')) {
                 Command.defeature(self.attr('rel'));
+                self.removeClass('ui-icon-bullet');
+                self.addClass('ui-icon-star');
             } else {
                 Command.feature(self.attr('rel'));
+                self.addClass('ui-icon-bullet');
+                self.removeClass('ui-icon-star');
             }
             
         },
