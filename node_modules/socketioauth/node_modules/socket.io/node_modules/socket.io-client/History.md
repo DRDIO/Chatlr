@@ -1,4 +1,19 @@
 
+0.9.6 / 2012-04-17
+==================
+
+  * Don't position the jsonp form off the screen (android fix).
+
+0.9.5 / 2012-04-05
+==================
+
+  * Bumped version.
+
+0.9.4 / 2012-04-01
+==================
+
+  * Fixes polling loop upon reconnect advice (fixes #438).
+
 0.9.3 / 2012-03-28
 ==================
 
