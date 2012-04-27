@@ -11,7 +11,7 @@ exports.dft = {
 };
 
 exports.db = {
-    'database': 'chat'
+    'database': 'YOURMONGODB'
 };
 
 exports.server = {
@@ -22,15 +22,15 @@ exports.server = {
 };
 
 exports.oauth = {
-    domain:          'http://tumblrchat.loc:8080',
+    domain:          'http://YOURDOMAIN',
 
     requestUrl:      'http://www.tumblr.com/oauth/request_token',
     accessUrl:       'http://www.tumblr.com/oauth/access_token',
     authorizeUrl:    'http://www.tumblr.com/oauth/authorize',
     authenticateUrl: 'http://api.tumblr.com/v2/user/info',
 
-    consumerKey:     'XXXX',
-    consumerSecret:  'XXXX',
+    consumerKey:     'YOUROAUTHKEY',
+    consumerSecret:  'YOUROAUTHSECRET',
 
     appHtmlPath:     exports.server.publicPath + '/content.html'
 };

@@ -408,6 +408,13 @@ $(function() {
             }
         },
         
+        setOp: function(op)
+        {
+            if (clientId in users) {
+                users[clientId].op = op;
+            }
+        },
+        
         isOp: function()
         {
             return (clientId in users && 'op' in users[clientId] && users[clientId].op);
@@ -661,9 +668,9 @@ $(function() {
             Command.theme(elBody.hasClass('night') ? 'light' : 'dark');
         },
         
-        topic: function(topic) {
-            if (User.isOp() && topic) {
-                Util.callServer('topic', [ topic ]);
+        topic: function(newTopic) {
+            if (User.isOp() && newTopic) {
+                Util.callServer('topic', [ newTopic ]);
                 
                 return true;
             } else {
@@ -895,6 +902,24 @@ $(function() {
                     message: 'The new topic is \'' + response.topic + '\''
                 });
             }
+        },
+        
+        op: function(response) {
+            User.setOp(true);
+            
+            Action.message({
+                type: 'status',
+                message: response.message
+            });
+        },
+        
+        deop: function(response) {
+            User.setOp(true);
+            
+            Action.message({
+                type: 'status',
+                message: response.message
+            });
         },
 
         // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
