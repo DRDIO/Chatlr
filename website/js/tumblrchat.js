@@ -197,16 +197,7 @@ $(function() {
                 userLink = user.children('a'),
                 imageSrc = user.children('img').attr('src');
 
-            if (!popup.length) {
-                popup = $('<div/>', {
-                    'id':    'user-popup',
-                    'click': function(e) {
-                        e.stopPropagation();
-                    }
-                });
-
-                elBody.append(popup);
-            } else if (popup.is(':visible') && popup.data('uid') == user.attr('id')) {
+            if (popup.is(':visible') && popup.data('uid') == user.attr('id')) {
                 // If we are clicking the users name again, toggle popup off
                 popup.hide();
                 return;
@@ -1156,7 +1147,7 @@ $(function() {
 
                     // STATUS: Status messages just show a faded message
                     } else if (response.type == 'status') {
-                        row.addClass('status');
+                        row.addClass('user' in response ? 'userstatus' : 'status');
                         message.html(' ' + response.message);
                     }
 
