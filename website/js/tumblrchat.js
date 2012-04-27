@@ -685,6 +685,21 @@ $(function() {
             return false;
         },
         
+        whisper: function(pkg) {
+            var list = pkg.split(' ', 2);
+                        
+            if (User.isValidName(list[0])) {
+                Util.callServer('whisper', list);
+
+                return true;
+            }
+        },
+        
+        // Shorthand for whisper
+        w: function(pkg) {
+            Command.whisper(pkg);
+        },
+        
         help: function() {
             btnHelp.trigger('click');
             
@@ -790,22 +805,31 @@ $(function() {
                     type:    'status',
                     user:    users[clientId],
                     message: 'Ignored as spam due to repetition, length, or frequency.'});
+                
+                return false;
 
             } else if (!User.isOp() && message.search(/follow/i) != -1 && Room.getUrl() != 'follow-back') {
                 // If user asks for followers, kick them to the 'follow-back' room                
                 Util.callServer('change', [ 'follow-back' ]);
-                elText.val('');
+                return true;
 
             } else {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
+                var list = message.split(' ', 1);
+                if (list[0].search(/^#[a-z0-9-]+:/i) != -1) {
+                    if (Command.whisper(message.substr(1))) {
+                        return true;
+                    }
+                }
+                
                 // Send to server for broadcast
                 Util.callServer('message', [ message ]);
-
-                // Clear text box
-                elText.val('');
+                return true;
             }
+            
+            return false;
         },
         
         logout: function()
@@ -1154,7 +1178,9 @@ $(function() {
                     response.message = response.message.replace(/(https?:\/\/([-\w\.]+)+(:\d+)?(\/([\w/_.-]*(\?\S+)?(#\S+)?)?)?)/g, '<a href="$1" class="external" title="Visit External Link!" target="_blank"><strong>[link]</strong></a>');
                     response.message = response.message.replace(/(^| )@([a-z0-9-]+)($|[' !?.,:;])/gi, '$1<a href="http://$2.tumblr.com/" title="Visit Their Tumblr!" target="_blank"><strong>@$2</strong></a>$3');
                     response.message = response.message.replace(/(#(!?[a-z0-9-]{2,16}))/gi, '<a href="$2" class="room" title="Go to $2 Room">$1</a>');
-
+                    response.message = response.message.replace(/\*(.*)?\*/gi, '<strong>$1</strong>');
+                    response.message = response.message.replace(/_(.*)?_/gi, '<em>$1</em>');
+                    
                     // MESSAGE: The default message from a user
                     if (response.type == 'message') {
                         message.html(': ' + response.message);
