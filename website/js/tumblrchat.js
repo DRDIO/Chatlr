@@ -819,7 +819,7 @@ $(function() {
 
                 var list = message.split(' ', 1);
                 if (list[0].search(/^#[a-z0-9-]+:/i) != -1) {
-                    if (Command.whisper(message.substr(1))) {
+                    if (Command.whisper(list[0].substring(1, -1) + ' ' + list[1])) {
                         return true;
                     }
                 }
