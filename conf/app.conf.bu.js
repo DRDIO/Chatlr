@@ -22,8 +22,7 @@ exports.server = {
 };
 
 exports.oauth = {
-    protocol:        'http://',
-    domain:          'tumblrchat.loc:8080',
+    domain:          'http://tumblrchat.loc:8080',
 
     requestUrl:      'http://www.tumblr.com/oauth/request_token',
     accessUrl:       'http://www.tumblr.com/oauth/access_token',
@@ -35,8 +34,6 @@ exports.oauth = {
 
     appHtmlPath:     exports.server.publicPath + '/content.html'
 };
-
-exports.oauth.callbackUrl = exports.oauth.protocal + exports.oauth.domain + '/callback';
 
 exports.socketio = {
     logLevel: 2

@@ -10,8 +10,7 @@ exports.server = {
 };
 
 exports.oauth = {
-    protocol:        'http://',
-    domain:          'YOURDOMAINNAME',
+    domain:          'http://YOURDOMAINNAME',
 
     requestUrl:      'http://www.tumblr.com/oauth/request_token',
     accessUrl:       'http://www.tumblr.com/oauth/access_token',
@@ -23,8 +22,6 @@ exports.oauth = {
 
     appHtmlPath:     exports.server.publicPath + '/content.html'
 };
-
-exports.oauth.callbackUrl = exports.oauth.protocal + exports.oauth.domain + '/callback';
 
 exports.socketio = {
     logLevel: 2

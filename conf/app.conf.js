@@ -41,10 +41,11 @@ exports.oauth = {
 
     consumerKey:     'svbT4DJfa0G1LDo4BkFlxPhlshIIYzrOoE1IWieuww0fS07P21',
     consumerSecret:  'TpF7X2GIWV2duq7g2sHijZ64QMNtvfB7i050zyiDvkhw6aC8Sk',
-    callbackUrl:     'http://tumblrchat.loc:8080/callback',
 
     appHtmlPath:     exports.server.publicPath + '/content.html'
 };
+
+exports.oauth.callbackUrl = exports.oauth.protocal + exports.oauth.domain + '/callback';
 
 exports.socketio = {
     logLevel: 2
