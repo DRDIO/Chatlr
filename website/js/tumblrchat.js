@@ -245,7 +245,7 @@ $(function() {
         {
             e.preventDefault();
             var uid = popUser.data('uid').slice(1);
-            elText.val('#' + uid + ': ').focus();
+            elText.val('@' + uid + ': ').focus();
         },
         
         userIgnore: function(e)
@@ -426,7 +426,7 @@ $(function() {
             if (!elText.val()) {
                 var wid = $(this).parent().attr('data-wid');
                 if (wid) {
-                    elText.val('#' + wid + ': ').focus();
+                    elText.val('@' + wid + ': ').focus();
                 }
             }
         },
@@ -461,7 +461,7 @@ $(function() {
                     whisperCount = (key == 38 ? 0 : whisperLog.length - 1);
                 }
                 
-                elText.val('#' + whisperLog[whisperCount] + ':').focus();
+                elText.val('@' + whisperLog[whisperCount] + ':').focus();
                 
             }
         },
@@ -938,7 +938,7 @@ $(function() {
 
                 var list = message.split(' ');
                 
-                if (list[0].search(/#[a-z0-9-]+:/i) != -1) {
+                if (list[0].search(/@[a-z0-9-]+:/i) != -1) {
                     var whisperUser = list[0].slice(1, -1);
                     
                     list.shift();
