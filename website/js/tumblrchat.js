@@ -17,6 +17,7 @@ $(function() {
         connected     = false,
         approved      = false,
         elCurrentRoom = $('#currentroom'),
+        whisperLog    = [],
         
         elBody        = $('body'),
         
@@ -28,6 +29,7 @@ $(function() {
           btnLogout     = elHeader.children('#button-logout'),
           btnHelp       = elHeader.children('#button-help'),
           btnFollow     = elHeader.children('#button-follow'),
+          btnDefault    = elHeader.children('#button-default'),
 
         elTop         = elBody.children('#section-top'),
           elAd          = elTop.children('#advertisement'),
@@ -52,6 +54,7 @@ $(function() {
             elRoomName    = elRoomForm.find('#room-name'),
             elRoomType    = elRoomForm.find('#room-type'),
         popError      = elBody.children('#page-error'),
+        popUser       = elBody.children('#popup-user'),
 
         elLoading     = elBody.children('#loading'),
           elPulse       = elLoading.children('#loading-pulse'),
@@ -177,10 +180,7 @@ $(function() {
                 .dialog({
                     width: Math.min(640, $(window).width() * 0.8),
                     height: Math.min(400, $(window).height() * 0.8),
-                    resizable: false,
-                    close: function() {
-                        self.remove()
-                    }
+                    resizable: false
                 })                
                 .parent().position({my: 'center', at: 'center', of: document});
         },
@@ -192,31 +192,81 @@ $(function() {
             e.preventDefault();
             e.stopPropagation();
 
-            var popup    = $('#user-popup'),
-                user     = $(this),
+            var user     = $(this),
+                uid      = user.attr('id').slice(1),
                 userLink = user.children('a'),
                 imageSrc = user.children('img').attr('src');
 
-            if (popup.is(':visible') && popup.data('uid') == user.attr('id')) {
+            // When the user is self, show different options
+            if (uid == clientId) {
+                popUser.children('.user-ulself').show();
+                popUser.children('.user-ulother').hide();
+            } else {                
+                popUser.children('.user-ulself').hide();
+                popUser.children('.user-ulother').show();
+            }
+            
+            if (popUser.is(':visible') && popUser.data('uid') == user.attr('id')) {
                 // If we are clicking the users name again, toggle popup off
-                popup.hide();
+                popUser.hide();
                 return;
             }
 
             imageSrc = imageSrc.substr(0, imageSrc.length - 2) + 64;
 
-            popup
+            popUser.children('img').attr('src', imageSrc);
+            
+            popUser.children('h1')
+                .html(userLink.attr('title'));
+                
+            popUser.find('.user-visit')
+                .attr('href', userLink.attr('href'));
+                
+            if (uid in ignore) {
+                popUser.find('.user-ignore').html('Unblock');
+            } else {
+                popUser.find('.user-ignore').html('Block');
+            }
+            
+            popUser
                 .data('uid', user.attr('id'))
-                .empty()
-                .append($('<img />', {src: imageSrc}))
-                .append($('<a />', {
-                    href:  userLink.attr('href'),
-                    title: userLink.attr('title'),
-                    html:  userLink.attr('title')}
-                ))
-                .append($('<span />'))
                 .show()
                 .position({my: 'left center', at: 'left center', of: user, offset: '48 0'});
+        },
+        
+        userWhisper: function(e) 
+        {
+            e.preventDefault();
+            var uid = popUser.data('uid').slice(1);
+            elText.val('#' + uid + ': ').focus();
+        },
+        
+        userIgnore: function(e)
+        {
+            e.preventDefault();
+            var uid = popUser.data('uid').slice(1);
+            Command.ignore(uid);
+        },
+        
+        userAway: function(e)
+        {
+            e.preventDefault();
+            var uid = popUser.data('uid').slice(1);
+            Command.away(uid);
+        },
+        
+        userTheme: function(e)
+        {
+            e.preventDefault();
+            var uid = popUser.data('uid').slice(1);
+            Command.night(uid);
+        },
+        
+        userLayout: function(e)
+        {
+            e.preventDefault();
+            var uid = popUser.data('uid').slice(1);
+            Command.mobile(uid);
         },
         
         scrollMobile: function(e) 
@@ -232,7 +282,7 @@ $(function() {
         
         hidePopup: function()
         {
-            $('#user-popup').hide();
+            popUser.hide();
             popCreateRoom.filter(':visible').hide();
         },
         
@@ -364,6 +414,16 @@ $(function() {
            }
         },
         
+        whisperBack: function(e)
+        {
+            if (!elText.val()) {
+                var wid = $(this).parent().attr('data-wid');
+                if (wid) {
+                    elText.val('#' + wid + ': ').focus();
+                }
+            }
+        },
+        
         keydownText: function(e)
         {
             var self = $(this),
@@ -383,6 +443,10 @@ $(function() {
             
             if(self.data('amp') && ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || key == 189)) {
                 console.log(e.key);
+            }
+            
+            if (!elText.val() && key == 38) {
+                elText.val(whisperLog.pop());
             }
         },
         
@@ -444,7 +508,7 @@ $(function() {
                     .append($('<a/>')
                         .attr('href', Util.clean(users[id].url))
                         .attr('target', '_blank')
-                        .attr('title', Util.clean('Visit ' + users[id].title))
+                        .attr('title', Util.clean(users[id].title))
                         .text(Util.clean(users[id].name)));
 
                 if (users[id].name in ignore) {
@@ -569,10 +633,20 @@ $(function() {
         
         ban: function(message) {
             if (User.isOp()) {
-                var list = message.split(' ', 3);
-                
+                var list = message.split(' ');
+                    
                 if (User.isValidName(list[0])) {
-                    Util.callServer('ban', list);
+                    var banUid      = list[0],
+                        banRoomName = list[1] || '',
+                        minutes     = list[2] || -1;
+                        
+                    list.shift();
+                    list.shift();
+                    list.shift();
+                    
+                    var reason = list.join(' ');
+                    
+                    Util.callServer('ban', [banUid, banRoomName, minutes, reason]);
                     
                     return true;
                 }
@@ -583,10 +657,18 @@ $(function() {
         
         kick: function(message) {
             if (User.isOp()) {
-                var list = message.split(' ', 2);
+                var list = message.split(' ');
                 
-                if (User.isValidName(list[0])) {
-                    Util.callServer('kick', list);
+                if (User.isValidName(list[0])) {                    
+                    var kickUid      = list[0],
+                        kickRoomName = list[1] || '';
+                        
+                    list.shift();
+                    list.shift();
+                    
+                    var reason = list.join(' ');
+                    
+                    Util.callServer('kick', [kickUid, kickRoomName, reason]);
                     
                     return true;
                 }
@@ -614,6 +696,7 @@ $(function() {
                 isMobile = true;
 
                 elNotMobile.fadeOut(250);
+                btnDefault.fadeIn(250);
 
                 elAnimators.animate({opacity: 0}, 250);
                 elSide.animate({width: '0px'}, 250);                    
@@ -623,6 +706,7 @@ $(function() {
                 isMobile = false;
 
                 elNotMobile.fadeIn(250);
+                btnDefault.fadeOut(250);
 
                 elAnimators.animate({opacity: 1}, 250);
                 elSide.animate({width: '12em'}, 250);
@@ -658,7 +742,7 @@ $(function() {
             if (type == 'light' || type == 'day') {
                 elBody.removeClass('night');
             } else if (type == 'dark' || type == 'night') {
-                elBody.removeClass('night');
+                elBody.addClass('night');
             }            
             
             return true;
@@ -686,18 +770,33 @@ $(function() {
         },
         
         whisper: function(pkg) {
-            var list = pkg.split(' ', 2);
+            var list = pkg.split(' ');
                         
-            if (User.isValidName(list[0])) {
-                Util.callServer('whisper', list);
+            if (User.isValidName(list[0])) {                
+                var whisperUid   = list[0];
+
+                list.shift();
+                var message = list.join(' ');
+
+                // Store a whisper log to use up arrow to get last person
+                var lastWhisper = whisperLog.inArray(whisperUid);
+                if (lastWhisper > -1) {
+                    delete whisperLog[lastWhisper];
+                }
+                
+                whisperLog.push(whisperUid);
+
+                Util.callServer('whisper', [whisperUid, message]);
 
                 return true;
             }
+            
+            return false;
         },
         
         // Shorthand for whisper
         w: function(pkg) {
-            Command.whisper(pkg);
+            return Command.whisper(pkg);
         },
         
         help: function() {
@@ -706,32 +805,36 @@ $(function() {
             return true;
         },
         
-        ignore: function(ignoreUserName) {        
-            if (ignoreUserName.search(/^[a-z0-9-]+$/i) == 0) {
-                
-                if (ignoreUserName in ignore) {
-                    delete ignore[ignoreUserName];
+        block: function(blockUid) 
+        {
+            if (User.isValidName(blockUid) && blockUid != clientId && !(blockUid in ignore)) {
+                // Add person to ignore list
+                ignore[blockUid] = '';
 
-                    for (var i in users) {
-                        if (ignoreUserName == users[i].name) {
-                            elUsers.children('#u' + i).removeClass('ignore');
-                        }
-                    }
-                } else {
-                    // Add person to ignore list
-                    ignore[ignoreUserName] = '';
-
-                    for (var i in users) {
-                        if (ignoreUserName == users[i].name) {
-                            elUsers.children('#u' + i).addClass('ignore');
-                        }
-                    }
+                if (blockUid in users) {
+                    elUsers.children('#u' + blockUid).addClass('ignore');
                 }
-                
-                return true;
             }
-            
-            return false;
+        },
+        
+        unblock: function(unblockUid) 
+        {           
+            if (User.isValidName(unblockUid) && unblockUid in ignore) {
+                delete ignore[unblockUid];
+
+                if (unblockUid in users) {
+                    elUsers.children('#u' + unblockUid).removeClass('ignore');
+                }
+            }           
+        },
+        
+        ignore: function(ignoreUid)
+        {
+            if (ignoreUid in ignore) {
+                Command.unblock(ignoreUid);
+            } else {
+                Command.block(ignoreUid);
+            }
         },
         
         settimer: function(message) {
@@ -817,9 +920,17 @@ $(function() {
                 lastMessage   = message;
                 lastTimestamp = timestamp;
 
-                var list = message.split(' ', 1);
-                if (list[0].search(/^#[a-z0-9-]+:/i) != -1) {
-                    if (Command.whisper(list[0].substring(1, -1) + ' ' + list[1])) {
+                var list = message.split(' ');
+                
+                if (list[0].search(/#[a-z0-9-]+:/i) != -1) {
+                    var whisperUser = list[0].slice(1, -1);
+                    
+                    list.shift();
+                    var whisperMsg = list.join(' ');
+                    
+                    // Attempt to call whisper command
+                    if (Command.whisper(whisperUser + ' ' + whisperMsg)) {
+                        commandLog.push('#' + whisperUser + ': ');
                         return true;
                     }
                 }
@@ -1139,18 +1250,18 @@ $(function() {
         //
         message: function(response) {
             if (response.message) {
-                if (response.id && response.id in users) {
-                    if (users[response.id].name in ignore) {
-                        return;
-                    }
-
-                    // User sent a message, so not idle, and update response to pass to message
-                    response.user = users[response.id];
-                    elUsers.children('#u' + response.id).removeClass('idle');
-                }
-
                 // Display message
                 if (typeof response == 'object') {
+                    if (response.id && response.id in users) {
+                        if (users[response.id].name in ignore) {
+                            return;
+                        }
+
+                        // User sent a message, so not idle, and update response to pass to message
+                        response.user = users[response.id];
+                        elUsers.children('#u' + response.id).removeClass('idle');
+                    }
+                    
                     // Everything is pulled from the user list
 
                     var row     = $('<div/>'),
@@ -1171,6 +1282,12 @@ $(function() {
                         if ('op' in response.user && response.user.op) {
                             link.addClass('op');
                         }
+                        
+                        if (response.message.search(/^\/me /) != -1) {
+                            response.type = 'status';
+                            console.log(response.message.substr(4));
+                            response.message = response.message.substr(4);
+                        }
                     }
 
                     // Clean message then update usernames to tumblr links
@@ -1182,7 +1299,21 @@ $(function() {
                     response.message = response.message.replace(/_(.*)?_/gi, '<em>$1</em>');
                     
                     // MESSAGE: The default message from a user
-                    if (response.type == 'message') {
+                    if (response.type == 'message' || response.type == 'whisper') {
+                        
+                        // Whispers show up as entirely green to help stand out
+                        if (response.type == 'whisper') {
+                            if (response.wid) {
+                                // If this is a whisper back, save info for quick link)
+                                row.attr('data-wid', response.wid);
+                                response.message = '(#' + response.wid + ') ' + response.message;
+                            } else {
+                                row.attr('data-wid', response.user.uid);
+                            }
+                            
+                            row.addClass('whisper');
+                        }
+                        
                         message.html(': ' + response.message);
                         if (clientId in users) {
                             if ('user' in response && response.user.name == users[clientId].name) {
@@ -1220,8 +1351,8 @@ $(function() {
             Action.message(response);
         },
         
-        userstatus: function(response) {
-            // TODO
+        whisper: function(response) {
+            Action.message(response);
         }
     }
         
@@ -1284,6 +1415,7 @@ $(function() {
             btnLogout.button({text: false, icons: {primary: 'ui-icon-power'}});
             btnHelp.button({text: false, icons: {primary: 'ui-icon-help'}});
             btnFollow.button({text: false, icons: {primary: 'ui-icon-plus'}});
+            btnDefault.button({text: false, icons: {primary: 'ui-icon-copy'}});
                         
             $('#room-submit').button();
             
@@ -1298,6 +1430,8 @@ $(function() {
             // CLICK EVENT: Logout
             btnLogout.on('click', DomEvent.logout);
 
+            btnDefault.on('click', DomEvent.userLayout);
+            
             // SUBMIT EVENT: Trigger text submission
             elForm.on('submit', DomEvent.submitText);
 
@@ -1320,7 +1454,10 @@ $(function() {
                 .on('click', '#users>div', DomEvent.popupUserInfo)
                 
                 // LIVE EVENT: Toggle featured room
-                .on('click', '.toggle-feature', DomEvent.toggleFeatured);
+                .on('click', '.toggle-feature', DomEvent.toggleFeatured)
+                
+                // LIVE EVENT: Shortcut for easily whisper to someone
+                .on('click', '#chatbox .whisper span', DomEvent.whisperBack);
 
             
             $(window)
@@ -1343,6 +1480,16 @@ $(function() {
             elRoomForm.on('submit', DomEvent.createRoom);
             
             elRoomType.on('click', DomEvent.toggleRoomType);
+            
+            popUser.find('.user-whisper').on('click', DomEvent.userWhisper);
+            
+            popUser.find('.user-ignore').on('click', DomEvent.userIgnore);
+            
+            popUser.find('.user-away').on('click', DomEvent.userAway);
+            
+            popUser.find('.user-theme').on('click', DomEvent.userTheme);
+            
+            popUser.find('.user-layout').on('click', DomEvent.userLayout);   
         },
         
         dom: function()
@@ -1354,9 +1501,10 @@ $(function() {
             document.title = 'Chatlr (Connecting...)'
             elPulse.chatlr('strobe'); 
             
-            elLogout.hide();  
+            elLogout.hide();
+            btnDefault.hide();
             
-            popCreateRoom.hide();
+            DomEvent.hidePopup();
         }
     };
     

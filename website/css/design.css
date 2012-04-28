@@ -280,6 +280,12 @@ body, input, .ui-button {
                 padding-top: 0;
             }
             
+            #chat div.userstatus > * {
+                font-weight: normal;
+                font-style: italic;
+                opacity: 0.75;
+            }
+            
             #chat div.status span {
                 display: block;                
                 padding: 0.5em;
@@ -290,7 +296,7 @@ body, input, .ui-button {
                 border-radius: 0 0 0.25em 0.25em;
             }
             
-            #chat div.personal > a {                
+            #chat div.personal > a, #chat div.whisper span {                
                 color: #6ebf1c;
             }
 
@@ -542,7 +548,7 @@ body, input, .ui-button {
     border-bottom: 7px solid rgba(0, 0, 0, 0.10);
 }
 
-#user-popup {
+#popup-user {
     position: absolute;
     top: 0;
     left: 0;
@@ -556,7 +562,7 @@ body, input, .ui-button {
     min-width: 24em;
 }
 
-#user-popup img {
+#popup-user img {
     width: 64px;
     height: 64px;
     border-radius: 0.25em;
@@ -564,14 +570,35 @@ body, input, .ui-button {
     margin-right: 0.5em;
 }
 
-#user-popup a {
-    font-size: 1.167em;
+#popup-user h1 {
+    font-size: 1.25em;
     display: block;
-    line-height: 1;
-    margin: 0;
-    text-decoration: none;
+    line-height: 1em;
+    margin: 0.5em 0 0 0;
     font-weight: bold;
-    color: #333;
+    overflow: hidden;
+    width: 12em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#popup-user ul {
+    margin: 0;
+    padding: 0.666em 0;
+    list-style: none;
+}
+
+#popup-user li {
+    float: left;
+    padding-right: 0.5em;
+}
+
+#popup-user li a {
+    font-size: 1em;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 0.25em;
+    padding: 0.333em 0.666em !important;
 }
 
 .ui-button-icon-only {
@@ -707,7 +734,7 @@ body, input, .ui-button {
     text-align: left;
 }
 
-#page-createroom #room-submit {
+#page-createroom #room-submit, #popup-user li a {
     float: right;
     display: block;
     padding: 0.6em 1em;
@@ -718,6 +745,10 @@ body, input, .ui-button {
     border-top: 1px solid rgba(255, 255, 255, 0.4);
     border-bottom: 3px solid rgba(0, 0, 0, 0.25);
     background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.15) 0, rgba(0, 0, 0, 0.15) 100%);
+}
+
+#page-createroom #room-submit:hover, #popup-user li a:hover {
+    opacity: 0.9;
 }
 
 #page-createroom .ui-button-text {
