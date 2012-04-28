@@ -739,7 +739,7 @@ $(function() {
         
         mobile: function()
         {
-            Command.layout(isMobile ? 'default' : 'compact');
+            return Command.layout(isMobile ? 'default' : 'compact');
         },
         
         room: function(page) {
@@ -765,7 +765,7 @@ $(function() {
         },
         
         night: function() {
-            Command.theme(elBody.hasClass('night') ? 'light' : 'dark');
+            return Command.theme(elBody.hasClass('night') ? 'light' : 'dark');
         },
         
         topic: function(newTopic) {
@@ -829,8 +829,11 @@ $(function() {
 
                 if (blockUid in users) {
                     elUsers.children('#u' + blockUid).addClass('ignore');
+                    return true;
                 }
             }
+            
+            return false;
         },
         
         unblock: function(unblockUid) 
@@ -840,16 +843,19 @@ $(function() {
 
                 if (unblockUid in users) {
                     elUsers.children('#u' + unblockUid).removeClass('ignore');
+                    return true; 
                 }
-            }           
+            } 
+            
+            return false;   
         },
         
         ignore: function(ignoreUid)
         {
             if (ignoreUid in ignore) {
-                Command.unblock(ignoreUid);
+                return Command.unblock(ignoreUid);
             } else {
-                Command.block(ignoreUid);
+                return Command.block(ignoreUid);
             }
         },
         
@@ -961,6 +967,7 @@ $(function() {
         logout: function()
         {
             Util.callServer('logout', []);
+            return true;
         }
     };
     
