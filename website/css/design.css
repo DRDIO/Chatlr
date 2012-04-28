@@ -136,10 +136,8 @@ body, input, .ui-button {
             color: #333;
             text-decoration: none;
             font-weight: bold;
-            vertical-align: middle;
-        }
-        
-        #rooms a {            
+            vertical-align: middle;  
+            
             display: block;
             float: left;
             width: 7em;
