@@ -1131,7 +1131,7 @@ $(function() {
                         // Update status to say they joined                    
                         Action.message({
                             type:    'status',
-                            message: 'The topic is \'' + topic + '\''
+                            message: topic
                         });
                     }
 
