@@ -137,16 +137,11 @@ body, input, .ui-button {
             text-decoration: none;
             font-weight: bold;
             vertical-align: middle;  
-            float: right;
-            display: block;
+            display: inline-block;
             width: 7em;
             height: 1.25em;
             text-overflow: ellipsis;
             white-space: nowrap;
-        }
-        
-        #rooms a {
-            float: left;
         }
 
         #users div.personal, #rooms div.op {
