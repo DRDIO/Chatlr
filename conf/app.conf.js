@@ -10,15 +10,6 @@ exports.dft = {
     owner: 'kevinnuut'
 };
 
-exports.opList = {
-    'kevinnuut':     0,
-    'lacey':         1,
-    'gompr':         1,
-    'topherchris':   1,
-    'brittanyforks': 1,
-    'fajita':        1
-};
-
 exports.db = {
     'database': 'chatlrdev'
 };
@@ -31,15 +22,15 @@ exports.server = {
 };
 
 exports.oauth = {
-    domain:          'http://tumblrchat.loc:8080',
+    domain:          'http://chatlr.com:8080',
 
     requestUrl:      'http://www.tumblr.com/oauth/request_token',
     accessUrl:       'http://www.tumblr.com/oauth/access_token',
     authorizeUrl:    'http://www.tumblr.com/oauth/authorize',
     authenticateUrl: 'http://api.tumblr.com/v2/user/info',
 
-    consumerKey:     'svbT4DJfa0G1LDo4BkFlxPhlshIIYzrOoE1IWieuww0fS07P21',
-    consumerSecret:  'TpF7X2GIWV2duq7g2sHijZ64QMNtvfB7i050zyiDvkhw6aC8Sk',
+    consumerKey:     'k6huAUe0DtDSdmIRHxnDGNuTBScw7ffJ0ePAi6tsbjSgZTzF9P',
+    consumerSecret:  'jWwSLvLTqKDQMDeTGYrhWeUVApk2FufivWmkn3RS8VhFOvTE2h',
 
     appHtmlPath:     exports.server.publicPath + '/content.html'
 };
