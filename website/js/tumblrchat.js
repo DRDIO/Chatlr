@@ -1,3 +1,7 @@
+debugging = false;
+if (typeof console == 'undefined') var console = { log: function() {} }; 
+else if (!debugging || typeof console.log == 'undefined') console.log = function() {};
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 // LOAD EVENT
 //
@@ -17,7 +21,10 @@ $(function() {
         connected     = false,
         approved      = false,
         elCurrentRoom = $('#currentroom'),
+        
+        // Track whispers with up arrow
         whisperLog    = [],
+        whisperCount  = -1,
         
         elBody        = $('body'),
         
@@ -437,16 +444,25 @@ $(function() {
             }
             
             if (key == 50 && self.data('shift')) {
-                console.log('amped');
+                // console.log('amped');
                 self.data('amp', true);
             }
             
             if(self.data('amp') && ((key >= 48 && key <= 57) || (key >= 65 && key <= 90) || key == 189)) {
-                console.log(e.key);
+                // console.log(e.key);
             }
             
-            if (!elText.val() && key == 38) {
-                elText.val(whisperLog.pop());
+            if (key == 38 || key == 40) {
+                e.preventDefault();
+                
+                whisperCount += (key == 38 ? 1 : -1);
+                
+                if (!(whisperCount in whisperLog)) {
+                    whisperCount = (key == 38 ? 0 : whisperLog.length - 1);
+                }
+                
+                elText.val('#' + whisperLog[whisperCount] + ':').focus();
+                
             }
         },
         
@@ -779,12 +795,12 @@ $(function() {
                 var message = list.join(' ');
 
                 // Store a whisper log to use up arrow to get last person
-                var lastWhisper = whisperLog.inArray(whisperUid);
+                var lastWhisper = $.inArray(whisperUid, whisperLog);
                 if (lastWhisper > -1) {
                     delete whisperLog[lastWhisper];
                 }
                 
-                whisperLog.push(whisperUid);
+                whisperLog.unshift(whisperUid);
 
                 Util.callServer('whisper', [whisperUid, message]);
 
@@ -930,7 +946,6 @@ $(function() {
                     
                     // Attempt to call whisper command
                     if (Command.whisper(whisperUser + ' ' + whisperMsg)) {
-                        commandLog.push('#' + whisperUser + ': ');
                         return true;
                     }
                 }
@@ -1173,14 +1188,15 @@ $(function() {
         // CONNECTED: Set user into sidebar and update count
         //
         connected: function(response) {
+            console.log(response);
             if (response.user) {
                 // Update user counts on sidebar and in header
                 userCount++;
                 document.title = '(' + userCount + ') Chatlr';                
                 
                 // Display user on side and add
-                users[response.user.name] = response.user;
-                User.display(response.user.name);                
+                users[response.user.uid] = response.user;
+                User.display(response.user.uid);                
             }
         },
 
@@ -1316,7 +1332,7 @@ $(function() {
                         
                         message.html(': ' + response.message);
                         if (clientId in users) {
-                            if ('user' in response && response.user.name == users[clientId].name) {
+                            if ('user' in response && response.user.uid == clientId) {
                                 row.addClass('personal');
                             } else {
                                 // Try to save having to do a rege exp all the time
