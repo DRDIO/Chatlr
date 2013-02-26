@@ -239,6 +239,7 @@ body, input, .ui-button {
     overflow: hidden;
     height: 100%;
     border-radius: 0.25em;
+    -webkit-overflow-scrolling: touch;
 }
 
     #chat {
