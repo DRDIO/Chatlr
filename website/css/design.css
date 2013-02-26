@@ -446,19 +446,26 @@ body, input, .ui-button {
 
 /* PHONES AND TABLETS */
 
-@media all and (max-device-width: 481px) {
+@media (max-width: 767px) {
     body {
         -webkit-text-size-adjust: none;
         -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
 
-    #notice, .toplink, #section-top-left, #button-help, #advertisement {
+    #section-top-left, #advertisement {
         display: none;
     }
 
     #chatbox {
-        width: 100%;
-        clear: both;        
+        box-sizing: border-box;
+        width: 100% !important;
+	clear: both;
+    }
+}
+
+@media (max-width: 480px) {
+    #notice, .toplink, #section-top-left, #button-help, #advertisement {
+        display: none;
     }
 }
 

@@ -11,26 +11,26 @@ exports.dft = {
 };
 
 exports.db = {
-    'database': 'chatlrdev'
+    'database': 'chatlr'
 };
 
 exports.server = {
     host:       '',
-    port:       8080,
-    secret:     'sauce1!',
+    port:       80,
+    secret:     'pantspants1!',
     publicPath: __dirname + '/../website'
 };
 
 exports.oauth = {
-    domain:          'http://chatlr.com:8080',
+    domain:          'http://chatlr.com',
 
     requestUrl:      'http://www.tumblr.com/oauth/request_token',
     accessUrl:       'http://www.tumblr.com/oauth/access_token',
     authorizeUrl:    'http://www.tumblr.com/oauth/authorize',
     authenticateUrl: 'http://api.tumblr.com/v2/user/info',
 
-    consumerKey:     'k6huAUe0DtDSdmIRHxnDGNuTBScw7ffJ0ePAi6tsbjSgZTzF9P',
-    consumerSecret:  'jWwSLvLTqKDQMDeTGYrhWeUVApk2FufivWmkn3RS8VhFOvTE2h',
+    consumerKey:     'oQRq1Wpo1BiygSFYGdUJUZq2DgcRzm4Jjx7ooxh19wQ3WCAcSU',
+    consumerSecret:  'Ak59AnEOWHWpgbtzqJYJL08IIQ8DNxA96CbsBh5FJDpMDbiij0',
 
     appHtmlPath:     exports.server.publicPath + '/content.html'
 };
