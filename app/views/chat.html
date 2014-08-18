@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+<head>
+    <title>Chatlr</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="http://jquery-ui.googlecode.com/svn/tags/1.8.13/themes/black-tie/jquery-ui.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/css/design.css?v=$Id$" />
+
+    <link rel="icon" href="favicon.ico" sizes="16x16" />
+    <link rel="icon" href="favicon.ico" sizes="48x48" />
+
+    <link rel="apple-touch-icon" href="/img/iphoneicon.png" />
+    <link rel="apple-touch-startup-image" href="/img/startup.png">
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/effects.js"></script>
+    <script type="text/javascript" src="/js/json.js"></script>
+    <script type="text/javascript" src="/js/tumblrchat.js?v=$Id$"></script>
+</head>
+<body>
+<div id="top">
+    <h1 id="header">Chatlr</h1>
+    <!--<div id="count"></div>
+    <div id="notice"></div>-->
+
+    <div id="tabs">
+        <!--                <a id="button-changeroom" class="topbuttons" href="#" title="Change Room">
+                            Create Room
+                        </a>-->
+        <div id="currentroom" class="topbuttons">
+            <span class="ui-icon ui-icon-pin-s"></span>
+            <span class="text"></span>
+        </div>
+    </div>
+
+    <a id="button-logout" class="topbuttons ui-state-error" href="/clear" title="Logout">
+        Logout
+    </a>
+
+    <!--<a id="button-settings" class="topbuttons" href="/settings" title="Settings">Settings</a>-->
+
+    <a id="button-help" class="topbuttons" title="Chatlr Rules & Help" href="" rel="page-about">
+        Rules
+    </a>
+
+    <a id="button-follow" class="topbuttons" href="http://www.tumblr.com/follow/chatlr" title="Follow Chatlr's Blog!" target="_blank">
+        Follow
+    </a>
+
+    <a id="button-default" class="topbuttons" href="#" title="Return to Default Theme">
+        Follow
+    </a>
+</div>
+
+<div id="section-top">
+    <div id="section-top-left">
+        <div id="usersbox" class="scrollbox animator">
+            <div id="users" class="viewport"></div>
+        </div>
+
+        <div id="roomsbox" class="scrollbox animator">
+            <a href="" id="button-room" class="ui-state-default" title="Create Room" rel="page-createroom">
+                <span class="ui-icon ui-icon-plus"></span>
+                Create Room
+            </a>
+            <div id="rooms" class="viewport"></div>
+        </div>
+    </div>
+
+    <div id="chatbox" class="scrollbox">
+        <div id="chat" class="viewport"></div>
+    </div>
+</div>
+
+<div id="section-bottom">
+    <form id="form" action="" method="post">
+        <input id="text" type="text" autocomplete="off" placeholder="Type something and hit enter!" />
+    </form>
+</div>
+
+<div id="page-about" class="page">
+    <p>
+        <strong>Rules</strong><br />
+        Failure to abide by the following rules will result in an escalating ban:
+    </p>
+
+    <ul>
+        <li>No Bullying</li>
+        <li>No Griefing</li>
+        <li>No Whoring</li>
+        <li>No Vulgarity</li>
+        <li>No Spamming</li>
+    </ul>
+    <div style="clear: both;"></div>
+
+    <p>
+        <strong>Problems</strong><br />
+        Chatlr works in Explorer, Firefox,
+        <a href="http://www.apple.com/safari/" title="Get Safari!">Safari</a> and
+        <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>.
+        Please report all problems to the
+        <a href="http://blog.chatlr.com/ask" title="Chatlr's Ask Box" target="_blank">Ask Box</a>
+        along with your OS, browser version, and any error messages.
+    </p>
+
+    <p>
+        <strong>About</strong><br />
+        Chatlr was created by
+        <a href="http://kevinnuut.com/" title="Visit KevinNuut.com" target="_blank">Kevin Nuut</a>
+        using
+        <a href="http://www.tumblr.com/oauth/apps" title="Visit Tumblr OAuth" target="_blank">Tumblr OAuth</a>,
+        <a href="http://socket.io/" title="Visit Socket.IO" target="_blank">Socket.IO</a>,
+        <a href="http://nodejs.org/" title="Visit Node.JS" target="_blank">Node.JS</a>, and
+        <a href="http://jquery.com/" title="Visit jQuery" target="_blank">jQuery</a>.
+    </p>
+
+    <p>
+        <strong>
+            <a href="http://www.tumblr.com/follow/chatlr" title="Chatlr Blog" target="_blank">Follow Chatlr</a>!
+        </strong>
+    </p>
+</div>
+
+<div id="page-error" class="page">
+    Chatlr works in
+    <a href="http://www.mozilla.com/en-US/firefox/beta/" title="Get Firefox 4 Beta!">Firefox 4</a>,
+    <a href="http://www.apple.com/safari/" title="Get Safari!">Safari</a>,
+    <a href="http://www.google.com/chrome/" title="Get Chrome!">Chrome</a>, and Explorer.
+</div>
+
+<div id="page-createroom">
+    <form id="room-form">
+        <fieldset>
+            <input type="text" id="room-name" placeholder="Room Name" />
+        </fieldset>
+        <fieldset>
+            <input id="room-submit" type="submit" value="Create Room" />
+            <button id="room-type" value="Public">Public</button>
+        </fieldset>
+    </form>
+</div>
+
+<div id="popup-user">
+    <img src="" alt="icon" />
+    <h1>
+
+    </h1>
+    <ul class="user-ulself">
+        <li>
+            <a class="user-away" href="#" title="Step Away">
+                Idle
+            </a>
+        </li>
+        <li>
+            <a class="user-theme" href="#" title="Toggle Theme">
+                Theme
+            </a>
+        </li>
+        <li>
+            <a class="user-layout" href="#" title="Toggle Layout">
+                Layout
+            </a>
+        </li>
+    </ul>
+    <ul class="user-ulother">
+        <li>
+            <a class="user-visit" href="#" target="_blank">
+                Visit
+            </a>
+        </li>
+        <li>
+            <a class="user-whisper" href="#" title="Whisper">
+                Whisper
+            </a>
+        </li>
+        <li>
+            <a class="user-ignore" href="#" title="Block">
+                Ignore
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div id="loading"><div id="loading-pulse"></div></div>
+
+<div id="logout" class="ui-state-default">
+    <div id="bloglist"></div>
+
+    <a id="logout-confirm">
+        <span class="ui-icon ui-icon-power"></span>Logout
+    </a>
+</div>
+</body>
+</html>
